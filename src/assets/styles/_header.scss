@@ -1,0 +1,62 @@
+@use "_colors.scss" as *;
+
+.header {
+  background: $color-bg;
+  border-bottom: 1px solid $color-border;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1280px;
+  margin: 0 auto;
+  height: 72px;
+  padding: 0 2rem;
+}
+
+.header-left,
+.header-right {
+  display: flex;
+  gap: 2rem;
+}
+
+.header-logo {
+  flex: 1;
+  text-align: center;
+}
+
+.logo-link {
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+  font-size: 2rem;
+  font-weight: bold;
+  color: $color-text;
+  text-decoration: none;
+  letter-spacing: -1px;
+}
+
+.header-link,
+.header-cart {
+  background: none;
+  border: none;
+  color: $color-text;
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.header-link:hover,
+.header-cart:hover {
+  color: $color-accent;
+  text-decoration: underline;
+}
+
+.header-cart {
+  font-weight: bold;
+}

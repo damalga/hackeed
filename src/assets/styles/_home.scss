@@ -1,0 +1,28 @@
+@use "sass:color";
+@use "_colors.scss" as *;
+
+.home-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: $color-text;
+}
+
+.home-subtitle {
+    font-size: 1.25rem;
+    color: $color-muted;
+    margin-bottom: 2rem;
+}
+
+.home-cta {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background-color: $color-primary;
+    color: $color-bg;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    &:hover {
+        background-color: color.adjust($color-primary, $lightness: -10%);
+    }
+}

@@ -1,9 +1,8 @@
 <script setup>
-import Header from './components/Header.vue'
-import Hero from './components/Hero.vue'
-import Products from './components/Products.vue'
-import Contact from './components/Contact.vue'
-import Footer from './components/Footer.vue'
+import Header from './components/Header_comp.vue'
+import Hero from './components/Hero_comp.vue'
+import Contact from './components/Contact_comp.vue'
+import Footer from './components/Footer_comp.vue'
 </script>
 
 <template>

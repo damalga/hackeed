@@ -27,9 +27,9 @@
 
 <script setup>
 import { ref } from 'vue'
-import Header from '../components/Header.vue'
-import Footer from '../components/Footer.vue'
-import Cart from '../components/Cart.vue'
+import Header from '../components/Header_comp.vue'
+import Footer from '../components/Footer_comp.vue'
+import Cart from '../components/Cart_comp.vue'
 
 const showCart = ref(false)
 </script>

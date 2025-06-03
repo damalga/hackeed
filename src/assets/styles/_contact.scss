@@ -1,0 +1,62 @@
+@use "_colors.scss" as *;
+
+.contact-section {
+    border-top: 1px solid $color-border;
+    padding-top: 3rem;
+    max-width: 720px;
+    margin: 0 auto 5rem auto;
+    text-align: center;
+    .contact-title {
+        font-size: 1.5rem;
+        font-family: "Fira Mono", monospace;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        color: $color-text;
+    }
+
+    .contact-desc {
+        color: $color-text;
+        margin-bottom: 1.5rem;
+    }
+
+    .contact-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.1rem;
+        max-width: 340px;
+        margin: 0 auto;
+    }
+
+    .contact-input {
+        width: 100%;
+        padding: 0.7rem 1rem;
+        border: 1px solid $color-border;
+        font-size: 1rem;
+        background: $color-bg;
+        color: $color-text;
+        outline: none;
+        transition: border 0.18s;
+
+        &:focus {
+            border-color: $color-accent;
+        }
+    }
+
+    .contact-btn {
+        padding: 0.7rem 2.2rem;
+        background: $color-primary;
+        color: $color-text;
+        font-weight: bold;
+        font-size: 1.07rem;
+        border: none;
+        cursor: pointer;
+        transition:
+            background 0.2s,
+            color 0.2s;
+
+        &:hover {
+            background: $color-accent;
+            color: $color-primary;
+        }
+    }
+}

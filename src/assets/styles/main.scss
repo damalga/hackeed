@@ -1,0 +1,10 @@
+/*general*/
+@use "_reset.scss" as *;
+@use "_colors.scss" as *;
+/*components*/
+@use "_header.scss" as *;
+@use "_hero.scss" as *;
+@use "_contact.scss" as *;
+@use "_footer.scss" as *;
+/*pages*/
+@use "_home.scss" as *;
