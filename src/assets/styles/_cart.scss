@@ -1,0 +1,380 @@
+// Header cart styles with dark theme
+.header-cart {
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+  
+  &:hover .cart-info {
+    color: var(--accent-primary);
+  }
+}
+
+.cart-info {
+  margin-left: 8px;
+  color: var(--accent-primary);
+  font-weight: 600;
+  font-size: 14px;
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+}
+
+// Cart page styles
+.cart-page {
+  min-height: calc(100vh - 140px);
+  padding: 40px 20px;
+  background: var(--bg-primary);
+}
+
+.cart-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cart-title {
+  font-size: 36px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 40px;
+  color: var(--text-primary);
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+  letter-spacing: -1px;
+}
+
+// Empty cart styles
+.empty-cart {
+  text-align: center;
+  padding: 80px 20px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 12px;
+  box-shadow: 0 2px 10px var(--shadow-dark);
+
+  h2 {
+    font-size: 28px;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-size: 16px;
+    margin-bottom: 30px;
+    font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+  }
+}
+
+.empty-cart-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+}
+
+.continue-shopping-btn {
+  display: inline-block;
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+  padding: 15px 30px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.2s;
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+
+  &:hover {
+    background: var(--accent-secondary);
+  }
+}
+
+// Cart content with products
+.cart-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 40px;
+}
+
+.cart-items {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 2px 10px var(--shadow-dark);
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  gap: 20px;
+  padding: 25px 0;
+  border-bottom: 1px solid var(--border-primary);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.item-image {
+  width: 120px;
+  height: 120px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    filter: brightness(1.1);
+  }
+}
+
+.item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--text-primary);
+  margin: 0;
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+}
+
+.item-desc {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 0;
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+}
+
+.item-price {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--accent-primary);
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+}
+
+.item-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 15px;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: 25px;
+  padding: 5px;
+}
+
+.quantity-btn {
+  width: 35px;
+  height: 35px;
+  border: 2px solid var(--accent-primary);
+  background: var(--bg-secondary);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--accent-primary);
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px var(--shadow-dark);
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+
+  &:hover {
+    background: var(--accent-primary);
+    color: var(--bg-primary);
+  }
+
+  &.minus, &.plus {
+    // Specific styles for + and - buttons if needed
+  }
+}
+
+.quantity {
+  font-size: 16px;
+  font-weight: 600;
+  min-width: 30px;
+  text-align: center;
+  color: var(--text-primary);
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+}
+
+.item-total {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--text-primary);
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+}
+
+.remove-item-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: rgba(255, 0, 0, 0.1);
+  }
+}
+
+// Cart summary sidebar
+.cart-summary {
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+}
+
+.summary-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 2px 10px var(--shadow-dark);
+
+  h3 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 0 25px 0;
+    color: var(--text-primary);
+    font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+  }
+
+  hr {
+    border: none;
+    border-top: 2px solid var(--border-primary);
+    margin: 20px 0;
+  }
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  color: var(--text-secondary);
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+
+  &.total {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--text-primary);
+  }
+}
+
+.checkout-btn {
+  width: 100%;
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+  border: none;
+  padding: 18px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin: 25px 0 15px 0;
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+
+  &:hover {
+    background: var(--accent-secondary);
+  }
+}
+
+.continue-shopping {
+  display: block;
+  text-align: center;
+  color: var(--accent-primary);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+
+  &:hover {
+    background: var(--bg-tertiary);
+  }
+}
+
+// Cart actions
+.cart-actions {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.clear-cart-btn {
+  background: #dc3545;
+  color: var(--text-primary);
+  border: none;
+  padding: 12px 25px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+
+  &:hover {
+    background: #c82333;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .cart-page {
+    padding: 20px 15px;
+  }
+  
+  .cart-title {
+    font-size: 28px;
+    margin-bottom: 30px;
+  }
+  
+  .cart-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .cart-item {
+    grid-template-columns: 80px 1fr;
+    gap: 15px;
+  }
+  
+  .item-controls {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+  }
+  
+  .item-image {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .item-name {
+    font-size: 18px;
+  }
+  
+  .summary-card {
+    padding: 20px;
+  }
+}

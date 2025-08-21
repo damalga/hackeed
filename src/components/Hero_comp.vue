@@ -11,9 +11,10 @@
                 <img :src="slide.img" :alt="slide.title" class="hero-img" />
                 <h2 class="hero-title">{{ slide.title }}</h2>
                 <p class="hero-desc">{{ slide.desc }}</p>
-                <router-link :to="slide.link" class="hero-cta">{{
+                <div class="hero-price">{{ slide.price }}</div>
+                <button class="hero-cta" @click="openProductModal(slide.productId)">{{
                     slide.cta
-                }}</router-link>
+                }}</button>
             </div>
             <button class="hero-arrow hero-arrow--left" @click="prevSlide">
                 &#8592;
@@ -35,9 +36,11 @@
 
 <script setup>
 import { ref } from "vue";
-
+import { useProductModalStore } from '@/stores/productModalStore'
 import slides from '../data/slider_hero_data.js'
+import products from '../data/products_data.js'
 
+const productModalStore = useProductModalStore()
 const activeIndex = ref(0);
 
 function nextSlide() {
@@ -46,5 +49,12 @@ function nextSlide() {
 
 function prevSlide() {
     activeIndex.value = (activeIndex.value - 1 + slides.length) % slides.length;
+}
+
+function openProductModal(productId) {
+    const product = products.find(p => p.id === productId)
+    if (product) {
+        productModalStore.openModal(product)
+    }
 }
 </script>

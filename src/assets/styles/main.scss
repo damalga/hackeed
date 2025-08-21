@@ -1,10 +1,14 @@
 /*general*/
 @use "_reset.scss" as *;
 @use "_colors.scss" as *;
+@use "_global.scss" as *;
 /*components*/
 @use "_header.scss" as *;
 @use "_hero.scss" as *;
 @use "_contact.scss" as *;
 @use "_footer.scss" as *;
+@use "_product.scss" as *;
+@use "_cart.scss" as *;
 /*pages*/
 @use "_home.scss" as *;
+@use "_shop.scss" as *;

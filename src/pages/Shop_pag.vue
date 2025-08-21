@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header @toggle-cart="showCart = !showCart" />
+    <Header />
     <section class="shop-section">
       <h2 class="shop-title">
         Productos top hacker
@@ -11,37 +11,78 @@
           :key="product.id"
           class="shop-card"
         >
-          <img
-            :src="product.img"
-            :alt="product.name"
-            class="shop-img"
-          />
-          <h3 class="shop-product-title">
-            {{ product.name }}
-          </h3>
-          <p class="shop-product-desc">
-            {{ product.desc }}
-          </p>
-          <button class="shop-add-cart">
-            Añadir al carrito
-          </button>
+          <div class="shop-img-container" @click="openProductModal(product)">
+            <img
+              :src="product.img"
+              :alt="product.name"
+              class="shop-img"
+            />
+          </div>
+          <div class="shop-content">
+            <h3 class="shop-product-title" @click="openProductModal(product)">
+              {{ product.name }}
+            </h3>
+            <p class="shop-product-desc">
+              {{ product.desc }}
+            </p>
+            <div class="shop-price">€{{ product.price }}</div>
+            
+            <!-- Controles del carrito -->
+            <div class="shop-cart-controls">
+              <div v-if="cartStore.isInCart(product.id)" class="quantity-controls">
+                <button 
+                  class="quantity-btn" 
+                  @click="cartStore.updateQuantity(product.id, cartStore.getItemQuantity(product.id) - 1)"
+                >
+                  −
+                </button>
+                <span class="quantity">{{ cartStore.getItemQuantity(product.id) }}</span>
+                <button 
+                  class="quantity-btn" 
+                  @click="cartStore.updateQuantity(product.id, cartStore.getItemQuantity(product.id) + 1)"
+                >
+                  +
+                </button>
+              </div>
+              <button 
+                v-else
+                class="shop-add-cart"
+                @click="addToCart(product)"
+                :disabled="!product.inStock"
+              >
+                {{ product.inStock ? 'Añadir al carrito' : 'Agotado' }}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
     <Footer />
-    <Carrito :show="showCart" @close="showCart = false" />
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
-
+import { useCartStore } from '../stores/cartStore'
+import { useProductModalStore } from '../stores/productModalStore'
 import products from '../data/products_data.js'
 
 import Header from "../components/Header_comp.vue";
 import Footer from "../components/Footer_comp.vue";
-import Carrito from "../components/Cart_comp.vue";
 
-const showCart = ref(false);
+const cartStore = useCartStore()
+const productModalStore = useProductModalStore()
 
+const addToCart = (product) => {
+  if (product.inStock) {
+    cartStore.addToCart(product)
+  }
+}
+
+const openProductModal = (product) => {
+  productModalStore.openModal(product)
+}
 </script>
+
+<style scoped>
+/* Estilos incluidos desde _shop.scss */
+</style>

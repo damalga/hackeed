@@ -1,0 +1,194 @@
+// Shop page styles with dark theme
+.shop-section {
+  padding: 60px 20px;
+  background: var(--bg-primary);
+  min-height: calc(100vh - 140px);
+}
+
+.shop-title {
+  font-size: 42px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 50px;
+  color: var(--text-primary);
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+  letter-spacing: -1px;
+}
+
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.shop-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px var(--shadow-dark);
+  transition: all 0.3s ease;
+}
+
+.shop-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px var(--shadow-dark);
+  border-color: var(--accent-primary);
+}
+
+.shop-img-container {
+  width: 100%;
+  height: 280px;
+  background: var(--bg-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.shop-img {
+  max-width: 85%;
+  max-height: 85%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+  filter: brightness(1.1);
+}
+
+.shop-img-container:hover .shop-img {
+  transform: scale(1.05);
+}
+
+.shop-content {
+  padding: 25px;
+}
+
+.shop-product-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--text-primary);
+  margin: 0 0 12px 0;
+  cursor: pointer;
+  transition: color 0.2s;
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+}
+
+.shop-product-title:hover {
+  color: var(--accent-primary);
+}
+
+.shop-product-desc {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 15px 0;
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+}
+
+.shop-price {
+  font-size: 26px;
+  font-weight: bold;
+  color: var(--accent-primary);
+  margin-bottom: 20px;
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+}
+
+.shop-cart-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: 25px;
+  padding: 10px;
+}
+
+.quantity-btn {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--accent-primary);
+  background: var(--bg-secondary);
+  color: var(--accent-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.2s;
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+}
+
+.quantity-btn:hover {
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+}
+
+.quantity {
+  font-size: 18px;
+  font-weight: bold;
+  min-width: 30px;
+  text-align: center;
+  color: var(--text-primary);
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+}
+
+.shop-add-cart {
+  width: 100%;
+  padding: 15px;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 2px solid var(--border-primary);
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+}
+
+.shop-add-cart:hover:not(:disabled) {
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+  border-color: var(--accent-primary);
+}
+
+.shop-add-cart:disabled {
+  background: var(--bg-tertiary);
+  color: var(--text-muted);
+  border-color: var(--border-primary);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+  .shop-section {
+    padding: 40px 15px;
+  }
+  
+  .shop-title {
+    font-size: 32px;
+    margin-bottom: 30px;
+  }
+  
+  .shop-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .shop-img-container {
+    height: 220px;
+  }
+  
+  .shop-content {
+    padding: 20px;
+  }
+}
