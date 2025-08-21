@@ -1,10 +1,12 @@
+@use "_colors.scss" as *;
+
 // Header cart styles with dark theme
 .header-cart {
   position: relative;
   text-decoration: none;
   color: inherit;
   font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
-  
+
   &:hover .cart-info {
     color: var(--accent-primary);
   }
@@ -46,7 +48,6 @@
   padding: 80px 20px;
   background: var(--bg-secondary);
   border: 1px solid var(--border-primary);
-  border-radius: 12px;
   box-shadow: 0 2px 10px var(--shadow-dark);
 
   h2 {
@@ -70,19 +71,7 @@
 }
 
 .continue-shopping-btn {
-  display: inline-block;
-  background: var(--accent-primary);
-  color: var(--bg-primary);
-  padding: 15px 30px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: background-color 0.2s;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
-
-  &:hover {
-    background: var(--accent-secondary);
-  }
+  @include button-primary;
 }
 
 // Cart content with products
@@ -95,7 +84,6 @@
 .cart-items {
   background: var(--bg-secondary);
   border: 1px solid var(--border-primary);
-  border-radius: 12px;
   padding: 30px;
   box-shadow: 0 2px 10px var(--shadow-dark);
 }
@@ -117,7 +105,6 @@
   height: 120px;
   background: var(--bg-tertiary);
   border: 1px solid var(--border-primary);
-  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -173,26 +160,20 @@
   gap: 10px;
   background: var(--bg-tertiary);
   border: 1px solid var(--border-primary);
-  border-radius: 25px;
   padding: 5px;
 }
 
 .quantity-btn {
+  @include button-small;
   width: 35px;
   height: 35px;
-  border: 2px solid var(--accent-primary);
+  padding: 0;
   background: var(--bg-secondary);
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
   font-size: 18px;
   font-weight: bold;
-  color: var(--accent-primary);
-  transition: all 0.2s;
   box-shadow: 0 2px 4px var(--shadow-dark);
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 
   &:hover {
     background: var(--accent-primary);
@@ -226,8 +207,8 @@
   cursor: pointer;
   font-size: 18px;
   padding: 8px;
-  border-radius: 4px;
   transition: background-color 0.2s;
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 
   &:hover {
     background: rgba(255, 0, 0, 0.1);
@@ -244,7 +225,6 @@
 .summary-card {
   background: var(--bg-secondary);
   border: 1px solid var(--border-primary);
-  border-radius: 12px;
   padding: 30px;
   box-shadow: 0 2px 10px var(--shadow-dark);
 
@@ -279,22 +259,10 @@
 }
 
 .checkout-btn {
+  @include button-primary;
+  @include button-large;
   width: 100%;
-  background: var(--accent-primary);
-  color: var(--bg-primary);
-  border: none;
-  padding: 18px;
-  border-radius: 8px;
-  font-size: 18px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
   margin: 25px 0 15px 0;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
-
-  &:hover {
-    background: var(--accent-secondary);
-  }
 }
 
 .continue-shopping {
@@ -304,7 +272,6 @@
   text-decoration: none;
   font-weight: 500;
   padding: 10px;
-  border-radius: 4px;
   transition: background-color 0.2s;
   font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 
@@ -320,20 +287,7 @@
 }
 
 .clear-cart-btn {
-  background: #dc3545;
-  color: var(--text-primary);
-  border: none;
-  padding: 12px 25px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
-
-  &:hover {
-    background: #c82333;
-  }
+  @include button-danger;
 }
 
 // Responsive design
@@ -341,22 +295,22 @@
   .cart-page {
     padding: 20px 15px;
   }
-  
+
   .cart-title {
     font-size: 28px;
     margin-bottom: 30px;
   }
-  
+
   .cart-content {
     grid-template-columns: 1fr;
     gap: 30px;
   }
-  
+
   .cart-item {
     grid-template-columns: 80px 1fr;
     gap: 15px;
   }
-  
+
   .item-controls {
     grid-column: 1 / -1;
     flex-direction: row;
@@ -364,16 +318,16 @@
     align-items: center;
     margin-top: 15px;
   }
-  
+
   .item-image {
     width: 80px;
     height: 80px;
   }
-  
+
   .item-name {
     font-size: 18px;
   }
-  
+
   .summary-card {
     padding: 20px;
   }

@@ -1,11 +1,11 @@
 @use "_colors.scss" as *;
 
 .footer {
-    background: $color-bg;
-    border-top: 1px solid $color-border;
+    background: $color-bg-primary;
+    border-top: 1px solid $color-border-primary;
     margin-top: 4rem;
     padding: 2rem 1rem 1rem 1rem;
-    color: $color-muted;
+    color: $color-text-muted;
     font-size: 1rem;
     .footer-main {
         display: flex;
@@ -21,7 +21,7 @@
     }
 
     .footer-link {
-        color: $color-text;
+        color: $color-text-primary;
         text-decoration: none;
         font-weight: 500;
         transition: color 0.2s;
@@ -29,14 +29,14 @@
     }
 
     .footer-link:hover {
-        color: $color-accent;
+        color: $color-accent-primary;
         text-decoration: underline;
     }
 
     .footer-claim {
         text-align: center;
         font-size: 0.98rem;
-        color: $color-muted;
+        color: $color-text-muted;
         font-family: "Fira Mono", "JetBrains Mono", "Menlo", monospace;
     }
 
@@ -44,6 +44,6 @@
         text-align: center;
         margin-top: 1rem;
         font-size: 0.9rem;
-        color: $color-border;
+        color: $color-border-primary;
     }
 }

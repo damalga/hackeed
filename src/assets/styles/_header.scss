@@ -1,8 +1,8 @@
 @use "_colors.scss" as *;
 
 .header {
-  background: $color-bg;
-  border-bottom: 1px solid $color-border;
+  background: $color-bg-primary;
+  border-bottom: 1px solid $color-border-primary;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -33,7 +33,7 @@
   font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
   font-size: 2rem;
   font-weight: bold;
-  color: $color-text;
+  color: $color-text-primary;
   text-decoration: none;
   letter-spacing: -1px;
 }
@@ -42,7 +42,7 @@
 .header-cart {
   background: none;
   border: none;
-  color: $color-text;
+  color: $color-text-primary;
   font-family: inherit;
   font-size: 1rem;
   cursor: pointer;
@@ -53,7 +53,7 @@
 
 .header-link:hover,
 .header-cart:hover {
-  color: $color-accent;
+  color: $color-accent-primary;
   text-decoration: underline;
 }
 

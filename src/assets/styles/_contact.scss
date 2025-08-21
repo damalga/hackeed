@@ -1,7 +1,7 @@
 @use "_colors.scss" as *;
 
 .contact-section {
-    border-top: 1px solid $color-border;
+    border-top: 1px solid $color-border-primary;
     padding-top: 3rem;
     max-width: 720px;
     margin: 0 auto 5rem auto;
@@ -11,11 +11,11 @@
         font-family: "Fira Mono", monospace;
         font-weight: bold;
         margin-bottom: 1rem;
-        color: $color-text;
+        color: $color-text-primary;
     }
 
     .contact-desc {
-        color: $color-text;
+        color: $color-text-primary;
         margin-bottom: 1.5rem;
     }
 
@@ -30,33 +30,23 @@
     .contact-input {
         width: 100%;
         padding: 0.7rem 1rem;
-        border: 1px solid $color-border;
+        border: 1px solid $color-border-primary;
         font-size: 1rem;
-        background: $color-bg;
-        color: $color-text;
+        background: $color-bg-primary;
+        color: $color-text-primary;
         outline: none;
         transition: border 0.18s;
 
         &:focus {
-            border-color: $color-accent;
+            border-color: $color-accent-primary;
         }
     }
 
     .contact-btn {
+        @include button-primary;
         padding: 0.7rem 2.2rem;
-        background: $color-primary;
-        color: $color-text;
-        font-weight: bold;
         font-size: 1.07rem;
-        border: none;
-        cursor: pointer;
-        transition:
-            background 0.2s,
-            color 0.2s;
 
-        &:hover {
-            background: $color-accent;
-            color: $color-primary;
-        }
+
     }
 }

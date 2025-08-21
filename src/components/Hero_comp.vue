@@ -11,7 +11,6 @@
                 <img :src="slide.img" :alt="slide.title" class="hero-img" />
                 <h2 class="hero-title">{{ slide.title }}</h2>
                 <p class="hero-desc">{{ slide.desc }}</p>
-                <div class="hero-price">{{ slide.price }}</div>
                 <button class="hero-cta" @click="openProductModal(slide.productId)">{{
                     slide.cta
                 }}</button>
