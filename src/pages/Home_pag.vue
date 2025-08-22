@@ -2,8 +2,11 @@
     <div>
         <Header />
         <Hero />
-        <Products />
-        <Contact />
+        <Products
+            title="Productos destacados"
+            :limit="3"
+            :show-title="true"
+        />
         <Footer />
     </div>
 </template>

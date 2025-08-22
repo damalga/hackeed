@@ -17,63 +17,14 @@
             </div>
           </div>
           
-          <div class="shop-grid">
-            <div
-              v-for="product in filteredProducts"
-              :key="product.id"
-              class="shop-card"
-            >
-              <div class="shop-img-container" @click="openProductModal(product)">
-                <img
-                  :src="product.img"
-                  :alt="product.name"
-                  class="shop-img"
-                />
-              </div>
-              <div class="shop-card-content">
-                <h3 class="shop-product-title" @click="openProductModal(product)">
-                  {{ product.name }}
-                </h3>
-                <p class="shop-product-desc">
-                  {{ product.desc }}
-                </p>
-                <div class="shop-price">€{{ product.price }}</div>
-                
-                <!-- Stock badge -->
-                <div class="shop-stock">
-                  <span v-if="product.inStock" class="stock-badge in-stock">En stock</span>
-                  <span v-else class="stock-badge out-of-stock">Agotado</span>
-                </div>
-                
-                <!-- Controles del carrito -->
-                <div class="shop-cart-controls">
-                  <div v-if="cartStore.isInCart(product.id)" class="quantity-controls">
-                    <button 
-                      class="quantity-btn" 
-                      @click="cartStore.updateQuantity(product.id, cartStore.getItemQuantity(product.id) - 1)"
-                    >
-                      −
-                    </button>
-                    <span class="quantity">{{ cartStore.getItemQuantity(product.id) }}</span>
-                    <button 
-                      class="quantity-btn" 
-                      @click="cartStore.updateQuantity(product.id, cartStore.getItemQuantity(product.id) + 1)"
-                    >
-                      +
-                    </button>
-                  </div>
-                  <button 
-                    v-else
-                    class="shop-add-cart"
-                    @click="addToCart(product)"
-                    :disabled="!product.inStock"
-                  >
-                    {{ product.inStock ? 'Añadir al carrito' : 'Agotado' }}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+          <!-- Componente Products reutilizable -->
+          <Products 
+            :show-title="false"
+            :products-list="filteredProducts"
+            :show-stock="true"
+            :show-cart-controls="true"
+            class="shop-products"
+          />
           
           <!-- Mensaje si no hay productos -->
           <div v-if="filteredProducts.length === 0" class="no-products">
@@ -89,16 +40,12 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { useCartStore } from '../stores/cartStore'
-import { useProductModalStore } from '../stores/productModalStore'
 import products from '../data/products_data.js'
 
 import Header from "../components/Header_comp.vue"
 import Footer from "../components/Footer_comp.vue"
 import Filters from "../components/Filters_comp.vue"
-
-const cartStore = useCartStore()
-const productModalStore = useProductModalStore()
+import Products from "../components/Products_comp.vue"
 
 // Estado de filtros
 const activeFilters = ref({
@@ -152,18 +99,29 @@ const filteredProducts = computed(() => {
 const handleFiltersChange = (filters) => {
   activeFilters.value = filters
 }
-
-const addToCart = (product) => {
-  if (product.inStock) {
-    cartStore.addToCart(product)
-  }
-}
-
-const openProductModal = (product) => {
-  productModalStore.openModal(product)
-}
 </script>
 
 <style scoped>
-/* Estilos incluidos desde _shop.scss */
+/* Estilos específicos para la página shop */
+.shop-products {
+  padding: 0; /* Eliminar padding del componente en shop */
+}
+
+.no-products {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text-secondary);
+}
+
+.no-products h3 {
+  font-size: 24px;
+  color: var(--text-primary);
+  margin-bottom: 15px;
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+}
+
+.no-products p {
+  font-size: 16px;
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+}
 </style>

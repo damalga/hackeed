@@ -116,6 +116,104 @@
   }
 }
 
+// Stock badge styles
+.product-stock {
+  margin-bottom: 15px;
+}
+
+.stock-badge {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+  border-radius: 20px; // Only allowed border-radius
+
+  &.in-stock {
+    background: rgba(0, 255, 0, 0.2);
+    color: var(--accent-primary);
+    border: 1px solid var(--accent-primary);
+  }
+
+  &.out-of-stock {
+    background: rgba(255, 0, 0, 0.2);
+    color: var(--error);
+    border: 1px solid var(--error);
+  }
+}
+
+// Cart controls styles
+.product-cart-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  padding: 10px;
+}
+
+.quantity-btn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: var(--bg-secondary);
+  color: var(--accent-primary);
+  border: 2px solid var(--accent-primary);
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.2s;
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+
+  &:hover {
+    background: var(--accent-primary);
+    color: var(--bg-primary);
+  }
+}
+
+.quantity {
+  font-size: 18px;
+  font-weight: bold;
+  min-width: 30px;
+  text-align: center;
+  color: var(--text-primary);
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+}
+
+.product-add-cart {
+  width: 100%;
+  padding: 15px;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 2px solid var(--border-primary);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+
+  &:hover:not(:disabled) {
+    background: var(--accent-primary);
+    color: var(--bg-primary);
+    border-color: var(--accent-primary);
+  }
+
+  &:disabled {
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+    border-color: var(--border-primary);
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
 // Responsive design
 @media (max-width: 768px) {
   .products {

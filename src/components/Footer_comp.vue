@@ -6,7 +6,7 @@
         <router-link to="/contact" class="footer-link">Contacto</router-link>
       </div>
       <div class="footer-claim">
-        <span>hackonlin.es — Hardware hacker, gadgets de culto y electrónica sin postureo.</span>
+        <span>hackonlin.es — Todos los derechos reservados.</span>
       </div>
     </div>
     <div class="footer-extra">

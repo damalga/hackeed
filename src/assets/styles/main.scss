@@ -4,45 +4,13 @@
 /*components*/
 @use "_header.scss" as *;
 @use "_hero.scss" as *;
-@use "_contact.scss" as *;
 @use "_footer.scss" as *;
 @use "_products.scss" as *;
 @use "_product.scss" as *;
 @use "_cart.scss" as *;
 @use "_filters.scss" as *;
 /*pages*/
+@use "_contact.scss" as *;
+@use "_about.scss" as *;
 @use "_home.scss" as *;
 @use "_shop.scss" as *;
-
-
-// Global base styles
-* {
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
-}
-
-body {
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
-}
-
-button, input, textarea, select, a {
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
-}
-
-// Custom scrollbar
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--bg-tertiary);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--border-secondary);
-}

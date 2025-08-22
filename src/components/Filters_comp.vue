@@ -1,22 +1,22 @@
 <template>
   <div class="shop-filters">
     <h3 class="filters-title">Filtros</h3>
-    
+
     <!-- Filtro por categoría -->
     <div class="filter-group">
       <h4 class="filter-group-title">Categoría</h4>
       <div class="filter-options">
-        <div 
-          v-for="category in categories" 
+        <div
+          v-for="category in categories"
           :key="category.name"
           class="filter-option"
           @click="toggleCategory(category.name)"
         >
-          <div 
-            class="filter-checkbox" 
+          <div
+            class="filter-checkbox"
             :class="{ checked: selectedCategories.includes(category.name) }"
           ></div>
-          <span 
+          <span
             class="filter-label"
             :class="{ active: selectedCategories.includes(category.name) }"
           >
@@ -26,23 +26,22 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Filtro por rango de precio -->
     <div class="filter-group">
       <h4 class="filter-group-title">Precio</h4>
       <div class="price-range">
         <div class="price-inputs">
-          <input 
-            type="number" 
-            class="price-input" 
+          <input
+            type="number"
+            class="price-input"
             placeholder="Min"
             v-model="priceRange.min"
             @input="updatePriceFilter"
           />
-          <span class="price-separator">-</span>
-          <input 
-            type="number" 
-            class="price-input" 
+          <input
+            type="number"
+            class="price-input"
             placeholder="Max"
             v-model="priceRange.max"
             @input="updatePriceFilter"
@@ -50,20 +49,20 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Filtro por disponibilidad -->
     <div class="filter-group stock-filter">
       <h4 class="filter-group-title">Disponibilidad</h4>
       <div class="filter-options">
-        <div 
+        <div
           class="filter-option"
           @click="toggleStock('inStock')"
         >
-          <div 
-            class="filter-checkbox" 
+          <div
+            class="filter-checkbox"
             :class="{ checked: selectedStock.includes('inStock') }"
           ></div>
-          <span 
+          <span
             class="filter-label"
             :class="{ active: selectedStock.includes('inStock') }"
           >
@@ -71,15 +70,15 @@
           </span>
           <span class="stock-badge in-stock">Disponible</span>
         </div>
-        <div 
+        <div
           class="filter-option"
           @click="toggleStock('outOfStock')"
         >
-          <div 
-            class="filter-checkbox" 
+          <div
+            class="filter-checkbox"
             :class="{ checked: selectedStock.includes('outOfStock') }"
           ></div>
-          <span 
+          <span
             class="filter-label"
             :class="{ active: selectedStock.includes('outOfStock') }"
           >
@@ -89,32 +88,7 @@
         </div>
       </div>
     </div>
-    
-    <!-- Filtro por características -->
-    <div class="filter-group">
-      <h4 class="filter-group-title">Características</h4>
-      <div class="filter-options">
-        <div 
-          v-for="feature in features" 
-          :key="feature.name"
-          class="filter-option"
-          @click="toggleFeature(feature.name)"
-        >
-          <div 
-            class="filter-checkbox" 
-            :class="{ checked: selectedFeatures.includes(feature.name) }"
-          ></div>
-          <span 
-            class="filter-label"
-            :class="{ active: selectedFeatures.includes(feature.name) }"
-          >
-            {{ feature.name }}
-          </span>
-          <span class="filter-count">({{ feature.count }})</span>
-        </div>
-      </div>
-    </div>
-    
+
     <!-- Acciones de filtros -->
     <div class="filter-actions">
       <button class="apply-filters-btn" @click="applyFilters">
@@ -148,7 +122,7 @@ const categories = computed(() => {
       categoryCount[product.category] = (categoryCount[product.category] || 0) + 1
     }
   })
-  
+
   return Object.entries(categoryCount).map(([name, count]) => ({
     name,
     count
@@ -164,7 +138,7 @@ const features = computed(() => {
       })
     }
   })
-  
+
   return Object.entries(featureCount).map(([name, count]) => ({
     name,
     count
