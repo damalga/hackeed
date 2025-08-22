@@ -1,6 +1,4 @@
-// ============================================
-// TEMA OSCURO - VARIABLES DE COLOR CENTRALIZADAS
-// ============================================
+@use "sass:color";
 
 // Fondos
 $color-bg-primary: #0a0a0a;
@@ -34,26 +32,26 @@ $shadow-dark: rgba(0, 0, 0, 0.3);
   --bg-primary: #{$color-bg-primary};
   --bg-secondary: #{$color-bg-secondary};
   --bg-tertiary: #{$color-bg-tertiary};
-  
+
   --text-primary: #{$color-text-primary};
   --text-secondary: #{$color-text-secondary};
   --text-muted: #{$color-text-muted};
-  
+
   --accent-primary: #{$color-accent-primary};
   --accent-secondary: #{$color-accent-secondary};
-  
+
   --border-primary: #{$color-border-primary};
   --border-secondary: #{$color-border-secondary};
-  
+
   --success: #{$color-success};
   --error: #{$color-error};
   --warning: #{$color-warning};
-  
+
   --shadow-light: #{$shadow-light};
   --shadow-dark: #{$shadow-dark};
 }
 
-// Mixins para botones estandarizados
+// Mixins botones
 @mixin button-base {
   font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
   font-weight: 600;
@@ -73,12 +71,12 @@ $shadow-dark: rgba(0, 0, 0, 0.3);
   background: $color-accent-primary;
   color: $color-bg-primary;
   border-color: $color-accent-primary;
-  
+
   &:hover:not(:disabled) {
     background: $color-accent-secondary;
     border-color: $color-accent-secondary;
   }
-  
+
   &:disabled {
     background: $color-bg-tertiary;
     color: $color-text-muted;
@@ -93,13 +91,13 @@ $shadow-dark: rgba(0, 0, 0, 0.3);
   background: $color-bg-tertiary;
   color: $color-text-primary;
   border-color: $color-border-primary;
-  
+
   &:hover:not(:disabled) {
     background: $color-accent-primary;
     color: $color-bg-primary;
     border-color: $color-accent-primary;
   }
-  
+
   &:disabled {
     background: $color-bg-tertiary;
     color: $color-text-muted;
@@ -114,10 +112,10 @@ $shadow-dark: rgba(0, 0, 0, 0.3);
   background: $color-error;
   color: $color-text-primary;
   border-color: $color-error;
-  
+
   &:hover:not(:disabled) {
-    background: darken($color-error, 10%);
-    border-color: darken($color-error, 10%);
+    background: color.scale($color-error, $lightness: -10%);
+    border-color: color.scale($color-error, $lightness: -10%);
   }
 }
 

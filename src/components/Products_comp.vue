@@ -3,44 +3,46 @@
     <div class="products-container">
       <h2 v-if="showTitle" class="products-title">{{ title }}</h2>
       <div class="products-grid">
-        <div 
-          v-for="product in displayedProducts" 
-          :key="product.id" 
+        <div
+          v-for="product in displayedProducts"
+          :key="product.id"
           class="product-card"
         >
           <div class="product-image" @click="openProductModal(product)">
             <img :src="product.img" :alt="product.name" />
           </div>
-          
+
           <div class="product-info">
             <h3 class="product-name" @click="openProductModal(product)">{{ product.name }}</h3>
             <p class="product-desc">{{ product.desc }}</p>
-            <div class="product-price">€{{ product.price }}</div>
-            
-            <!-- Stock badge (solo en shop) -->
-            <div v-if="showStock" class="product-stock">
-              <span v-if="product.inStock" class="stock-badge in-stock">En stock</span>
-              <span v-else class="stock-badge out-of-stock">Agotado</span>
+            <div class="product-values">
+                <div class="product-price">€{{ product.price }}</div>
+
+                <!-- Stock badge (solo en shop) -->
+                <div v-if="showStock" class="product-stock">
+                    <span v-if="product.inStock" class="stock-badge in-stock">En stock</span>
+                    <span v-else class="stock-badge out-of-stock">Agotado</span>
+                </div>
             </div>
-            
+
             <!-- Controles del carrito (solo en shop) -->
             <div v-if="showCartControls" class="product-cart-controls">
               <div v-if="cartStore.isInCart(product.id)" class="quantity-controls">
-                <button 
-                  class="quantity-btn" 
+                <button
+                  class="quantity-btn"
                   @click="cartStore.updateQuantity(product.id, cartStore.getItemQuantity(product.id) - 1)"
                 >
                   −
                 </button>
                 <span class="quantity">{{ cartStore.getItemQuantity(product.id) }}</span>
-                <button 
-                  class="quantity-btn" 
+                <button
+                  class="quantity-btn"
                   @click="cartStore.updateQuantity(product.id, cartStore.getItemQuantity(product.id) + 1)"
                 >
                   +
                 </button>
               </div>
-              <button 
+              <button
                 v-else
                 class="product-add-cart"
                 @click="addToCart(product)"
@@ -49,7 +51,7 @@
                 {{ product.inStock ? 'Añadir al carrito' : 'Agotado' }}
               </button>
             </div>
-            
+
             <!-- Botón simple (solo en home) -->
             <button v-else class="product-cta" @click="openProductModal(product)">Ver producto</button>
           </div>
@@ -99,11 +101,11 @@ const cartStore = useCartStore()
 // Productos a mostrar según configuración
 const displayedProducts = computed(() => {
   const productsToShow = props.productsList
-  
+
   if (props.limit && props.limit > 0) {
     return productsToShow.slice(0, props.limit)
   }
-  
+
   return productsToShow
 })
 

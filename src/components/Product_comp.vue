@@ -6,7 +6,7 @@
           <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
-      
+
       <div v-if="product" class="modal-body">
         <!-- Galería de imágenes -->
         <div class="modal-images">
@@ -14,8 +14,8 @@
             <img :src="selectedImage" :alt="product.name" />
           </div>
           <div v-if="product.images && product.images.length > 1" class="image-thumbnails">
-            <button 
-              v-for="(image, index) in product.images" 
+            <button
+              v-for="(image, index) in product.images"
               :key="index"
               class="thumbnail"
               :class="{ active: selectedImage === image }"
@@ -33,10 +33,14 @@
             <span class="product-category">{{ product.category }}</span>
           </div>
 
-          <div class="product-price">
-            <span class="price">€{{ product.price }}</span>
-            <span v-if="product.inStock" class="stock in-stock">En stock</span>
-            <span v-else class="stock out-of-stock">Agotado</span>
+          <div class="product-values">
+              <div class="product-price">€{{ product.price }}</div>
+
+              <!-- Stock badge (solo en shop) -->
+              <div class="product-stock">
+                  <span v-if="product.inStock" class="stock-badge in-stock">En stock</span>
+                  <span v-else class="stock-badge out-of-stock">Agotado</span>
+              </div>
           </div>
 
           <p class="product-description">{{ product.longDesc || product.desc }}</p>
@@ -54,15 +58,15 @@
           <!-- Controles del carrito -->
           <div class="cart-controls">
             <div v-if="cartStore.isInCart(product.id)" class="quantity-controls">
-              <button 
-                class="quantity-btn" 
+              <button
+                class="quantity-btn"
                 @click="updateQuantity(cartStore.getItemQuantity(product.id) - 1)"
               >
                 -
               </button>
               <span class="quantity">{{ cartStore.getItemQuantity(product.id) }}</span>
-              <button 
-                class="quantity-btn" 
+              <button
+                class="quantity-btn"
                 @click="updateQuantity(cartStore.getItemQuantity(product.id) + 1)"
               >
                 +
@@ -71,9 +75,9 @@
                 Quitar del carrito
               </button>
             </div>
-            <button 
+            <button
               v-else
-              class="add-to-cart-btn" 
+              class="add-to-cart-btn"
               @click="addToCart"
               :disabled="!product.inStock"
             >
@@ -130,7 +134,3 @@ document.addEventListener('keydown', (e) => {
   }
 })
 </script>
-
-<style scoped>
-/* Estilos incluidos desde _product.scss */
-</style>

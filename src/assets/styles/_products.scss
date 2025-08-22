@@ -52,8 +52,7 @@
 }
 
 .product-image img {
-  max-width: 80%;
-  max-height: 80%;
+  height: 100%;
   object-fit: contain;
   filter: brightness(1.1);
 }
@@ -78,12 +77,43 @@
   font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 }
 
-.product-price {
-  font-size: 24px;
-  font-weight: bold;
-  color: var(--accent-primary);
-  margin-bottom: 20px;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+.product-values{
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--border-primary);
+    border-bottom: 1px solid var(--border-primary);
+
+    .product-price {
+        font-size: 24px;
+        font-weight: bold;
+        color: var(--accent-primary);
+        font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+    }
+
+    // Stock badge styles
+    .product-stock {
+        padding: 15px 0;
+    }
+    .stock-badge {
+        padding: 6px 12px;
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: uppercase;
+        font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+        border-radius: 20px; // Only allowed border-radius
+
+        &.in-stock {
+            background: rgba(0, 255, 0, 0.2);
+            color: var(--accent-primary);
+            border: 1px solid var(--accent-primary);
+        }
+
+        &.out-of-stock {
+            background: rgba(255, 0, 0, 0.2);
+            color: var(--error);
+            border: 1px solid var(--error);
+        }
+    }
 }
 
 .product-cta {
@@ -113,32 +143,6 @@
     border-color: var(--border-primary);
     cursor: not-allowed;
     opacity: 0.5;
-  }
-}
-
-// Stock badge styles
-.product-stock {
-  margin-bottom: 15px;
-}
-
-.stock-badge {
-  padding: 6px 12px;
-  font-size: 12px;
-  font-weight: 500;
-  text-transform: uppercase;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
-  border-radius: 20px; // Only allowed border-radius
-
-  &.in-stock {
-    background: rgba(0, 255, 0, 0.2);
-    color: var(--accent-primary);
-    border: 1px solid var(--accent-primary);
-  }
-
-  &.out-of-stock {
-    background: rgba(255, 0, 0, 0.2);
-    color: var(--error);
-    border: 1px solid var(--error);
   }
 }
 
@@ -219,12 +223,12 @@
   .products {
     padding: 40px 15px;
   }
-  
+
   .products-title {
     font-size: 28px;
     margin-bottom: 30px;
   }
-  
+
   .products-grid {
     grid-template-columns: 1fr;
     gap: 20px;
