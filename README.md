@@ -5,9 +5,7 @@ The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs]
 
 Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
 
-Thanks to Evan You and the global open-source community driving it forward.
-
---
+Thanks to [Evan You](https://evanyou.me/) and the global open-source community driving it forward.
 
 ## About Hackeed
 
