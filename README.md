@@ -5,7 +5,9 @@ The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs]
 
 Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
 
----
+Thanks to Evan You and the global open-source community driving it forward.
+
+--
 
 ## About Hackeed
 
@@ -17,8 +19,6 @@ What if ethics itself was just another questionable system?
 
 In the end, it’s about questioning, deconstructing, and building. Never destroying. That’s the spirit!
 
-If you have ideas, questions, projects, or just want to think out loud, [get in touch](/contact).
-
-This website lives on [GitHub](#), and the frontend is built with [Vue](#), thanks to Evan You and the global open-source community driving it forward.
+If you have ideas, questions, projects, or just want to think out loud, get in touch.
 
 Hackeed is exactly that: a living lab where curiosity rules.
