@@ -1,17 +1,15 @@
 @use "_colors.scss" as *;
 
 .about-main {
-  background: var(--bg-primary);
-  min-height: calc(100vh - 140px);
     .about-container {
-        max-width: 1400px;
+        max-width: 1280px;
+        padding: 0 2rem;
         margin: 0 auto;
-        padding: 40px 20px;
-        display: grid;
-        grid-template-columns: 280px 1fr;
-        gap: 40px;
         .about-section{
             width: max-content;
+            h2{
+                margin: .8rem 0;
+            }
         }
     }
 }

@@ -29,27 +29,30 @@
         <!-- Información del producto -->
         <div class="modal-info">
           <div class="product-header">
-            <h2 class="product-title">{{ product.name }}</h2>
+            <h2 class="product-title">{{ variantsStore.getProductFullName(product) }}</h2>
             <span class="product-category">{{ product.category }}</span>
           </div>
 
-          <div class="product-values">
-              <div class="product-price">€{{ product.price }}</div>
-
-              <!-- Stock badge (solo en shop) -->
-              <div class="product-stock">
-                  <span v-if="product.inStock" class="stock-badge in-stock">En stock</span>
-                  <span v-else class="stock-badge out-of-stock">Agotado</span>
-              </div>
+          <div class="product-price">
+            <span class="price">€{{ variantsStore.getProductPrice(product) }}</span>
+            <span v-if="variantsStore.isProductAvailable(product)" class="stock in-stock">En stock</span>
+            <span v-else class="stock out-of-stock">Agotado</span>
           </div>
 
           <p class="product-description">{{ product.longDesc || product.desc }}</p>
 
+          <!-- Selector de variantes -->
+          <ProductVariants 
+            v-if="product.variants"
+            :product="product"
+            @variant-changed="onVariantChanged"
+          />
+
           <!-- Características -->
-          <div v-if="product.features && product.features.length" class="product-features">
+          <div v-if="currentFeatures && currentFeatures.length" class="product-features">
             <h3>Características principales:</h3>
             <ul>
-              <li v-for="feature in product.features" :key="feature">
+              <li v-for="feature in currentFeatures" :key="feature">
                 {{ feature }}
               </li>
             </ul>
@@ -57,31 +60,31 @@
 
           <!-- Controles del carrito -->
           <div class="cart-controls">
-            <div v-if="cartStore.isInCart(product.id)" class="quantity-controls">
-              <button
-                class="quantity-btn"
-                @click="updateQuantity(cartStore.getItemQuantity(product.id) - 1)"
+            <div v-if="cartStore.isInCart(product)" class="quantity-controls">
+              <button 
+                class="quantity-btn" 
+                @click="updateQuantity(cartStore.getItemQuantity(product) - 1)"
               >
                 -
               </button>
-              <span class="quantity">{{ cartStore.getItemQuantity(product.id) }}</span>
-              <button
-                class="quantity-btn"
-                @click="updateQuantity(cartStore.getItemQuantity(product.id) + 1)"
+              <span class="quantity">{{ cartStore.getItemQuantity(product) }}</span>
+              <button 
+                class="quantity-btn" 
+                @click="updateQuantity(cartStore.getItemQuantity(product) + 1)"
               >
                 +
               </button>
-              <button class="remove-btn" @click="cartStore.removeFromCart(product.id)">
+              <button class="remove-btn" @click="removeFromCart">
                 Quitar del carrito
               </button>
             </div>
-            <button
+            <button 
               v-else
-              class="add-to-cart-btn"
+              class="add-to-cart-btn" 
               @click="addToCart"
-              :disabled="!product.inStock"
+              :disabled="!variantsStore.isProductAvailable(product)"
             >
-              {{ product.inStock ? 'Añadir al carrito' : 'Agotado' }}
+              {{ variantsStore.isProductAvailable(product) ? 'Añadir al carrito' : 'Agotado' }}
             </button>
           </div>
         </div>
@@ -94,9 +97,12 @@
 import { ref, computed, watch } from 'vue'
 import { useProductModalStore } from '@/stores/productModalStore'
 import { useCartStore } from '@/stores/cartStore'
+import { useProductVariantsStore } from '@/stores/productVariantsStore'
+import ProductVariants from './ProductVariants_comp.vue'
 
 const productModalStore = useProductModalStore()
 const cartStore = useCartStore()
+const variantsStore = useProductVariantsStore()
 
 const selectedImage = ref('')
 
@@ -115,16 +121,37 @@ const closeModal = () => {
   productModalStore.closeModal()
 }
 
+// Características actuales del producto (incluyendo variantes)
+const currentFeatures = computed(() => {
+  if (product.value) {
+    return variantsStore.getProductFeatures(product.value)
+  }
+  return []
+})
+
 const addToCart = () => {
-  if (product.value && product.value.inStock) {
+  if (product.value && variantsStore.isProductAvailable(product.value)) {
     cartStore.addToCart(product.value)
   }
 }
 
 const updateQuantity = (newQuantity) => {
   if (product.value) {
-    cartStore.updateQuantity(product.value.id, newQuantity)
+    const cartItemId = cartStore.getCartItemId(product.value)
+    cartStore.updateQuantity(cartItemId, newQuantity)
   }
+}
+
+const removeFromCart = () => {
+  if (product.value) {
+    const cartItemId = cartStore.getCartItemId(product.value)
+    cartStore.removeFromCart(cartItemId)
+  }
+}
+
+const onVariantChanged = (variantData) => {
+  // Las variantes ya están actualizadas en el store
+  // Podrían agregarse efectos secundarios aquí si es necesario
 }
 
 // Cerrar modal con tecla Escape

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { useProductVariantsStore } from './productVariantsStore'
 
 export const useCartStore = defineStore('cart', () => {
   // Estado
@@ -19,34 +20,50 @@ export const useCartStore = defineStore('cart', () => {
 
   // Actions (funciones)
   const addToCart = (product) => {
-    const existingItem = items.value.find(item => item.id === product.id)
+    const variantsStore = useProductVariantsStore()
+    
+    // Crear un identificador único que incluya las variantes
+    const cartItemId = getCartItemId(product)
+    
+    const existingItem = items.value.find(item => item.cartItemId === cartItemId)
     
     if (existingItem) {
       existingItem.quantity += 1
     } else {
+      // Obtener precio y nombre con variantes
+      const finalPrice = variantsStore.getProductPrice(product)
+      const fullName = variantsStore.getProductFullName(product)
+      const selectedOption = variantsStore.getSelectedOption(product)
+      
       items.value.push({
         id: product.id,
-        name: product.name,
+        cartItemId: cartItemId, // ID único para el item en carrito
+        name: fullName, // nombre con variante incluida
+        originalName: product.name,
         desc: product.desc,
         img: product.img,
-        price: product.price || 99, // precio por defecto si no existe
-        quantity: 1
+        price: finalPrice,
+        quantity: 1,
+        variants: product.variants ? {
+          selected: variantsStore.getProductVariants(product.id),
+          option: selectedOption
+        } : null
       })
     }
   }
 
-  const removeFromCart = (productId) => {
-    const index = items.value.findIndex(item => item.id === productId)
+  const removeFromCart = (cartItemId) => {
+    const index = items.value.findIndex(item => item.cartItemId === cartItemId)
     if (index > -1) {
       items.value.splice(index, 1)
     }
   }
 
-  const updateQuantity = (productId, quantity) => {
-    const item = items.value.find(item => item.id === productId)
+  const updateQuantity = (cartItemId, quantity) => {
+    const item = items.value.find(item => item.cartItemId === cartItemId)
     if (item) {
       if (quantity <= 0) {
-        removeFromCart(productId)
+        removeFromCart(cartItemId)
       } else {
         item.quantity = quantity
       }
@@ -59,14 +76,28 @@ export const useCartStore = defineStore('cart', () => {
 
 
 
-  // Verificar si un producto está en el carrito
-  const isInCart = (productId) => {
-    return items.value.some(item => item.id === productId)
+  // Generar ID único para item del carrito (incluye variantes)
+  const getCartItemId = (product) => {
+    if (!product.variants) {
+      return `${product.id}`
+    }
+    
+    const variantsStore = useProductVariantsStore()
+    const variants = variantsStore.getProductVariants(product.id)
+    const variantString = Object.entries(variants).map(([key, value]) => `${key}:${value}`).join('|')
+    return `${product.id}-${variantString}`
   }
 
-  // Obtener la cantidad de un producto específico en el carrito
-  const getItemQuantity = (productId) => {
-    const item = items.value.find(item => item.id === productId)
+  // Verificar si un producto está en el carrito (con variantes específicas)
+  const isInCart = (product) => {
+    const cartItemId = getCartItemId(product)
+    return items.value.some(item => item.cartItemId === cartItemId)
+  }
+
+  // Obtener la cantidad de un producto específico en el carrito (con variantes)
+  const getItemQuantity = (product) => {
+    const cartItemId = getCartItemId(product)
+    const item = items.value.find(item => item.cartItemId === cartItemId)
     return item ? item.quantity : 0
   }
 
@@ -85,6 +116,7 @@ export const useCartStore = defineStore('cart', () => {
     updateQuantity,
     clearCart,
     isInCart,
-    getItemQuantity
+    getItemQuantity,
+    getCartItemId
   }
 })

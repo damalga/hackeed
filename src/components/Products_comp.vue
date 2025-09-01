@@ -20,35 +20,35 @@
 
                 <!-- Stock badge (solo en shop) -->
                 <div v-if="showStock" class="product-stock">
-                    <span v-if="product.inStock" class="stock-badge in-stock">En stock</span>
-                    <span v-else class="stock-badge out-of-stock">Agotado</span>
+                  <span v-if="variantsStore.isProductAvailable(product)" class="stock-badge in-stock">En stock</span>
+                  <span v-else class="stock-badge out-of-stock">Agotado</span>
                 </div>
             </div>
 
             <!-- Controles del carrito (solo en shop) -->
             <div v-if="showCartControls" class="product-cart-controls">
-              <div v-if="cartStore.isInCart(product.id)" class="quantity-controls">
-                <button
-                  class="quantity-btn"
-                  @click="cartStore.updateQuantity(product.id, cartStore.getItemQuantity(product.id) - 1)"
+              <div v-if="cartStore.isInCart(product)" class="quantity-controls">
+                <button 
+                  class="quantity-btn" 
+                  @click="updateQuantity(product, cartStore.getItemQuantity(product) - 1)"
                 >
                   −
                 </button>
-                <span class="quantity">{{ cartStore.getItemQuantity(product.id) }}</span>
-                <button
-                  class="quantity-btn"
-                  @click="cartStore.updateQuantity(product.id, cartStore.getItemQuantity(product.id) + 1)"
+                <span class="quantity">{{ cartStore.getItemQuantity(product) }}</span>
+                <button 
+                  class="quantity-btn" 
+                  @click="updateQuantity(product, cartStore.getItemQuantity(product) + 1)"
                 >
                   +
                 </button>
               </div>
-              <button
+              <button 
                 v-else
                 class="product-add-cart"
                 @click="addToCart(product)"
-                :disabled="!product.inStock"
+                :disabled="!variantsStore.isProductAvailable(product)"
               >
-                {{ product.inStock ? 'Añadir al carrito' : 'Agotado' }}
+                {{ variantsStore.isProductAvailable(product) ? 'Añadir al carrito' : 'Agotado' }}
               </button>
             </div>
 
@@ -62,9 +62,10 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useProductModalStore } from '@/stores/productModalStore'
 import { useCartStore } from '@/stores/cartStore'
+import { useProductVariantsStore } from '@/stores/productVariantsStore'
 import products from '@/data/products_data.js'
 
 // Props configurables
@@ -97,6 +98,7 @@ const props = defineProps({
 
 const productModalStore = useProductModalStore()
 const cartStore = useCartStore()
+const variantsStore = useProductVariantsStore()
 
 // Productos a mostrar según configuración
 const displayedProducts = computed(() => {
@@ -114,10 +116,27 @@ const openProductModal = (product) => {
 }
 
 const addToCart = (product) => {
-  if (product.inStock) {
+  // Inicializar variantes por defecto si no están configuradas
+  variantsStore.initializeProductDefaults(product)
+  
+  if (variantsStore.isProductAvailable(product)) {
     cartStore.addToCart(product)
   }
 }
+
+const updateQuantity = (product, newQuantity) => {
+  const cartItemId = cartStore.getCartItemId(product)
+  cartStore.updateQuantity(cartItemId, newQuantity)
+}
+
+// Inicializar variantes por defecto para todos los productos
+onMounted(() => {
+  displayedProducts.value.forEach(product => {
+    if (product.variants) {
+      variantsStore.initializeProductDefaults(product)
+    }
+  })
+})
 </script>
 
 <style scoped>

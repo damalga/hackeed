@@ -7,7 +7,7 @@
         <aside class="shop-sidebar">
           <Filters @filters-changed="handleFiltersChange" />
         </aside>
-        
+
         <!-- Área principal de productos -->
         <section class="shop-content">
           <div class="shop-header">
@@ -16,16 +16,16 @@
               {{ filteredProducts.length }} producto{{ filteredProducts.length !== 1 ? 's' : '' }} encontrado{{ filteredProducts.length !== 1 ? 's' : '' }}
             </div>
           </div>
-          
+
           <!-- Componente Products reutilizable -->
-          <Products 
+          <Products
             :show-title="false"
             :products-list="filteredProducts"
             :show-stock="true"
             :show-cart-controls="true"
             class="shop-products"
           />
-          
+
           <!-- Mensaje si no hay productos -->
           <div v-if="filteredProducts.length === 0" class="no-products">
             <h3>No se encontraron productos</h3>
@@ -50,22 +50,29 @@ import Products from "../components/Products_comp.vue"
 // Estado de filtros
 const activeFilters = ref({
   categories: [],
+  brands: [],
   stock: [],
-  features: [],
   priceRange: { min: null, max: null }
 })
 
 // Productos filtrados
 const filteredProducts = computed(() => {
   let filtered = [...products]
-  
+
   // Filtrar por categorías
   if (activeFilters.value.categories.length > 0) {
-    filtered = filtered.filter(product => 
+    filtered = filtered.filter(product =>
       activeFilters.value.categories.includes(product.category)
     )
   }
-  
+
+  // Filtrar por marcas
+  if (activeFilters.value.brands.length > 0) {
+    filtered = filtered.filter(product =>
+      activeFilters.value.brands.includes(product.brand)
+    )
+  }
+
   // Filtrar por stock
   if (activeFilters.value.stock.length > 0) {
     filtered = filtered.filter(product => {
@@ -74,24 +81,15 @@ const filteredProducts = computed(() => {
       return false
     })
   }
-  
-  // Filtrar por características
-  if (activeFilters.value.features.length > 0) {
-    filtered = filtered.filter(product =>
-      product.features && activeFilters.value.features.some(feature =>
-        product.features.includes(feature)
-      )
-    )
-  }
-  
+
   // Filtrar por rango de precio
-  if (activeFilters.value.priceRange.min !== null) {
-    filtered = filtered.filter(product => product.price >= activeFilters.value.priceRange.min)
+  if (activeFilters.value.priceRange.min !== null && activeFilters.value.priceRange.min !== '') {
+    filtered = filtered.filter(product => product.price >= parseFloat(activeFilters.value.priceRange.min))
   }
-  if (activeFilters.value.priceRange.max !== null) {
-    filtered = filtered.filter(product => product.price <= activeFilters.value.priceRange.max)
+  if (activeFilters.value.priceRange.max !== null && activeFilters.value.priceRange.max !== '') {
+    filtered = filtered.filter(product => product.price <= parseFloat(activeFilters.value.priceRange.max))
   }
-  
+
   return filtered
 })
 
