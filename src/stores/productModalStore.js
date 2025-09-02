@@ -29,7 +29,7 @@ export const useProductModalStore = defineStore('productModal', () => {
     // Estado
     isModalOpen,
     selectedProduct,
-    
+
     // Actions
     openModal,
     closeModal,

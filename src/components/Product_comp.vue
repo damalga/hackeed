@@ -37,12 +37,42 @@
             <span class="price">€{{ variantsStore.getProductPrice(product) }}</span>
             <span v-if="variantsStore.isProductAvailable(product)" class="stock in-stock">En stock</span>
             <span v-else class="stock out-of-stock">Agotado</span>
+
+            <!-- Controles del carrito -->
+            <div class="cart-controls">
+              <div v-if="cartStore.isInCart(product)" class="quantity-controls">
+                <button
+                  class="quantity-btn"
+                  @click="updateQuantity(cartStore.getItemQuantity(product) - 1)"
+                >
+                  -
+                </button>
+                <span class="quantity">{{ cartStore.getItemQuantity(product) }}</span>
+                <button
+                  class="quantity-btn"
+                  @click="updateQuantity(cartStore.getItemQuantity(product) + 1)"
+                >
+                  +
+                </button>
+                <button class="remove-btn" @click="removeFromCart">
+                  Quitar del carrito
+                </button>
+              </div>
+              <button
+                v-else
+                class="add-to-cart-btn"
+                @click="addToCart"
+                :disabled="!variantsStore.isProductAvailable(product)"
+              >
+                {{ variantsStore.isProductAvailable(product) ? 'Añadir al carrito' : 'Agotado' }}
+              </button>
+            </div>
           </div>
 
           <p class="product-description">{{ product.longDesc || product.desc }}</p>
 
           <!-- Selector de variantes -->
-          <ProductVariants 
+          <ProductVariants
             v-if="product.variants"
             :product="product"
             @variant-changed="onVariantChanged"
@@ -58,35 +88,7 @@
             </ul>
           </div>
 
-          <!-- Controles del carrito -->
-          <div class="cart-controls">
-            <div v-if="cartStore.isInCart(product)" class="quantity-controls">
-              <button 
-                class="quantity-btn" 
-                @click="updateQuantity(cartStore.getItemQuantity(product) - 1)"
-              >
-                -
-              </button>
-              <span class="quantity">{{ cartStore.getItemQuantity(product) }}</span>
-              <button 
-                class="quantity-btn" 
-                @click="updateQuantity(cartStore.getItemQuantity(product) + 1)"
-              >
-                +
-              </button>
-              <button class="remove-btn" @click="removeFromCart">
-                Quitar del carrito
-              </button>
-            </div>
-            <button 
-              v-else
-              class="add-to-cart-btn" 
-              @click="addToCart"
-              :disabled="!variantsStore.isProductAvailable(product)"
-            >
-              {{ variantsStore.isProductAvailable(product) ? 'Añadir al carrito' : 'Agotado' }}
-            </button>
-          </div>
+
         </div>
       </div>
     </div>

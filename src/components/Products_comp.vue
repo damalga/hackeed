@@ -28,21 +28,21 @@
             <!-- Controles del carrito (solo en shop) -->
             <div v-if="showCartControls" class="product-cart-controls">
               <div v-if="cartStore.isInCart(product)" class="quantity-controls">
-                <button 
-                  class="quantity-btn" 
+                <button
+                  class="quantity-btn"
                   @click="updateQuantity(product, cartStore.getItemQuantity(product) - 1)"
                 >
                   −
                 </button>
                 <span class="quantity">{{ cartStore.getItemQuantity(product) }}</span>
-                <button 
-                  class="quantity-btn" 
+                <button
+                  class="quantity-btn"
                   @click="updateQuantity(product, cartStore.getItemQuantity(product) + 1)"
                 >
                   +
                 </button>
               </div>
-              <button 
+              <button
                 v-else
                 class="product-add-cart"
                 @click="addToCart(product)"
@@ -118,7 +118,7 @@ const openProductModal = (product) => {
 const addToCart = (product) => {
   // Inicializar variantes por defecto si no están configuradas
   variantsStore.initializeProductDefaults(product)
-  
+
   if (variantsStore.isProductAvailable(product)) {
     cartStore.addToCart(product)
   }
@@ -138,7 +138,3 @@ onMounted(() => {
   })
 })
 </script>
-
-<style scoped>
-/* Estilos incluidos desde _products.scss */
-</style>

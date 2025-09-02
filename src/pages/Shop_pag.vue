@@ -11,7 +11,7 @@
         <!-- Área principal de productos -->
         <section class="shop-content">
           <div class="shop-header">
-            <h1 class="shop-title">Productos top hacker</h1>
+            <h1 class="shop-title">Productos</h1>
             <div class="shop-results">
               {{ filteredProducts.length }} producto{{ filteredProducts.length !== 1 ? 's' : '' }} encontrado{{ filteredProducts.length !== 1 ? 's' : '' }}
             </div>

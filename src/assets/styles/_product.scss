@@ -135,15 +135,18 @@
 }
 
 .product-price {
-  padding: 15px 0;
+  padding: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+    .price {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--accent-primary);
+    font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
+    }
 }
 
-.price {
-  font-size: 32px;
-  font-weight: bold;
-  color: var(--accent-primary);
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
-}
 
 .stock {
   padding: 6px 12px;

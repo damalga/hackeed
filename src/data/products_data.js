@@ -28,7 +28,7 @@ export default [
   },
   {
     id: 2,
-    name: "Expansión WiFi para Flipper Zero",
+    name: "Expansión WiFi Flipper Zero",
     desc: "Añade conectividad Wi‑Fi al Flipper Zero mediante un ESP32 integrado.",
     longDesc: "Esta expansión convierte tu Flipper Zero en un dispositivo con capacidad WiFi completa. Basada en un módulo ESP32, permite realizar ataques de red, capturar paquetes, ejecutar scripts remotos y mucho más.",
     img: "images/flipper_zero/flipper_zero_wifi_1.webp",
