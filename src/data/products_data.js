@@ -119,7 +119,7 @@ export default [
       "images/raspberry_pi/raspberry_pi_500_1.webp",
       "images/raspberry_pi/raspberry_pi_500_2.webp",
       "images/raspberry_pi/raspberry_pi_500_3.webp",
-      "images/raspberry_pi/raspberry_pi_500_4.jpg"
+      "images/raspberry_pi/raspberry_pi_500_4.webp"
     ],
     price: 108,
     category: "Plataforma/s de desarrollo",
@@ -143,11 +143,11 @@ export default [
     name: "Kit Raspberry Pi 500",
     desc: "Todo lo que necesitas para comenzar a trabajar con el Raspberry Pi 500",
     longDesc: "Kit completo con Raspberry Pi 500 y todos los accesorios esenciales. Incluye el teclado-computadora Pi 500, fuente de alimentación oficial, tarjeta microSD de alta velocidad y cable HDMI. Perfecto para empezar de inmediato.",
-    img: "images/raspberry_pi/raspberry_pi_500_kit_1.png",
+    img: "images/raspberry_pi/raspberry_pi_500_kit_1.webp",
     images: [
-      "images/raspberry_pi/raspberry_pi_500_kit_1.png",
-      "images/raspberry_pi/raspberry_pi_500_kit_2.png",
-      "images/raspberry_pi/raspberry_pi_500_kit_3.png"
+      "images/raspberry_pi/raspberry_pi_500_kit_1.webp",
+      "images/raspberry_pi/raspberry_pi_500_kit_2.webp",
+      "images/raspberry_pi/raspberry_pi_500_kit_3.webp"
     ],
     price: 145, // precio base del kit
     category: "Kits",
@@ -191,11 +191,11 @@ export default [
     name: "Raspberry Pi Screen",
     desc: "Pantalla de 15,6 pulgadas, diseñada como complemento para el Raspberry Pi 500.",
     longDesc: "Versátil y nítida, diseñada para acompañar a Raspberry Pi. También funciona con ordenadores y consolas vía HDMI.",
-    img: "images/raspberry_pi/raspberry_pi_screen_1.png",
+    img: "images/raspberry_pi/raspberry_pi_screen_1.webp",
     images: [
-      "images/raspberry_pi/raspberry_pi_screen_1.png",
-      "images/raspberry_pi/raspberry_pi_screen_2.png",
-      "images/raspberry_pi/raspberry_pi_screen_3.png",
+      "images/raspberry_pi/raspberry_pi_screen_1.webp",
+      "images/raspberry_pi/raspberry_pi_screen_2.webp",
+      "images/raspberry_pi/raspberry_pi_screen_3.webp",
     ],
     price: 118,
     category: "Pantallas",
