@@ -9,7 +9,8 @@ $color-bg-quaternary: #fafafa;
 // Textos
 $color-text-primary: #ffffff;
 $color-text-secondary: #b0b0b0;
-$color-text-muted: #808080;
+$color-text-tertiary: #808080;
+$color-text-quaternary: #121212;
 
 // Acentos (verde hacker)
 $color-accent-primary: #00ff00;
@@ -37,7 +38,7 @@ $shadow-dark: rgba(0, 0, 0, 0.3);
 
   --text-primary: #{$color-text-primary};
   --text-secondary: #{$color-text-secondary};
-  --text-muted: #{$color-text-muted};
+  --text-muted: #{$color-text-tertiary};
 
   --accent-primary: #{$color-accent-primary};
   --accent-secondary: #{$color-accent-secondary};
@@ -81,7 +82,7 @@ $shadow-dark: rgba(0, 0, 0, 0.3);
 
   &:disabled {
     background: $color-bg-tertiary;
-    color: $color-text-muted;
+    color: $color-text-tertiary;
     border-color: $color-border-primary;
     cursor: not-allowed;
     opacity: 0.5;
@@ -102,7 +103,7 @@ $shadow-dark: rgba(0, 0, 0, 0.3);
 
   &:disabled {
     background: $color-bg-tertiary;
-    color: $color-text-muted;
+    color: $color-text-tertiary;
     border-color: $color-border-primary;
     cursor: not-allowed;
     opacity: 0.5;
