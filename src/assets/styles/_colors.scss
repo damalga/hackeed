@@ -72,7 +72,8 @@ $shadow-dark: rgba(0, 0, 0, 0.3);
   color: $color-bg-primary;
   border-color: $color-accent-primary;
 
-  &:hover:not(:disabled) {
+  &:hover{
+    color: var(--bg-primary);
     background: $color-accent-secondary;
     border-color: $color-accent-secondary;
   }

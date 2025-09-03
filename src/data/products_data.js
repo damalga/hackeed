@@ -52,6 +52,7 @@ export default [
     longDesc: "La Raspberry Pi 5 es una de las computadoras de placa única más potentes. Con procesador de 64 bits, conectividad mejorada y capacidades de IA. Perfecta para proyectos de Homelab, IoT, automatización y desarrollo tecnológico de todo tipo.",
     img: "images/raspberry_pi/webp/raspberry_pi_5_1.webp",
     images: [
+      "images/raspberry_pi/webp/raspberry_pi_5_1.webp",
       "images/raspberry_pi/webp/raspberry_pi_5_2.webp",
       "images/raspberry_pi/webp/raspberry_pi_5_3.webp",
       "images/raspberry_pi/webp/raspberry_pi_5_4.webp",
@@ -212,5 +213,53 @@ export default [
     ],
     // Sin variantes - producto único
     variants: null,
+  },
+  {
+    id: 7,
+    name: "Rubber Ducky",
+    desc: "El USB que teclea solo. Inyección de teclas con guiones sencillos.",
+    longDesc: "Rubber Ducky es el clásico de Hak5 para inyección de teclado. Se identifica como un teclado estándar y ejecuta secuencias en milisegundos con DuckyScript 3.0. Pensado para demos de seguridad, automatización controlada y formación en hardening.",
+    img: "images/hak5/webp/rubber_ducky.webp",
+    images: [
+      "images/hak5/webp/rubber_ducky.webp",
+    ],
+    price: 180,
+    category: "Seguridad Informática",
+    brand: "Hak5",
+    inStock: true,
+    features: [
+      "DuckyScript 3.0",
+      "Inyección de teclado (HID)",
+      "Compatible con Windows, macOS y Linux",
+      "Memoria interna para payloads",
+      "Indicador LED de estado",
+      "USB-A",
+      "Modo arming/configuración"
+    ],
+    variants: null
+  },
+  {
+    id: 8,
+    name: "WiFi Pineapple",
+    desc: "Plataforma de auditoría WiFi con interfaz web y suite PineAP.",
+    longDesc: "WiFi Pineapple es la herramienta de Hak5 para pruebas de redes inalámbricas. Recon, campañas controladas y capturas para análisis, todo desde interfaz web y con soporte de módulos. Orientada a pentesting y formación en seguridad defensiva.",
+    img: "images/hak5/webp/wifi_pineapple.webp",
+    images: [
+      "images/hak5/webp/wifi_pineapple.webp",
+    ],
+    price: 430,
+    category: "Seguridad Informática",
+    brand: "Hak5",
+    inStock: true,
+    features: [
+      "Suite PineAP",
+      "Recon inalámbrico 2.4 GHz",
+      "Interfaz web administrativa",
+      "Captura de handshakes WPA/WPA2",
+      "Soporte de módulos y CLI",
+      "Alimentación por USB-C",
+      "Actualizaciones OTA"
+    ],
+    variants: null
   }
 ];

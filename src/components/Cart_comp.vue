@@ -18,15 +18,3 @@
 defineProps(['show'])
 defineEmits(['close'])
 </script>
-
-<style scoped>
-.slide-enter-active, .slide-leave-active {
-  transition: transform 0.3s cubic-bezier(.4,0,.2,1);
-}
-.slide-enter-from, .slide-leave-to {
-  transform: translateX(100%);
-}
-.slide-enter-to, .slide-leave-from {
-  transform: translateX(0%);
-}
-</style>

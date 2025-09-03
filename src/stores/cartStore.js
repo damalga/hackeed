@@ -1,40 +1,73 @@
-import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
-import { useProductVariantsStore } from './productVariantsStore'
+import { defineStore } from "pinia";
+import { ref, computed, watch } from "vue";
+import { useProductVariantsStore } from "./productVariantsStore";
 
-export const useCartStore = defineStore('cart', () => {
+export const useCartStore = defineStore("cart", () => {
+  // Cargar datos del localStorage al inicializar
+  const loadCartFromStorage = () => {
+    try {
+      const savedCart = localStorage.getItem('hackeed_cart');
+      return savedCart ? JSON.parse(savedCart) : [];
+    } catch (error) {
+      console.warn('Error loading cart from localStorage:', error);
+      return [];
+    }
+  };
+
+  // Guardar datos en localStorage
+  const saveCartToStorage = (cartItems) => {
+    try {
+      localStorage.setItem('hackeed_cart', JSON.stringify(cartItems));
+    } catch (error) {
+      console.warn('Error saving cart to localStorage:', error);
+    }
+  };
+
   // Estado
-  const items = ref([])
+  const items = ref(loadCartFromStorage());
 
+  // Watcher para guardar cambios automáticamente
+  watch(
+    items,
+    (newItems) => {
+      saveCartToStorage(newItems);
+    },
+    { deep: true }
+  );
 
   // Getters (computadas)
   const totalItems = computed(() => {
-    return items.value.reduce((total, item) => total + item.quantity, 0)
-  })
+    return items.value.reduce((total, item) => total + item.quantity, 0);
+  });
 
   const totalPrice = computed(() => {
-    return items.value.reduce((total, item) => total + (item.price * item.quantity), 0)
-  })
+    return items.value.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0,
+    );
+  });
 
-  const cartItems = computed(() => items.value)
+  const cartItems = computed(() => items.value);
 
   // Actions (funciones)
   const addToCart = (product) => {
-    const variantsStore = useProductVariantsStore()
-    
+    const variantsStore = useProductVariantsStore();
+
     // Crear un identificador único que incluya las variantes
-    const cartItemId = getCartItemId(product)
-    
-    const existingItem = items.value.find(item => item.cartItemId === cartItemId)
-    
+    const cartItemId = getCartItemId(product);
+
+    const existingItem = items.value.find(
+      (item) => item.cartItemId === cartItemId,
+    );
+
     if (existingItem) {
-      existingItem.quantity += 1
+      existingItem.quantity += 1;
     } else {
       // Obtener precio y nombre con variantes
-      const finalPrice = variantsStore.getProductPrice(product)
-      const fullName = variantsStore.getProductFullName(product)
-      const selectedOption = variantsStore.getSelectedOption(product)
-      
+      const finalPrice = variantsStore.getProductPrice(product);
+      const fullName = variantsStore.getProductFullName(product);
+      const selectedOption = variantsStore.getSelectedOption(product);
+
       items.value.push({
         id: product.id,
         cartItemId: cartItemId, // ID único para el item en carrito
@@ -44,72 +77,80 @@ export const useCartStore = defineStore('cart', () => {
         img: product.img,
         price: finalPrice,
         quantity: 1,
-        variants: product.variants ? {
-          selected: variantsStore.getProductVariants(product.id),
-          option: selectedOption
-        } : null
-      })
+        variants: product.variants
+          ? {
+              selected: variantsStore.getProductVariants(product.id),
+              option: selectedOption,
+            }
+          : null,
+      });
     }
-  }
+    // El watcher se encarga de guardar automáticamente
+  };
 
   const removeFromCart = (cartItemId) => {
-    const index = items.value.findIndex(item => item.cartItemId === cartItemId)
+    const index = items.value.findIndex(
+      (item) => item.cartItemId === cartItemId,
+    );
     if (index > -1) {
-      items.value.splice(index, 1)
+      items.value.splice(index, 1);
     }
-  }
+    // El watcher se encarga de guardar automáticamente
+  };
 
   const updateQuantity = (cartItemId, quantity) => {
-    const item = items.value.find(item => item.cartItemId === cartItemId)
+    const item = items.value.find((item) => item.cartItemId === cartItemId);
     if (item) {
       if (quantity <= 0) {
-        removeFromCart(cartItemId)
+        removeFromCart(cartItemId);
       } else {
-        item.quantity = quantity
+        item.quantity = quantity;
       }
     }
-  }
+    // El watcher se encarga de guardar automáticamente
+  };
 
   const clearCart = () => {
-    items.value = []
-  }
-
-
+    items.value = [];
+    // El watcher se encarga de guardar automáticamente
+  };
 
   // Generar ID único para item del carrito (incluye variantes)
   const getCartItemId = (product) => {
     if (!product.variants) {
-      return `${product.id}`
+      return `${product.id}`;
     }
-    
-    const variantsStore = useProductVariantsStore()
-    const variants = variantsStore.getProductVariants(product.id)
-    const variantString = Object.entries(variants).map(([key, value]) => `${key}:${value}`).join('|')
-    return `${product.id}-${variantString}`
-  }
+
+    const variantsStore = useProductVariantsStore();
+    const variants = variantsStore.getProductVariants(product.id);
+    const variantString = Object.entries(variants)
+      .map(([key, value]) => `${key}:${value}`)
+      .join("|");
+    return `${product.id}-${variantString}`;
+  };
 
   // Verificar si un producto está en el carrito (con variantes específicas)
   const isInCart = (product) => {
-    const cartItemId = getCartItemId(product)
-    return items.value.some(item => item.cartItemId === cartItemId)
-  }
+    const cartItemId = getCartItemId(product);
+    return items.value.some((item) => item.cartItemId === cartItemId);
+  };
 
   // Obtener la cantidad de un producto específico en el carrito (con variantes)
   const getItemQuantity = (product) => {
-    const cartItemId = getCartItemId(product)
-    const item = items.value.find(item => item.cartItemId === cartItemId)
-    return item ? item.quantity : 0
-  }
+    const cartItemId = getCartItemId(product);
+    const item = items.value.find((item) => item.cartItemId === cartItemId);
+    return item ? item.quantity : 0;
+  };
 
   return {
     // Estado
     items,
-    
+
     // Getters
     totalItems,
     totalPrice,
     cartItems,
-    
+
     // Actions
     addToCart,
     removeFromCart,
@@ -117,6 +158,6 @@ export const useCartStore = defineStore('cart', () => {
     clearCart,
     isInCart,
     getItemQuantity,
-    getCartItemId
-  }
-})
+    getCartItemId,
+  };
+});
