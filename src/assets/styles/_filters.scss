@@ -16,7 +16,6 @@
   font-weight: bold;
   color: var(--text-primary);
   margin: 0 0 25px 0;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
   letter-spacing: -1px;
 }
 
@@ -34,7 +33,6 @@
   color: var(--text-secondary);
   margin: 0 0 15px 0;
   text-transform: uppercase;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 }
 
 .filter-options {
@@ -50,7 +48,6 @@
   padding: 8px 0;
   cursor: pointer;
   transition: color 0.2s;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 
   &:hover {
     color: var(--accent-primary);
@@ -103,7 +100,7 @@
     .price-inputs {
         display: flex;
         flex-direction: column;
-        input{
+        .price-input{
             margin-bottom: .8rem;
         }
     }
@@ -116,7 +113,6 @@
   color: var(--text-primary);
   padding: 8px 12px;
   font-size: 14px;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
   transition: border-color 0.2s;
 
   &:focus {
@@ -132,7 +128,6 @@
 .price-separator {
   color: var(--text-secondary);
   font-size: 14px;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 }
 
 // Filter actions

@@ -115,11 +115,9 @@ const handleFiltersChange = (filters) => {
   font-size: 24px;
   color: var(--text-primary);
   margin-bottom: 15px;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 }
 
 .no-products p {
   font-size: 16px;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 }
 </style>

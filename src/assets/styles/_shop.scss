@@ -39,14 +39,12 @@
   font-weight: bold;
   color: var(--text-primary);
   margin: 0;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
   letter-spacing: -1px;
 }
 
 .shop-results {
   color: var(--text-secondary);
   font-size: 14px;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
   background: var(--bg-secondary);
   padding: 8px 16px;
   border: 1px solid var(--border-primary);
@@ -71,12 +69,10 @@
     font-size: 24px;
     color: var(--text-primary);
     margin-bottom: 15px;
-    font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
   }
 
   p {
     font-size: 16px;
-    font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
   }
 }
 

@@ -17,7 +17,6 @@
     text-align: center;
     margin-bottom: 50px;
     color: var(--text-primary);
-    font-family: "Fira Mono", "JetBrains Mono", "Menlo", monospace;
     letter-spacing: -1px;
 }
 
@@ -66,7 +65,6 @@
     font-weight: bold;
     color: var(--text-primary);
     margin: 0 0 10px 0;
-    font-family: "Fira Mono", "JetBrains Mono", "Menlo", monospace;
 }
 
 .product-desc {
@@ -74,7 +72,6 @@
     font-size: 14px;
     line-height: 1.5;
     margin: 0 0 15px 0;
-    font-family: "Fira Mono", "JetBrains Mono", "Menlo", monospace;
 }
 
 .product-values {
@@ -88,7 +85,6 @@
         font-size: 24px;
         font-weight: bold;
         color: var(--accent-primary);
-        font-family: "Fira Mono", "JetBrains Mono", "Menlo", monospace;
     }
 
     // Stock badge styles
@@ -100,7 +96,6 @@
         font-size: 12px;
         font-weight: 500;
         text-transform: uppercase;
-        font-family: "Fira Mono", "JetBrains Mono", "Menlo", monospace;
         border-radius: 20px; // Only allowed border-radius
 
         &.in-stock {
@@ -118,7 +113,6 @@
 }
 
 .product-cta {
-    font-family: "Fira Mono", "JetBrains Mono", "Menlo", monospace;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -175,7 +169,6 @@
     font-size: 18px;
     font-weight: bold;
     transition: all 0.2s;
-    font-family: "Fira Mono", "JetBrains Mono", "Menlo", monospace;
 
     &:hover {
         background: var(--accent-primary);
@@ -189,20 +182,18 @@
     min-width: 30px;
     text-align: center;
     color: var(--text-primary);
-    font-family: "Fira Mono", "JetBrains Mono", "Menlo", monospace;
 }
 
 .product-add-cart {
     width: 100%;
-    padding: 15px;
+    padding: 1rem;
     background: var(--bg-tertiary);
     color: var(--text-primary);
     border: 2px solid var(--border-primary);
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
-    font-family: "Fira Mono", "JetBrains Mono", "Menlo", monospace;
 
     &:hover:not(:disabled) {
         background: var(--accent-primary);

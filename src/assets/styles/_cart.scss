@@ -5,7 +5,6 @@
   position: relative;
   text-decoration: none;
   color: inherit;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 
   &:hover .cart-info {
     color: var(--accent-primary);
@@ -16,7 +15,6 @@
   color: var(--accent-primary);
   font-weight: 600;
   font-size: 14px;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 }
 
 // Cart page styles
@@ -37,7 +35,6 @@
   text-align: center;
   margin-bottom: 40px;
   color: var(--text-primary);
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
   letter-spacing: -1px;
 }
 
@@ -53,14 +50,12 @@
     font-size: 28px;
     color: var(--text-primary);
     margin-bottom: 10px;
-    font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
   }
 
   p {
     color: var(--text-secondary);
     font-size: 16px;
     margin-bottom: 30px;
-    font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
   }
 }
 
@@ -128,7 +123,6 @@
   font-weight: bold;
   color: var(--text-primary);
   margin: 0;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 }
 
 .item-desc {
@@ -136,14 +130,12 @@
   font-size: 14px;
   line-height: 1.4;
   margin: 0;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 }
 
 .item-price {
   font-size: 18px;
   font-weight: 600;
   color: var(--accent-primary);
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 }
 
 .item-controls {
@@ -190,24 +182,21 @@
   min-width: 30px;
   text-align: center;
   color: var(--text-primary);
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 }
 
 .item-total {
   font-size: 1rem;
   font-weight: bold;
   color: var(--text-primary);
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 }
 
 .remove-item {
+  font-size: .9rem;
   background: none;
   color: $color-warning;
   border: none;
   cursor: pointer;
-  font-size: .9rem;
   transition: color 0.2s;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
   &:hover {
     color: $color-error;
   }
@@ -231,7 +220,6 @@
     font-weight: bold;
     margin: 0 0 25px 0;
     color: var(--text-primary);
-    font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
   }
 
   hr {
@@ -247,7 +235,6 @@
   align-items: center;
   padding: 12px 0;
   color: var(--text-secondary);
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 
   &.total {
     font-size: 20px;
@@ -270,10 +257,9 @@
   font-weight: 500;
   padding: 10px;
   transition: background-color 0.2s;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 
   &:hover {
-    background: var(--bg-tertiary);
+    background-color: var(--bg-secondary);
   }
 }
 

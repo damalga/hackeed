@@ -30,7 +30,6 @@
 }
 
 .logo-link {
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
   font-size: 2rem;
   font-weight: bold;
   color: $color-text-primary;
@@ -43,7 +42,6 @@
   background: none;
   border: none;
   color: $color-text-primary;
-  font-family: inherit;
   font-size: 1rem;
   cursor: pointer;
   padding: 0;

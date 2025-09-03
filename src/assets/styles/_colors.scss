@@ -4,6 +4,7 @@
 $color-bg-primary: #0a0a0a;
 $color-bg-secondary: #1a1a1a;
 $color-bg-tertiary: #2a2a2a;
+$color-bg-quaternary: #fafafa;
 
 // Textos
 $color-text-primary: #ffffff;
@@ -21,6 +22,7 @@ $color-border-secondary: #444444;
 // Estados
 $color-success: #00ff00;
 $color-error: #ff0000;
+$color-dark-error: #dd2121;
 $color-warning: #ffff00;
 
 // Sombras
@@ -53,7 +55,6 @@ $shadow-dark: rgba(0, 0, 0, 0.3);
 
 // Mixins botones
 @mixin button-base {
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;

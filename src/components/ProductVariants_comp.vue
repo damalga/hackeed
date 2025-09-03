@@ -108,7 +108,6 @@ onMounted(() => {
   font-weight: 600;
   color: var(--text-primary);
   margin: 0 0 15px 0;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 }
 
 .variant-options {
@@ -126,7 +125,6 @@ onMounted(() => {
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 
   &:hover:not(.out-of-stock) {
     border-color: var(--accent-primary);
@@ -212,7 +210,6 @@ onMounted(() => {
   font-weight: 600;
   color: var(--text-primary);
   margin: 0 0 10px 0;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 }
 
 .features-list {
@@ -226,7 +223,6 @@ onMounted(() => {
   font-size: 13px;
   line-height: 1.4;
   margin-bottom: 5px;
-  font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', monospace;
 }
 
 /* Responsive */

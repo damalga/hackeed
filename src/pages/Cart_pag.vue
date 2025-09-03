@@ -53,7 +53,7 @@
                 <div class="item-total">€{{ (item.price * item.quantity).toFixed(2) }}</div>
                 <button
                   class="remove-item"
-                  @click="cartStore.removeFromCart(item.cartItemId)"
+                  @click="confirmRemoveItem(item)"
                   title="Eliminar producto"
                 >
                   Eliminar producto
@@ -109,20 +109,72 @@
     </main>
 
     <Footer />
+
+    <!-- Modal de confirmación para vaciar carrito -->
+    <ConfirmModal
+      :show="showConfirmModal"
+      title="Vaciar carrito"
+      message="¿Estás seguro de que quieres eliminar todos los productos del carrito? Esta acción no se puede deshacer."
+      confirm-text="Sí, vaciar carrito"
+      cancel-text="Cancelar"
+      @confirm="handleConfirmClear"
+      @cancel="handleCancelClear"
+    />
+
+    <!-- Modal de confirmación para eliminar producto individual -->
+    <ConfirmModal
+      :show="showRemoveItemModal"
+      title="Eliminar producto"
+      :message="`¿Estás seguro de que quieres eliminar '${itemToRemove?.name}' del carrito?`"
+      confirm-text="Sí, eliminar"
+      cancel-text="Cancelar"
+      @confirm="handleConfirmRemoveItem"
+      @cancel="handleCancelRemoveItem"
+    />
   </div>
 </template>
 
 <script setup>
 import Header from '../components/Header_comp.vue'
 import Footer from '../components/Footer_comp.vue'
+import ConfirmModal from '../components/ConfirmModal_comp.vue'
 import { useCartStore } from '../stores/cartStore'
+import { ref } from 'vue'
 
 const cartStore = useCartStore()
+const showConfirmModal = ref(false)
+const showRemoveItemModal = ref(false)
+const itemToRemove = ref(null)
 
 const confirmClearCart = () => {
-  if (confirm('¿Estás seguro de que quieres vaciar el carrito?')) {
-    cartStore.clearCart()
+  showConfirmModal.value = true
+}
+
+const handleConfirmClear = () => {
+  cartStore.clearCart()
+  showConfirmModal.value = false
+}
+
+const handleCancelClear = () => {
+  showConfirmModal.value = false
+}
+
+const confirmRemoveItem = (item) => {
+  itemToRemove.value = item
+  showRemoveItemModal.value = true
+}
+
+const handleConfirmRemoveItem = () => {
+  if (itemToRemove.value) {
+    cartStore.removeFromCart(itemToRemove.value.cartItemId)
   }
+  showRemoveItemModal.value = false
+  itemToRemove.value = null
+}
+
+const handleCancelRemoveItem = () => {
+  showRemoveItemModal.value = false
+  itemToRemove.value = null
 }
 </script>
 
