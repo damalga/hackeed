@@ -1,5 +1,25 @@
 @use "_colors.scss" as *;
 
+.shop-products {
+  padding: 0;
+}
+
+.no-products {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text-secondary);
+}
+
+.no-products h3 {
+  font-size: 24px;
+  color: var(--text-primary);
+  margin-bottom: 15px;
+}
+
+.no-products p {
+  font-size: 16px;
+}
+
 // Shop page styles with sidebar layout and dark theme
 .shop-main {
   background: var(--bg-primary);

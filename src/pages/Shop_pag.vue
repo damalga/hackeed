@@ -98,26 +98,3 @@ const handleFiltersChange = (filters) => {
   activeFilters.value = filters
 }
 </script>
-
-<style scoped>
-/* Estilos específicos para la página shop */
-.shop-products {
-  padding: 0; /* Eliminar padding del componente en shop */
-}
-
-.no-products {
-  text-align: center;
-  padding: 80px 20px;
-  color: var(--text-secondary);
-}
-
-.no-products h3 {
-  font-size: 24px;
-  color: var(--text-primary);
-  margin-bottom: 15px;
-}
-
-.no-products p {
-  font-size: 16px;
-}
-</style>
