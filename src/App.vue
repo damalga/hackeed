@@ -4,7 +4,7 @@ import Product from './components/Product_comp.vue'
 
 <template>
   <router-view />
-  
+
   <!-- Modales globales -->
   <Product />
 </template>

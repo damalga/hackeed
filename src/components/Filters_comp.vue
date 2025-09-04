@@ -136,7 +136,10 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import products from "@/data/products_data.js";
+
+const props = defineProps({
+  products: { type: Array, default: () => [] }
+});
 
 // Props para comunicar filtros al componente padre
 const emit = defineEmits(["filters-changed"]);
@@ -150,7 +153,7 @@ const priceRange = ref({ min: null, max: null });
 // Datos computados para opciones de filtros
 const categories = computed(() => {
     const categoryCount = {};
-    products.forEach((product) => {
+    props.products.forEach((product) => {
         if (product.category) {
             categoryCount[product.category] =
                 (categoryCount[product.category] || 0) + 1;
@@ -165,7 +168,7 @@ const categories = computed(() => {
 
 const brands = computed(() => {
     const brandCount = {};
-    products.forEach((product) => {
+    props.products.forEach((product) => {
         if (product.brand) {
             brandCount[product.brand] = (brandCount[product.brand] || 0) + 1;
         }
