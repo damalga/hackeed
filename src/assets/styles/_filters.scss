@@ -55,8 +55,8 @@
 }
 
 .filter-checkbox {
-  width: 18px;
-  height: 18px;
+  min-width: 1rem;
+  min-height: 1rem;
   border: 2px solid var(--border-primary);
   background: var(--bg-tertiary);
   position: relative;
