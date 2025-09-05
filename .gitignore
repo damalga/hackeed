@@ -1,2 +1,8 @@
+# Node Modules
+/node_modules
+
+# Distribution
+/dist
+
 # Local Netlify folder
 .netlify
