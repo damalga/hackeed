@@ -1,4 +1,4 @@
-@use "_colors.scss" as *;
+@use '_colors.scss' as *;
 
 .shop-products {
   padding: 0;
@@ -29,10 +29,10 @@
 .shop-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 2.8rem 1.4rem;
   display: grid;
   grid-template-columns: 280px 1fr;
-  gap: 40px;
+  gap: 2rem;
 }
 
 .shop-sidebar {
@@ -49,13 +49,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 40px;
-  flex-wrap: wrap;
-  gap: 15px;
+  margin-bottom: 1rem;
 }
 
 .shop-title {
-  font-size: 42px;
+  font-size: 2.6rem;
   font-weight: bold;
   color: var(--text-primary);
   margin: 0;
@@ -108,15 +106,8 @@
     position: relative;
     top: 0;
   }
-
-  .shop-header {
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 30px;
-  }
-
   .shop-title {
-    font-size: 32px;
+    font-size: 2rem;
   }
 }
 
