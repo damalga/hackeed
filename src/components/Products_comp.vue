@@ -3,26 +3,24 @@
     <div class="products-container">
       <h2 v-if="showTitle" class="products-title">{{ title }}</h2>
       <div class="products-grid">
-        <div
-          v-for="product in displayedProducts"
-          :key="product.id"
-          class="product-card"
-        >
+        <div v-for="product in displayedProducts" :key="product.id" class="product-card">
           <div class="product-image" @click="openProductModal(product)">
             <img :src="product.img" :alt="product.name" />
           </div>
 
           <div class="product-info">
-            <h3 class="product-name" @click="openProductModal(product)">{{ product.name }}</h3>
+            <h4 class="product-name" @click="openProductModal(product)">{{ product.name }}</h4>
             <p class="product-desc">{{ product.desc }}</p>
             <div class="product-values">
-                <div class="product-price">€{{ product.price }}</div>
+              <div class="product-price">€{{ product.price }}</div>
 
-                <!-- Stock badge (solo en shop) -->
-                <div v-if="showStock" class="product-stock">
-                  <span v-if="variantsStore.isProductAvailable(product)" class="stock-badge in-stock">En stock</span>
-                  <span v-else class="stock-badge out-of-stock">Agotado</span>
-                </div>
+              <!-- Stock badge (solo en shop) -->
+              <div v-if="showStock" class="product-stock">
+                <span v-if="variantsStore.isProductAvailable(product)" class="stock-badge in-stock"
+                  >En stock</span
+                >
+                <span v-else class="stock-badge out-of-stock">Agotado</span>
+              </div>
             </div>
 
             <!-- Controles del carrito (solo en shop) -->
@@ -53,7 +51,9 @@
             </div>
 
             <!-- Botón simple (solo en home) -->
-            <button v-else class="product-cta" @click="openProductModal(product)">Ver producto</button>
+            <button v-else class="product-cta" @click="openProductModal(product)">
+              Ver producto
+            </button>
           </div>
         </div>
       </div>
@@ -72,28 +72,28 @@ import products from '@/data/products_data.js'
 const props = defineProps({
   title: {
     type: String,
-    default: 'Productos destacados'
+    default: 'Productos destacados',
   },
   showTitle: {
     type: Boolean,
-    default: true
+    default: true,
   },
   limit: {
     type: Number,
-    default: null // null = mostrar todos
+    default: null, // null = mostrar todos
   },
   productsList: {
     type: Array,
-    default: () => products // por defecto usa todos los productos
+    default: () => products, // por defecto usa todos los productos
   },
   showStock: {
     type: Boolean,
-    default: false // mostrar badges de stock
+    default: false, // mostrar badges de stock
   },
   showCartControls: {
     type: Boolean,
-    default: false // mostrar controles de carrito
-  }
+    default: false, // mostrar controles de carrito
+  },
 })
 
 const productModalStore = useProductModalStore()
@@ -131,7 +131,7 @@ const updateQuantity = (product, newQuantity) => {
 
 // Inicializar variantes por defecto para todos los productos
 onMounted(() => {
-  displayedProducts.value.forEach(product => {
+  displayedProducts.value.forEach((product) => {
     if (product.variants) {
       variantsStore.initializeProductDefaults(product)
     }

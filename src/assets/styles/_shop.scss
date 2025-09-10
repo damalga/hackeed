@@ -11,13 +11,12 @@
 }
 
 .no-products h3 {
-  font-size: 24px;
   color: var(--text-primary);
-  margin-bottom: 15px;
+  margin-bottom: 0.9375rem;
 }
 
 .no-products p {
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 // Shop page styles with sidebar layout and dark theme
@@ -31,18 +30,18 @@
   margin: 0 auto;
   padding: 2.8rem 1.4rem;
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 17.5rem 1fr;
   gap: 2rem;
 }
 
 .shop-sidebar {
   position: sticky;
-  top: 100px;
+  top: 6.25rem;
   height: fit-content;
 }
 
 .shop-content {
-  min-height: 500px;
+  min-height: 31.25rem;
 }
 
 .shop-header {
@@ -53,44 +52,37 @@
 }
 
 .shop-title {
-  font-size: 2.6rem;
-  font-weight: bold;
   color: var(--text-primary);
   margin: 0;
-  letter-spacing: -1px;
 }
 
 .shop-results {
   color: var(--text-secondary);
-  font-size: 14px;
+  font-size: 0.875rem;
   background: var(--bg-secondary);
-  padding: 8px 16px;
+  padding: 0.5rem 1rem;
   border: 1px solid var(--border-primary);
 }
 
 .shop-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  gap: 1.875rem;
 }
-
-// Productos ahora usan el componente Products reutilizable
-// Los estilos se encuentran en _products.scss
 
 // No products message
 .no-products {
   text-align: center;
-  padding: 80px 20px;
+  padding: 5rem 1.25rem;
   color: var(--text-secondary);
 
   h3 {
-    font-size: 24px;
     color: var(--text-primary);
-    margin-bottom: 15px;
+    margin-bottom: 0.9375rem;
   }
 
   p {
-    font-size: 16px;
+    font-size: 1rem;
   }
 }
 
@@ -114,11 +106,5 @@
 @media (max-width: 768px) {
   .shop-container {
     padding: 20px 10px;
-  }
-
-  // Los estilos responsive de productos están en _products.scss
-
-  .shop-title {
-    font-size: 28px;
   }
 }

@@ -1,51 +1,47 @@
-@use "_colors.scss" as *;
+@use '_colors.scss' as *;
 
 .contact-section {
-    border-top: 1px solid $color-border-primary;
-    padding-top: 3rem;
-    max-width: 720px;
-    margin: 0 auto 5rem auto;
-    text-align: center;
-    .contact-title {
-        font-size: 1.5rem;
-        font-weight: bold;
-        margin-bottom: 1rem;
-        color: $color-text-primary;
+  border-top: 1px solid $color-border-primary;
+  padding-top: 3rem;
+  max-width: 45rem;
+  margin: 0 auto 5rem auto;
+  text-align: center;
+  .contact-title {
+    margin-bottom: 1rem;
+    color: $color-text-primary;
+  }
+
+  .contact-desc {
+    color: $color-text-primary;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    max-width: 21.25rem;
+    margin: 0 auto;
+  }
+
+  .contact-input {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 1px solid $color-border-primary;
+    font-size: 1rem;
+    background: $color-bg-primary;
+    color: $color-text-primary;
+    outline: none;
+    transition: border 0.18s;
+
+    &:focus {
+      border-color: $color-accent-primary;
     }
+  }
 
-    .contact-desc {
-        color: $color-text-primary;
-        margin-bottom: 1.5rem;
-    }
-
-    .contact-form {
-        display: flex;
-        flex-direction: column;
-        gap: 1.1rem;
-        max-width: 340px;
-        margin: 0 auto;
-    }
-
-    .contact-input {
-        width: 100%;
-        padding: 0.7rem 1rem;
-        border: 1px solid $color-border-primary;
-        font-size: 1rem;
-        background: $color-bg-primary;
-        color: $color-text-primary;
-        outline: none;
-        transition: border 0.18s;
-
-        &:focus {
-            border-color: $color-accent-primary;
-        }
-    }
-
-    .contact-btn {
-        @include button-primary;
-        padding: 0.7rem 2.2rem;
-        font-size: 1.07rem;
-
-
-    }
+  .contact-btn {
+    @include button-primary;
+    padding: 0.7rem 2.2rem;
+    font-size: 1.07rem;
+  }
 }

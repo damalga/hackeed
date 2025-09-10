@@ -11,7 +11,7 @@
         <!-- Área principal de productos -->
         <section class="shop-content">
           <div class="shop-header">
-            <h2 class="shop-title">Productos</h2>
+            <h3 class="shop-title">Productos</h3>
             <div class="shop-results">
               {{ filteredProducts.length }} producto{{
                 filteredProducts.length !== 1 ? 's' : ''

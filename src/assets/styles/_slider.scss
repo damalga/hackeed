@@ -1,12 +1,18 @@
 @use '_colors.scss' as *;
 
-.hero {
+.slider-title-main {
+  text-align: center;
+  color: $color-text-primary;
+  margin-bottom: 2rem;
+}
+
+.slider {
   padding: 4rem 0 3rem 0;
   background: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  .hero-slider {
+  .slider-container {
     position: relative;
     width: 100%;
     max-width: 60rem;
@@ -16,45 +22,45 @@
     margin-bottom: 1rem;
   }
 
-  .hero-slide {
+  .slider-slide {
     display: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 2.5rem;
+    padding: 0 2rem;
     text-align: center;
     height: 100%;
   }
 
-  .hero-slide.active {
+  .slider-slide.active {
     display: flex;
     animation: fadein 0.6s;
   }
 
-  .hero-img {
+  .slider-img {
     width: 15rem;
     height: 15rem;
     object-fit: cover;
     margin-bottom: 1rem;
   }
 
-  .hero-title {
+  .slider-title {
     color: $color-text-primary;
-    margin-bottom: 1rem;
+    margin-bottom: 0.7rem;
   }
 
-  .hero-desc {
+  .slider-desc {
     font-size: 1.1rem;
     color: $color-text-tertiary;
     margin-bottom: 2rem;
   }
 
-  .hero-cta {
+  .slider-cta {
     @include button-primary;
     font-size: 1.1rem;
   }
 
-  .hero-arrow {
+  .slider-arrow {
     @include button-secondary;
     position: absolute;
     top: 50%;
@@ -69,20 +75,20 @@
     user-select: none;
   }
 
-  .hero-arrow--left {
+  .slider-arrow--left {
     left: 1rem;
   }
-  .hero-arrow--right {
+  .slider-arrow--right {
     right: 1rem;
   }
 
-  .hero-dots {
+  .slider-dots {
     display: flex;
     gap: 1rem;
     justify-content: center;
   }
 
-  .hero-dots span {
+  .slider-dots span {
     width: 0.75rem;
     height: 0.75rem;
     background: $color-border-primary;
@@ -92,7 +98,7 @@
     border: 1px solid $color-border-secondary;
   }
 
-  .hero-dots span.active {
+  .slider-dots span.active {
     background: $color-accent-primary;
   }
 

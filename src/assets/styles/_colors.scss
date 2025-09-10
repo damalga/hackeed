@@ -1,4 +1,4 @@
-@use "sass:color";
+@use 'sass:color';
 
 // Fondos
 $color-bg-primary: #0a0a0a;
@@ -60,8 +60,8 @@ $shadow-dark: rgba(0, 0, 0, 0.3);
   cursor: pointer;
   transition: all 0.2s ease;
   border: 2px solid;
-  padding: 12px 20px;
-  font-size: 16px;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
   background: none;
   text-decoration: none;
   display: inline-block;
@@ -74,7 +74,7 @@ $shadow-dark: rgba(0, 0, 0, 0.3);
   color: $color-bg-primary;
   border-color: $color-accent-primary;
 
-  &:hover{
+  &:hover {
     color: var(--bg-primary);
     background: $color-accent-secondary;
     border-color: $color-accent-secondary;
@@ -124,12 +124,12 @@ $shadow-dark: rgba(0, 0, 0, 0.3);
 
 @mixin button-small {
   @include button-base;
-  padding: 8px 16px;
-  font-size: 14px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
 }
 
 @mixin button-large {
   @include button-base;
-  padding: 16px 24px;
-  font-size: 18px;
+  padding: 1rem 1.5rem;
+  font-size: 1.125rem;
 }

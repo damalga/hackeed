@@ -12,11 +12,8 @@
 }
 
 .filters-title {
-  font-size: 20px;
-  font-weight: bold;
   color: var(--text-primary);
-  margin: 0 0 25px 0;
-  letter-spacing: -1px;
+  margin: 0 0 1.5625rem 0;
 }
 
 .filter-group {
@@ -28,10 +25,10 @@
 }
 
 .filter-group-title {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--text-secondary);
-  margin: 0 0 15px 0;
+  margin: 0 0 0.9375rem 0;
   text-transform: uppercase;
 }
 
@@ -73,7 +70,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
       color: var(--bg-primary);
-      font-size: 12px;
+      font-size: 0.75rem;
       font-weight: bold;
     }
   }
@@ -81,7 +78,7 @@
 
 .filter-label {
   color: var(--text-secondary);
-  font-size: 14px;
+  font-size: 0.875rem;
   user-select: none;
 
   &.active {
@@ -91,7 +88,7 @@
 
 .filter-count {
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 0.75rem;
   margin-left: auto;
 }
 
@@ -126,7 +123,7 @@
 
 .price-separator {
   color: var(--text-secondary);
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 // Filter actions
@@ -140,24 +137,24 @@
 .apply-filters-btn {
   @include button-primary;
   width: 100%;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .clear-filters-btn {
   @include button-secondary;
   width: 100%;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 // Stock filter with special styling
 .stock-filter {
   .filter-option {
     .stock-badge {
-      padding: 4px 8px;
-      font-size: 10px;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.625rem;
       font-weight: 500;
       text-transform: uppercase;
-      border-radius: 20px; // Only place where border-radius is allowed
+      border-radius: 1.25rem; // Only place where border-radius is allowed
 
       &.in-stock {
         background: rgba(0, 255, 0, 0.2);
@@ -190,8 +187,7 @@
   }
 
   .filters-title {
-    font-size: 18px;
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
   }
 
   .filter-group {

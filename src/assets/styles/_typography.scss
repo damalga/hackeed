@@ -1,0 +1,243 @@
+:root {
+  // Base font size - 16px default, adjust as needed
+  --base-font-size: 1rem;
+
+  // Font weights
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  // Line heights
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  // Letter spacing
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.025em;
+}
+
+// H1 - Main page titles, hero titles
+h1 {
+  font-size: 2.8rem;
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  margin-top: 0;
+  margin-bottom: 1.6rem;
+
+  @media (max-width: 768px) {
+    font-size: 2.4rem;
+    margin-bottom: 1.4rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 2rem;
+    margin-bottom: 1.2rem;
+  }
+}
+
+// H2 - Section titles, component titles
+h2 {
+  font-size: 2.4rem;
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  margin-top: 0;
+  margin-bottom: 1.2rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+  }
+}
+
+// H3 - Subsection titles, card titles
+h3 {
+  font-size: 2rem;
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-normal);
+  margin-top: 0;
+  margin-bottom: 1rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.4rem;
+    margin-bottom: 0.875rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.2rem; // 24px on small mobile
+    margin-bottom: 0.72rem;
+  }
+}
+
+// H4 - Product titles, smaller section titles
+h4 {
+  font-size: 1.6rem; // 24px
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-normal);
+  letter-spacing: var(--letter-spacing-normal);
+  margin-top: 0;
+  margin-bottom: 0.88rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.4rem; // 22px on mobile
+    margin-bottom: 0.72rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.2rem; // 20px on small mobile
+    margin-bottom: 0.64rem;
+  }
+}
+
+// H5 - Feature titles, form labels
+h5 {
+  font-size: 1.4rem;
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  letter-spacing: var(--letter-spacing-normal);
+  margin-top: 0;
+  margin-bottom: 0.8rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem; // 18px on mobile
+    margin-bottom: 0.68rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1rem; // 16px on small mobile
+    margin-bottom: 0.6rem;
+  }
+}
+
+// H6 - Small titles, captions
+h6 {
+  font-size: 1.2rem; // 18px
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  letter-spacing: var(--letter-spacing-wide);
+  margin-top: 0;
+  margin-bottom: 0.64rem;
+  text-transform: uppercase;
+
+  @media (max-width: 768px) {
+    font-size: 1rem; // 16px on mobile
+    margin-bottom: 0.52rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.84rem; // 14px on small mobile
+    margin-bottom: 0.44rem;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// TYPOGRAPHY UTILITIES
+// -----------------------------------------------------------------------------
+
+// Text sizes for non-heading elements
+.text-xs {
+  font-size: 0.75rem;
+  line-height: var(--line-height-normal);
+}
+.text-sm {
+  font-size: 0.875rem;
+  line-height: var(--line-height-normal);
+}
+.text-base {
+  font-size: 1rem;
+  line-height: var(--line-height-normal);
+}
+.text-lg {
+  font-size: 1.125rem;
+  line-height: var(--line-height-normal);
+}
+.text-xl {
+  font-size: 1.25rem;
+  line-height: var(--line-height-normal);
+}
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: var(--line-height-tight);
+}
+
+// Font weights
+.font-light {
+  font-weight: var(--font-weight-light);
+}
+.font-regular {
+  font-weight: var(--font-weight-regular);
+}
+.font-medium {
+  font-weight: var(--font-weight-medium);
+}
+.font-semibold {
+  font-weight: var(--font-weight-semibold);
+}
+.font-bold {
+  font-weight: var(--font-weight-bold);
+}
+.font-extrabold {
+  font-weight: var(--font-weight-extrabold);
+}
+
+// Line heights
+.leading-tight {
+  line-height: var(--line-height-tight);
+}
+.leading-normal {
+  line-height: var(--line-height-normal);
+}
+.leading-relaxed {
+  line-height: var(--line-height-relaxed);
+}
+
+// Letter spacing
+.tracking-tight {
+  letter-spacing: var(--letter-spacing-tight);
+}
+.tracking-normal {
+  letter-spacing: var(--letter-spacing-normal);
+}
+.tracking-wide {
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+// Text alignment
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.text-justify {
+  text-align: justify;
+}
+
+// Text transforms
+.uppercase {
+  text-transform: uppercase;
+}
+.lowercase {
+  text-transform: lowercase;
+}
+.capitalize {
+  text-transform: capitalize;
+}
+.normal-case {
+  text-transform: none;
+}
