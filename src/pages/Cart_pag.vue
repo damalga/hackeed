@@ -11,19 +11,13 @@
           <div class="empty-cart-icon">🛒</div>
           <h2>Tu carrito está vacío</h2>
           <p>¡Añade algunos productos increíbles y vuelve aquí!</p>
-          <router-link to="/shop" class="continue-shopping-btn">
-            Ir a la tienda
-          </router-link>
+          <router-link to="/shop" class="continue-shopping-btn"> Ir a la tienda </router-link>
         </div>
 
         <!-- Carrito con productos -->
         <div v-else class="cart-content">
           <div class="cart-items">
-            <div
-              v-for="item in cartStore.cartItems"
-              :key="item.cartItemId"
-              class="cart-item"
-            >
+            <div v-for="item in cartStore.cartItems" :key="item.cartItemId" class="cart-item">
               <div class="item-image">
                 <img :src="item.img" :alt="item.name" />
               </div>
@@ -63,12 +57,7 @@
 
             <!-- Botón limpiar carrito (si hay productos) -->
             <div v-if="cartStore.totalItems > 0" class="cart-actions">
-              <button
-                class="clear-cart-btn"
-                @click="confirmClearCart"
-              >
-                Vaciar carrito
-              </button>
+              <button class="clear-cart-btn" @click="confirmClearCart">Vaciar carrito</button>
             </div>
           </div>
 
@@ -87,24 +76,19 @@
                 <span>Gratis</span>
               </div>
 
-              <hr>
+              <hr />
 
               <div class="summary-row total">
                 <span>Total</span>
                 <span>€{{ cartStore.totalPrice.toFixed(2) }}</span>
               </div>
 
-              <button class="checkout-btn">
-                Proceder al pago
-              </button>
+              <button class="checkout-btn">Proceder al pago</button>
 
-              <router-link to="/shop" class="continue-shopping">
-                Continuar comprando
-              </router-link>
+              <router-link to="/shop" class="continue-shopping"> Continuar comprando </router-link>
             </div>
           </div>
         </div>
-
       </div>
     </main>
 
@@ -177,7 +161,3 @@ const handleCancelRemoveItem = () => {
   itemToRemove.value = null
 }
 </script>
-
-<style scoped>
-/* Estilos incluidos desde _cart.scss */
-</style>
