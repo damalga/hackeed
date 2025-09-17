@@ -1,5 +1,5 @@
 packages:
-  - .  # el proyecto actual
+  - . # el proyecto actual
 
 catalog:
-  minimumReleaseAge: 2880  # 2 días
+  minimumReleaseAge: '2880 minutes'
