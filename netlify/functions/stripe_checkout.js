@@ -59,20 +59,61 @@ export async function handler(event) {
       throw new Error('STRIPE_SECRET_KEY no configurada');
     }
 
-    // Crear line items simplificados
-    const lineItems = items.map(item => ({
-      price_data: {
-        currency: 'eur',
-        product_data: {
-          name: item.name || `Producto ${item.id}`,
-          metadata: {
-            product_id: item.id.toString()
-          }
+    // Validar productos contra la base de datos para evitar manipulación de precios
+    const sql = neon();
+    const productIds = items.map(item => item.id);
+
+    console.log('Validating product IDs:', productIds);
+
+    // Obtener productos reales de la base de datos
+    const dbProducts = await sql`
+      SELECT id, name, price_cents, stock
+      FROM products
+      WHERE id = ANY(${productIds}) AND active = true
+    `;
+
+    if (dbProducts.length !== items.length) {
+      throw new Error('Algunos productos no están disponibles o no existen');
+    }
+
+    console.log('Database products:', dbProducts);
+
+    // Crear line items usando SOLO precios de la base de datos
+    const lineItems = [];
+    let totalAmount = 0;
+
+    for (const item of items) {
+      const dbProduct = dbProducts.find(p => p.id === item.id);
+
+      if (!dbProduct) {
+        throw new Error(`Producto ${item.id} no encontrado`);
+      }
+
+      // Verificar stock
+      if (dbProduct.stock < item.quantity) {
+        throw new Error(`Stock insuficiente para ${dbProduct.name}. Disponible: ${dbProduct.stock}, Solicitado: ${item.quantity}`);
+      }
+
+      const dbPrice = parseFloat(dbProduct.price_cents) / 100; // Convertir centavos a euros
+      const quantity = parseInt(item.quantity) || 1;
+
+      lineItems.push({
+        price_data: {
+          currency: 'eur',
+          product_data: {
+            name: dbProduct.name,
+            metadata: {
+              product_id: dbProduct.id.toString(),
+              validated: 'true'
+            }
+          },
+          unit_amount: Math.round(dbPrice * 100), // Usar SOLO precio de BD
         },
-        unit_amount: Math.round((item.price || 29.99) * 100), // Precio por defecto en centavos
-      },
-      quantity: item.quantity || 1,
-    }));
+        quantity: quantity,
+      });
+
+      totalAmount += dbPrice * quantity;
+    }
 
     console.log('Line items:', JSON.stringify(lineItems, null, 2));
 
@@ -113,11 +154,26 @@ export async function handler(event) {
     console.log('Sesión creada exitosamente:', session.id);
 
     // Verificar conexión con base de datos
-    try {
+    const databaseUrl = process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL;
+    try{
       console.log('Verificando conexión con Neon...');
       const sql = neon();
       const testQuery = await sql`SELECT NOW() as current_time`;
       console.log('Conexión con DB exitosa:', testQuery);
+      const isValidDatabaseUrl = (
+        databaseUrl &&
+        typeof databaseUrl === 'string' &&
+        databaseUrl !== '1' &&
+        databaseUrl.toLowerCase().startsWith('postgres')
+      );
+
+      if (!isValidDatabaseUrl) {
+        console.info('URL de base de datos no válida o no proporcionada. Omitiendo verificación de Neon.');
+      } else {
+        const sql = neon(databaseUrl);
+        const testQuery = await sql`SELECT NOW() as current_time`;
+        console.log('Conexión con DB exitosa:', testQuery);
+    }
     } catch (dbError) {
       console.warn('Error conectando a BD (continuando):', dbError.message);
     }

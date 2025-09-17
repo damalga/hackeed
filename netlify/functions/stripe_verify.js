@@ -4,15 +4,30 @@ import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function handler(event) {
+  // Verificar origen permitido
+  const allowedOrigins = [
+    'http://localhost:8888',
+    'https://tu-dominio.netlify.app'
+  ];
+
+  const origin = event.headers.origin;
+  const corsHeaders = allowedOrigins.includes(origin)
+    ? {
+        'Access-Control-Allow-Origin': origin,
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      }
+    : {
+        'Access-Control-Allow-Origin': 'null',
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      };
+
   // Solo permitir GET requests
   if (event.httpMethod !== 'GET') {
     return {
       statusCode: 405,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-      },
+      headers: corsHeaders,
       body: JSON.stringify({ error: 'Método no permitido' })
     };
   }
@@ -21,11 +36,7 @@ export async function handler(event) {
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-      },
+      headers: corsHeaders,
       body: ''
     };
   }
@@ -69,13 +80,16 @@ export async function handler(event) {
       verificationResult = { ...verificationResult, ...orderResult };
     }
 
+    // Sanitizar datos sensibles antes de enviar
+    const sanitizedResult = sanitizeVerificationResult(verificationResult);
+
     return {
       statusCode: 200,
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        ...corsHeaders,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(verificationResult)
+      body: JSON.stringify(sanitizedResult)
     };
 
   } catch (error) {
@@ -84,7 +98,7 @@ export async function handler(event) {
     return {
       statusCode: 500,
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        ...corsHeaders,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -93,6 +107,37 @@ export async function handler(event) {
       })
     };
   }
+}
+
+// Función para sanitizar datos sensibles
+function sanitizeVerificationResult(result) {
+  if (!result) return result;
+
+  // Crear copia para no mutar el original
+  const sanitized = JSON.parse(JSON.stringify(result));
+
+  // Remover datos sensibles del order
+  if (sanitized.order) {
+    delete sanitized.order.customer_email;
+    delete sanitized.order.notes;
+
+    // Mantener solo información básica del cliente
+    if (sanitized.order.customer_name) {
+      sanitized.order.customer_name = sanitized.order.customer_name.charAt(0) + '***';
+    }
+  }
+
+  // Remover client_secret de payment intent
+  if (sanitized.stripe_payment_intent) {
+    delete sanitized.stripe_payment_intent.client_secret;
+  }
+
+  // Remover customer_email de session
+  if (sanitized.stripe_session) {
+    delete sanitized.stripe_session.customer_email;
+  }
+
+  return sanitized;
 }
 
 // Verificar pago por Session ID

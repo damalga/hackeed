@@ -228,25 +228,18 @@ export default {
     const addTestProducts = () => {
       const products = [
         {
-          id: 1,
-          sku: 'TEST-001',
-          name: 'Camiseta Hackeed',
-          price: 29.99,
-          image_url: 'https://via.placeholder.com/150x150/3B82F6/FFFFFF?text=Camiseta',
+          id: '21b7de1e-cb06-4c1b-a558-330450f934e6', // Flipper Zero
+          sku: 'FZ-001',
+          name: 'Flipper Zero',
+          price: 245.0,
+          image_url: 'images/flipper_zero/webp/flipper_zero_1.webp',
         },
         {
-          id: 2,
-          sku: 'TEST-002',
-          name: 'Sudadera Premium',
-          price: 59.99,
-          image_url: 'https://via.placeholder.com/150x150/10B981/FFFFFF?text=Sudadera',
-        },
-        {
-          id: 3,
-          sku: 'TEST-003',
-          name: 'Gorra Snapback',
-          price: 24.99,
-          image_url: 'https://via.placeholder.com/150x150/F59E0B/FFFFFF?text=Gorra',
+          id: '05692200-9481-47e4-9285-539808f19917', // Expansión WiFi Flipper Zero
+          sku: 'FZ-WIFI',
+          name: 'Expansión WiFi Flipper Zero',
+          price: 45.0,
+          image_url: 'images/flipper_zero/webp/flipper_zero_wifi_1.webp',
         },
       ]
 
