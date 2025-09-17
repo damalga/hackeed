@@ -50,7 +50,6 @@ import Header from '../components/Header_comp.vue'
 import Footer from '../components/Footer_comp.vue'
 import Filters from '../components/Filters_comp.vue'
 import Products from '../components/Products_comp.vue'
-import ShoppingCart from '../components/ShoppingCart.vue'
 
 // Productos de Neon
 const { products, loadProducts, loading, error } = useProducts()
