@@ -18,5 +18,7 @@
 @use '_about.scss' as *;
 @use '_home.scss' as *;
 @use '_shop.scss' as *;
+/*stripe components*/
+@use '_stripe.scss' as *;
 /*modals*/
 @use '_confir-modal.scss' as *;

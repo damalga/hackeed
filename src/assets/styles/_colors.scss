@@ -35,10 +35,12 @@ $shadow-dark: rgba(0, 0, 0, 0.3);
   --bg-primary: #{$color-bg-primary};
   --bg-secondary: #{$color-bg-secondary};
   --bg-tertiary: #{$color-bg-tertiary};
+  --bg-quaternary: #{$color-bg-quaternary};
 
   --text-primary: #{$color-text-primary};
   --text-secondary: #{$color-text-secondary};
-  --text-muted: #{$color-text-tertiary};
+  --text-tertiary: #{$color-text-tertiary};
+  --text-quaternary: #{$color-text-quaternary};
 
   --accent-primary: #{$color-accent-primary};
   --accent-secondary: #{$color-accent-secondary};
