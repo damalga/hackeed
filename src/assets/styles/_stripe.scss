@@ -1008,33 +1008,38 @@
 }
 
 // Steps list for success page
-.steps-list {
-  display: grid;
-  gap: 1.5rem;
+.success-container {
+  width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 0;
 
-  .step {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 1.5rem;
-    background: #f0fdf4;
-    border: 1px solid #bbf7d0;
+  .steps-list {
+    display: grid;
+    gap: 1.5rem;
 
-    i {
-      font-size: 1.5rem;
-      color: var(--success);
-      margin-top: 0.25rem;
-    }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.5rem;
+      border: 1px solid $color-success;
 
-    h4 {
-      margin: 0 0 0.5rem 0;
-      color: var(--text-primary);
-      font-weight: 600;
-    }
+      i {
+        font-size: 1.5rem;
+        color: var(--success);
+        margin-top: 0.25rem;
+      }
 
-    p {
-      margin: 0;
-      color: var(--text-primary);
+      h4 {
+        margin: 0 0 0.5rem 0;
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+
+      p {
+        margin: 0;
+        color: var(--text-primary);
+      }
     }
   }
 }

@@ -93,20 +93,7 @@ CREATE TABLE IF NOT EXISTS stripe_events (
     processed_at TIMESTAMP
 );
 
--- 7. Tabla de carritos de compra (opcional, para persistencia)
-CREATE TABLE IF NOT EXISTS shopping_carts (
-    id SERIAL PRIMARY KEY,
-    session_id VARCHAR(255) NOT NULL, -- ID de sesión del browser
-    customer_id INTEGER REFERENCES customers(id),
-    product_id INTEGER REFERENCES products(id),
-    quantity INTEGER NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    UNIQUE(session_id, product_id)
-);
-
--- 8. Índices para optimización
+-- 7. Índices para optimización
 CREATE INDEX IF NOT EXISTS idx_orders_customer_id ON orders(customer_id);
 CREATE INDEX IF NOT EXISTS idx_orders_stripe_payment_intent ON orders(stripe_payment_intent_id);
 CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
@@ -119,14 +106,14 @@ CREATE INDEX IF NOT EXISTS idx_shopping_carts_session ON shopping_carts(session_
 CREATE INDEX IF NOT EXISTS idx_customers_email ON customers(email);
 CREATE INDEX IF NOT EXISTS idx_customers_stripe_id ON customers(stripe_customer_id);
 
--- 9. Función para generar números de orden únicos
+-- 8. Función para generar números de orden únicos
 CREATE OR REPLACE FUNCTION generate_order_number() RETURNS TEXT AS $$
 BEGIN
     RETURN 'ORD-' || TO_CHAR(NOW(), 'YYYYMMDD') || '-' || LPAD(nextval('orders_id_seq')::TEXT, 6, '0');
 END;
 $$ LANGUAGE plpgsql;
 
--- 10. Trigger para actualizar updated_at automáticamente
+-- 9. Trigger para actualizar updated_at automáticamente
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -148,7 +135,7 @@ CREATE TRIGGER update_orders_updated_at BEFORE UPDATE ON orders
 CREATE TRIGGER update_shopping_carts_updated_at BEFORE UPDATE ON shopping_carts
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
--- 11. Datos de ejemplo (opcional)
+-- 10. Datos de ejemplo (opcional)
 -- INSERT INTO products (sku, name, description, price, stock, category, image_url) VALUES
 -- ('PROD-001', 'Producto Ejemplo 1', 'Descripción del producto ejemplo', 29.99, 100, 'Electrónicos', 'https://example.com/image1.jpg'),
 -- ('PROD-002', 'Producto Ejemplo 2', 'Otra descripción', 49.99, 50, 'Hogar', 'https://example.com/image2.jpg');
