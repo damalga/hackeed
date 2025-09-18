@@ -5,6 +5,9 @@ import About from './pages/About_pag.vue'
 import Cart from './pages/Cart_pag.vue'
 import Faq from './pages/FAQ_pag.vue'
 import Contact from './pages/Contact_pag.vue'
+import TestCart from './pages/TestCart_pag.vue'
+import PaymentSuccess from './pages/PaymentSuccess_pag.vue'
+import StripeDebug from './pages/StripeDebug_pag.vue'
 
 const routes = [
   { path: '/', component: Home },
@@ -13,6 +16,9 @@ const routes = [
   { path: '/cart', component: Cart },
   { path: '/faq', component: Faq },
   { path: '/contact', component: Contact },
+  { path: '/test-cart', component: TestCart },
+  { path: '/success', component: PaymentSuccess },
+  { path: '/debug', component: StripeDebug },
 ]
 
 const router = createRouter({

@@ -44,6 +44,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useProducts } from '@/composables/useProducts'
+import { useStripe } from '@/composables/useStripe'
 
 import Header from '../components/Header_comp.vue'
 import Footer from '../components/Footer_comp.vue'
@@ -52,6 +53,13 @@ import Products from '../components/Products_comp.vue'
 
 // Productos de Neon
 const { products, loadProducts, loading, error } = useProducts()
+
+// Stripe & Cart
+const { addToCart, getCartItemCount } = useStripe()
+
+// Cart visibility
+const showCart = ref(false)
+
 onMounted(loadProducts)
 
 // Estado de filtros
