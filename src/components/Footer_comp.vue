@@ -3,7 +3,7 @@
     <div class="footer-main">
       <div class="footer-links">
         <router-link to="/about" class="header-link">Sobre nosotros</router-link>
-        <router-link to="/faq" class="footer-link">FAQ</router-link>
+        <router-link to="/sfaq" class="footer-link">SFAQ</router-link>
         <router-link to="/contact" class="footer-link">Contacto</router-link>
       </div>
       <div class="footer-claim">

@@ -1,0 +1,32 @@
+@use '_colors.scss' as *;
+
+.about-main,
+.sfaq-main {
+  .about-container,
+  .sfaq-container {
+    max-width: 1280px;
+    padding: 0 2rem;
+    margin: 2rem auto;
+    .about-section,
+    .sfaq-section {
+      width: max-content;
+      h2,
+      h3 {
+        color: $color-warning;
+      }
+      h4 {
+        color: $color-accent-primary;
+      }
+      h5 {
+        color: $color-accent-secondary;
+      }
+      h5,
+      p {
+        padding: 0 2rem;
+      }
+      p {
+        margin-bottom: 0.8rem;
+      }
+    }
+  }
+}

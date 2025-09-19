@@ -3,7 +3,7 @@ import Home from './pages/Home_pag.vue'
 import Shop from './pages/Shop_pag.vue'
 import About from './pages/About_pag.vue'
 import Cart from './pages/Cart_pag.vue'
-import Faq from './pages/FAQ_pag.vue'
+import Faq from './pages/SFAQ_pag.vue'
 import Contact from './pages/Contact_pag.vue'
 import TestCart from './pages/TestCart_pag.vue'
 import PaymentSuccess from './pages/PaymentSuccess_pag.vue'
@@ -14,7 +14,7 @@ const routes = [
   { path: '/shop', component: Shop },
   { path: '/about', component: About },
   { path: '/cart', component: Cart },
-  { path: '/faq', component: Faq },
+  { path: '/sfaq', component: Faq },
   { path: '/contact', component: Contact },
   { path: '/test-cart', component: TestCart },
   { path: '/success', component: PaymentSuccess },
