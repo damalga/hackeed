@@ -146,63 +146,6 @@ h6 {
 // TYPOGRAPHY UTILITIES
 // -----------------------------------------------------------------------------
 
-// Text sizes for non-heading elements
-.text-xs {
-  font-size: 0.75rem;
-  line-height: var(--line-height-normal);
-}
-.text-sm {
-  font-size: 0.875rem;
-  line-height: var(--line-height-normal);
-}
-.text-base {
-  font-size: 1rem;
-  line-height: var(--line-height-normal);
-}
-.text-lg {
-  font-size: 1.125rem;
-  line-height: var(--line-height-normal);
-}
-.text-xl {
-  font-size: 1.25rem;
-  line-height: var(--line-height-normal);
-}
-.text-2xl {
-  font-size: 1.5rem;
-  line-height: var(--line-height-tight);
-}
-
-// Font weights
-.font-light {
-  font-weight: var(--font-weight-light);
-}
-.font-regular {
-  font-weight: var(--font-weight-regular);
-}
-.font-medium {
-  font-weight: var(--font-weight-medium);
-}
-.font-semibold {
-  font-weight: var(--font-weight-semibold);
-}
-.font-bold {
-  font-weight: var(--font-weight-bold);
-}
-.font-extrabold {
-  font-weight: var(--font-weight-extrabold);
-}
-
-// Line heights
-.leading-tight {
-  line-height: var(--line-height-tight);
-}
-.leading-normal {
-  line-height: var(--line-height-normal);
-}
-.leading-relaxed {
-  line-height: var(--line-height-relaxed);
-}
-
 // Letter spacing
 .tracking-tight {
   letter-spacing: var(--letter-spacing-tight);
