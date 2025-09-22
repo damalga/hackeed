@@ -1,0 +1,5 @@
+packages:
+  - . # el proyecto actual
+
+catalog:
+  minimumReleaseAge: '2880 minutes'
