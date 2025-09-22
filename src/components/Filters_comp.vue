@@ -144,6 +144,7 @@ const selectedStock = ref([])
 const priceRange = ref({ min: null, max: null })
 
 // Datos computados para opciones de filtros
+// Categorias
 const categories = computed(() => {
   const categoryCount = {}
   props.products.forEach((product) => {
@@ -152,10 +153,9 @@ const categories = computed(() => {
     }
   })
 
-  return Object.entries(categoryCount).map(([name, count]) => ({
-    name,
-    count,
-  }))
+  return Object.entries(categoryCount)
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count)
 })
 
 const brands = computed(() => {
@@ -166,10 +166,9 @@ const brands = computed(() => {
     }
   })
 
-  return Object.entries(brandCount).map(([name, count]) => ({
-    name,
-    count,
-  }))
+  return Object.entries(brandCount)
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count)
 })
 
 // Funciones de toggle para filtros
