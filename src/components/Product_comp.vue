@@ -68,7 +68,7 @@
 
           <!-- Características -->
           <div v-if="currentFeatures && currentFeatures.length" class="product-features">
-            <h5>Características principales:</h5>
+            <h6>Características principales:</h6>
             <ul>
               <li v-for="feature in currentFeatures" :key="feature">
                 {{ feature }}
