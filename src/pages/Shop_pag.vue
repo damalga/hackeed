@@ -12,18 +12,29 @@
         <section class="shop-content">
           <div class="shop-header">
             <h3 class="shop-title">Productos</h3>
-            <div class="shop-results">
-              {{ filteredProducts.length }} producto{{
-                filteredProducts.length !== 1 ? 's' : ''
-              }}
-              encontrado{{ filteredProducts.length !== 1 ? 's' : '' }}
+            <div class="shop-controls">
+              <div class="shop-results">
+                <span class="results-current">
+                  Mostrando {{ startIndex + 1 }}-{{ endIndex }} de
+                  {{ sortedProducts.length }} Productos
+                </span>
+                <!-- <span class="results-total">
+                  {{ sortedProducts.length }} producto{{ sortedProducts.length !== 1 ? 's' : '' }}
+                  {{
+                    activeFiltersCount > 0
+                      ? 'filtrado' + (sortedProducts.length !== 1 ? 's' : '')
+                      : 'total' + (sortedProducts.length !== 1 ? 'es' : '')
+                  }}
+                </span> -->
+              </div>
+              <SortBy v-model="sortBy" @sort-change="handleSortChange" />
             </div>
           </div>
 
           <!-- Componente Products reutilizable -->
           <Products
             :show-title="false"
-            :products-list="paginatedProducts"
+            :products-list="sortedAndPaginatedProducts"
             :show-stock="true"
             :show-cart-controls="true"
             class="shop-products"
@@ -32,13 +43,13 @@
           <!-- Paginador -->
           <Pagination
             :current-page="currentPage"
-            :total-items="filteredProducts.length"
+            :total-items="sortedProducts.length"
             :items-per-page="itemsPerPage"
             @page-change="goToPage"
           />
 
           <!-- Mensaje si no hay productos -->
-          <div v-if="filteredProducts.length === 0" class="no-products">
+          <div v-if="sortedProducts.length === 0" class="no-products">
             <h3>No se encontraron productos</h3>
             <p>Intenta ajustar los filtros para ver más resultados.</p>
           </div>
@@ -59,6 +70,7 @@ import Footer from '../components/Footer_comp.vue'
 import Filters from '../components/Filters_comp.vue'
 import Products from '../components/Products_comp.vue'
 import Pagination from '../components/Pagination_comp.vue'
+import SortBy from '../components/SortBy_comp.vue'
 
 // Productos de Neon
 const { products, loadProducts, loading, error } = useProducts()
@@ -82,6 +94,22 @@ const activeFilters = ref({
 // Estado de paginación
 const currentPage = ref(1)
 const itemsPerPage = 15
+
+// Estado de ordenamiento
+const sortBy = ref('newest')
+
+// Contador de filtros activos
+const activeFiltersCount = computed(() => {
+  let count = 0
+  if (activeFilters.value.categories.length > 0) count++
+  if (activeFilters.value.brands.length > 0) count++
+  if (activeFilters.value.stock.length > 0) count++
+  if (activeFilters.value.priceRange.min !== null && activeFilters.value.priceRange.min !== '')
+    count++
+  if (activeFilters.value.priceRange.max !== null && activeFilters.value.priceRange.max !== '')
+    count++
+  return count
+})
 
 // Productos filtrados
 const filteredProducts = computed(() => {
@@ -123,16 +151,81 @@ const filteredProducts = computed(() => {
   return filtered
 })
 
+// Función para obtener conteo de productos por categoría/marca
+const getCategoryCount = (category) => {
+  return filteredProducts.value.filter((product) => product.category === category).length
+}
+
+const getBrandCount = (brand) => {
+  return filteredProducts.value.filter((product) => product.brand === brand).length
+}
+
+// Productos ordenados
+const sortedProducts = computed(() => {
+  const sorted = [...filteredProducts.value]
+
+  switch (sortBy.value) {
+    case 'newest':
+      // Ordenar por ID (productos más recientes primero)
+      return sorted.sort((a, b) => b.id - a.id)
+
+    case 'category':
+      // OPCIÓN 1: Ordenar por cantidad de productos en la categoría (más productos primero)
+      return sorted.sort((a, b) => {
+        const countA = getCategoryCount(a.category)
+        const countB = getCategoryCount(b.category)
+        if (countA !== countB) {
+          return countB - countA
+        }
+        // Si tienen el mismo count, ordenar alfabéticamente por categoría
+        return a.category.localeCompare(b.category)
+      })
+
+    // ALTERNATIVA más intuitiva - descomentar para usar:
+    // return sorted.sort((a, b) => a.category.localeCompare(b.category))
+
+    case 'brand':
+      // OPCIÓN 1: Ordenar por cantidad de productos de la marca (más productos primero)
+      return sorted.sort((a, b) => {
+        const countA = getBrandCount(a.brand)
+        const countB = getBrandCount(b.brand)
+        if (countA !== countB) {
+          return countB - countA
+        }
+        // Si tienen el mismo count, ordenar alfabéticamente por marca
+        return a.brand.localeCompare(b.brand)
+      })
+
+    // ALTERNATIVA más intuitiva - descomentar para usar:
+    // return sorted.sort((a, b) => a.brand.localeCompare(b.brand))
+
+    case 'price-asc':
+      // Precio de menor a mayor
+      return sorted.sort((a, b) => a.price - b.price)
+
+    case 'price-desc':
+      // Precio de mayor a menor
+      return sorted.sort((a, b) => b.price - a.price)
+
+    default:
+      return sorted
+  }
+})
+
+// Índices para paginación
+const startIndex = computed(() => (currentPage.value - 1) * itemsPerPage)
+const endIndex = computed(() =>
+  Math.min(startIndex.value + itemsPerPage, sortedProducts.value.length)
+)
+
 // Productos paginados
-const paginatedProducts = computed(() => {
-  const startIndex = (currentPage.value - 1) * itemsPerPage
-  const endIndex = startIndex + itemsPerPage
-  return filteredProducts.value.slice(startIndex, endIndex)
+const sortedAndPaginatedProducts = computed(() => {
+  return sortedProducts.value.slice(startIndex.value, endIndex.value)
 })
 
 // Total de páginas
 const totalPages = computed(() => {
-  return Math.ceil(filteredProducts.value.length / itemsPerPage)
+  return Math.ceil(sortedProducts.value.length / itemsPerPage)
 })
 
 // Función para cambiar de página
@@ -154,8 +247,32 @@ const handleFiltersChange = (filters) => {
   activeFilters.value = filters
   resetPage() // Resetear a página 1 cuando cambian los filtros
 }
-</script>
 
-<style scoped>
-/* Los estilos del paginador ahora están en el componente Pagination_comp.vue */
-</style>
+// Manejar cambios en ordenamiento
+const handleSortChange = (newSortBy) => {
+  sortBy.value = newSortBy
+  resetPage() // Resetear a página 1 cuando cambia el ordenamiento
+}
+
+// Verificar si hay filtros activos o ordenamiento no por defecto
+const hasActiveFilters = computed(() => {
+  return activeFiltersCount.value > 0 || sortBy.value !== 'newest'
+})
+
+// Resetear todos los filtros y ordenamiento
+const resetAllFilters = () => {
+  // Resetear filtros
+  activeFilters.value = {
+    categories: [],
+    brands: [],
+    stock: [],
+    priceRange: { min: null, max: null },
+  }
+
+  // Resetear ordenamiento
+  sortBy.value = 'newest'
+
+  // Resetear página
+  resetPage()
+}
+</script>

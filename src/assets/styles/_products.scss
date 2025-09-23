@@ -14,7 +14,7 @@
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(18.75rem, 1fr));
-  gap: 1.875rem;
+  gap: 1.6rem;
 }
 
 .product-card {
@@ -27,7 +27,7 @@
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-0.1rem);
   box-shadow: 0 8px 20px var(--shadow-dark);
   border-color: var(--accent-primary);
 }
