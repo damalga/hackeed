@@ -26,8 +26,6 @@ const emit = defineEmits(['update:modelValue', 'sort-change'])
 
 const options = [
   { value: 'newest', label: 'Novedades' },
-  { value: 'category', label: 'Categoría' },
-  { value: 'brand', label: 'Marca' },
   { value: 'price-asc', label: 'Precio: menor a mayor' },
   { value: 'price-desc', label: 'Precio: mayor a menor' },
 ]

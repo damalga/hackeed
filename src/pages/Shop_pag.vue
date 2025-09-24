@@ -18,14 +18,6 @@
                   Mostrando {{ startIndex + 1 }}-{{ endIndex }} de
                   {{ sortedProducts.length }} Productos
                 </span>
-                <!-- <span class="results-total">
-                  {{ sortedProducts.length }} producto{{ sortedProducts.length !== 1 ? 's' : '' }}
-                  {{
-                    activeFiltersCount > 0
-                      ? 'filtrado' + (sortedProducts.length !== 1 ? 's' : '')
-                      : 'total' + (sortedProducts.length !== 1 ? 'es' : '')
-                  }}
-                </span> -->
               </div>
               <SortBy v-model="sortBy" @sort-change="handleSortChange" />
             </div>
