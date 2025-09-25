@@ -39,7 +39,7 @@ const activeIndex = ref(0)
 
 // Limit to last 3 products
 const limitedProducts = computed(() => {
-  return products.value.slice(-3)
+  return products.value.slice(-4)
 })
 
 onMounted(() => {

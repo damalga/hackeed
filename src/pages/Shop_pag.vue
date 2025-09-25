@@ -158,8 +158,12 @@ const sortedProducts = computed(() => {
 
   switch (sortBy.value) {
     case 'newest':
-      // Ordenar por ID (productos más recientes primero)
-      return sorted.sort((a, b) => b.id - a.id)
+      // Ordenar por fecha de creación (productos más recientes primero)
+      return sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+
+    case 'oldest':
+      // Ordenar por fecha de creación (productos más antiguos primero)
+      return sorted.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
 
     case 'category':
       // OPCIÓN 1: Ordenar por cantidad de productos en la categoría (más productos primero)

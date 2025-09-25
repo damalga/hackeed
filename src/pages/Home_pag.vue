@@ -4,7 +4,7 @@
     <main class="home-main">
       <Hero />
       <Slider />
-      <Products title="Productos destacados" :limit="4" :show-title="true" />
+      <Products title="Productos destacados" :limit="3" :show-title="true" />
     </main>
     <Footer />
   </div>
