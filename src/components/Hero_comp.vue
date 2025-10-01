@@ -8,7 +8,9 @@
           Te ofrecemos un catálogo de herramientas tecnológicas para abrir el mundo... O para
           construirlo a tu gusto.
         </p>
-        <button class="hero-cta">Explorar Productos</button>
+        <button class="hero-cta">
+          <router-link to="/shop"> Explorar Productos </router-link>
+        </button>
       </div>
 
       <!-- Image section -->
