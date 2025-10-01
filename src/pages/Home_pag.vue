@@ -4,17 +4,29 @@
     <main class="home-main">
       <Hero />
       <Slider />
-      <Products title="Productos destacados" :limit="3" :show-title="true" />
+      <Products
+        title="Productos destacados"
+        :limit="3"
+        :show-title="true"
+        :products-list="products"
+      />
     </main>
     <Footer />
   </div>
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
+import { useProducts } from '@/composables/useProducts'
 import Header from '../components/Header_comp.vue'
 import Hero from '../components/Hero_comp.vue'
 import Slider from '../components/Slider_comp.vue'
 import Products from '../components/Products_comp.vue'
 import Contact from '../components/Contact_comp.vue'
 import Footer from '../components/Footer_comp.vue'
+
+// Cargar productos desde Neon DB
+const { products, loadProducts } = useProducts()
+
+onMounted(loadProducts)
 </script>

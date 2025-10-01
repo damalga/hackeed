@@ -3,8 +3,18 @@
   <main class="sfaq-main">
     <div class="sfaq-container">
       <section class="sfaq-section">
-        <h3>SFAQ (Supposedly Frequently Asked Questions)</h3>
-
+        <h3>SFAQ</h3>
+        <h4>Supposed Frequently Asked Questions</h4>
+        <p>
+          - Sí, has leído bien: "Supuestas Preguntas Frecuentes". Acabamos de abrir y todavía no
+          tenemos suficientes preguntas reales como para llenar esto, así que hemos anticipado las
+          más obvias. Durante los próximos 3 meses esto será un SFAQ provisional. Luego, cuando
+          tengáis tiempo de preguntarnos cosas raras, pasará a ser un FAQ de verdad.
+        </p>
+        <p>
+          Si tu duda no está aquí o prefieres hablar con humanos, pásate por nuestra página de
+          <router-link to="/contact" class="footer-link">Contacto</router-link>.
+        </p>
         <h4>Pagos y datos</h4>
         <h5>¿Cómo pago?</h5>
         <p>
@@ -13,11 +23,12 @@
         </p>
         <h5>¿Qué hacéis con mis datos?</h5>
         <p>
-          - Lo mínimo para que el pedido llegue a tu casa. Nada de vender listas ni spamearte con
-          newsletters infinitas.
+          - Lo mínimo para que el pedido te llegue. Nada de vender listas ni spamearte con aburridos
+          correos electrónicos. Ni siquiera gestionamos usuarios: todas las compras se hacen como
+          invitado (guest user), así que de momento, a menos que veamos que nos hace falta, no hay
+          logueos ni registros.
         </p>
         <br />
-
         <h4>Envíos</h4>
         <h5>¿Desde dónde enviáis?</h5>
         <p>
@@ -26,13 +37,12 @@
         </p>
         <h5>¿Cuánto tarda en llegar mi pedido?</h5>
         <p>
-          - Normalmente entre 2 y 5 días laborables en la península. A veces más si Correos decide
-          filosofar.
+          - Normalmente entre 2 y 5 días laborables en la península con GLS. Asegúrate de poner bien
+          tu email para recibir actualizaciones del estado de tu pedido.
         </p>
         <h5>¿Cuánto cuesta el envío?</h5>
         <p>- Lo verás antes de pagar, nada de sorpresas raras.</p>
         <br />
-
         <h4>Devoluciones</h4>
         <h5>¿Puedo devolver algo?</h5>
         <p>- Sí, tienes 14 días desde que recibes el producto (como dice la ley).</p>

@@ -2,10 +2,10 @@
   <section id="contact" class="contact-section">
     <h4 class="contact-title">¿Tienes dudas o ideas?</h4>
     <p class="contact-desc">Escríbenos y colabora con el proyecto.</p>
-    <div class="contact-form">
-      <input placeholder="Tu email" class="contact-input" />
-      <input placeholder="Tu mensaje" class="contact-input" />
-      <button class="contact-btn">Enviar</button>
-    </div>
+    <p class="contact-desc">
+      Por ahora no queremos formularios. Cualquier input es un vector de ataque, así que mientras
+      nos convertimos en los mejores "web security developers", simplemente envíanos un email a
+      <a href="mailto:hackeed.es@proton.me">hackeed.es@proton.me</a>
+    </p>
   </section>
 </template>
