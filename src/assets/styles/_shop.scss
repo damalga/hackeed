@@ -94,6 +94,40 @@
   }
 }
 
+// Loader
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+
+  /* .loader {
+    border: 0.1rem solid var(--accent-secondary);
+    border-top: 0.2rem solid var(--primary-color);
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    animation: spin 1s linear infinite;
+  } */
+
+  p {
+    margin-top: 1rem;
+    color: var(--accent-secondary);
+    font-size: 1rem;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 // Responsive design
 @media (max-width: 1024px) {
   .shop-container {

@@ -40,8 +40,14 @@
             @page-change="goToPage"
           />
 
+          <!-- Loader mientras cargan productos -->
+          <div v-if="loading" class="loader-container">
+            <div class="loader"></div>
+            <p>Cargando productos...</p>
+          </div>
+
           <!-- Mensaje si no hay productos -->
-          <div v-if="sortedProducts.length === 0" class="no-products">
+          <div v-if="!loading && sortedProducts.length === 0" class="no-products">
             <h3>No se encontraron productos</h3>
             <p>Intenta ajustar los filtros para ver más resultados.</p>
           </div>
