@@ -1,0 +1,78 @@
+# robots.txt - Hackeed
+# Configuración de acceso para crawlers de motores de búsqueda
+
+# ============================================
+# REGLA GENERAL - Todos los bots
+# ============================================
+User-agent: *
+Allow: /
+
+# Bloquear rutas privadas y de desarrollo
+Disallow: /cart
+Disallow: /test-cart
+Disallow: /debug
+Disallow: /success
+
+# Permitir explícitamente páginas importantes
+Allow: /shop
+Allow: /about
+Allow: /contact
+Allow: /sfaq
+
+# Bloquear assets innecesarios (opcional)
+# Disallow: /assets/
+
+# ============================================
+# SITEMAPS
+# ============================================
+Sitemap: https://hackeed.com/sitemap.xml
+
+# ============================================
+# REGLAS ESPECÍFICAS PARA BOTS PRINCIPALES
+# ============================================
+
+# Google
+User-agent: Googlebot
+Allow: /
+Disallow: /cart
+Disallow: /test-cart
+Disallow: /debug
+Disallow: /success
+
+# Bing
+User-agent: Bingbot
+Allow: /
+Disallow: /cart
+Disallow: /test-cart
+Disallow: /debug
+Disallow: /success
+
+# ============================================
+# CRAWL DELAY (Para prevenir sobrecarga)
+# ============================================
+# Crawl-delay: 1
+
+# ============================================
+# BLOQUEAR BOTS DE SCRAPING AGRESIVO
+# ============================================
+# Descomenta estas líneas si detectas scraping excesivo
+
+# User-agent: SemrushBot
+# Disallow: /
+
+# User-agent: AhrefsBot
+# Disallow: /
+
+# User-agent: MJ12bot
+# Disallow: /
+
+# User-agent: DotBot
+# Disallow: /
+
+# ============================================
+# NOTAS
+# ============================================
+# - Este archivo controla qué pueden rastrear los bots
+# - NO bloquea el acceso directo de usuarios
+# - Actualizado: Octubre 2024
+# - Más info: https://developers.google.com/search/docs/crawling-indexing/robots/intro

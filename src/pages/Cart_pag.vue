@@ -119,10 +119,19 @@
 </template>
 
 <script setup>
+import { usePageMeta } from '@/composables/usePageMeta'
 import Header from '../components/Header_comp.vue'
 import Footer from '../components/Footer_comp.vue'
 import ConfirmModal from '../components/ConfirmModal_comp.vue'
 import { useCartStore } from '../stores/cartStore'
+
+// SEO Meta Tags - No indexar carrito
+usePageMeta({
+  title: 'Carrito de Compras | Hackeed',
+  description: 'Revisa tu carrito de compras en Hackeed',
+  robots: 'noindex, nofollow', // No queremos que se indexe el carrito
+  url: 'https://hackeed.com/cart',
+})
 import { ref } from 'vue'
 
 const cartStore = useCartStore()
