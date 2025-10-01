@@ -1,99 +1,106 @@
 @use '_colors.scss' as *;
 
 .hero {
-  padding: 4rem 0 3rem 0;
+  padding: 4rem 2rem 3rem;
   background: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  .hero-slider {
-    position: relative;
-    width: 100%;
-    max-width: 60rem;
-    min-height: 21.875rem;
-    overflow: hidden;
-    background: $color-bg-primary;
-    margin-bottom: 1rem;
-  }
+  .hero-container {
+    max-width: 1400px;
+    .hero-slider {
+      position: relative;
+      width: 100%;
+      max-width: 60rem;
+      min-height: 21.875rem;
+      overflow: hidden;
+      background: $color-bg-primary;
+      margin-bottom: 1rem;
+    }
 
-  .hero-slide {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2.5rem;
-    text-align: center;
-    height: 100%;
-  }
+    .hero-slide {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem;
+      text-align: center;
+      height: 100%;
+      &.active {
+        display: flex;
+        animation: fadein 0.6s;
+      }
+    }
 
-  .hero-slide.active {
-    display: flex;
-    animation: fadein 0.6s;
-  }
+    .hero-img {
+      width: 15rem;
+      height: 15rem;
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
 
-  .hero-img {
-    width: 15rem;
-    height: 15rem;
-    object-fit: cover;
-    margin-bottom: 1rem;
-  }
+    .hero-title {
+      color: $color-text-primary;
+      margin-bottom: 1rem;
+    }
 
-  .hero-title {
-    color: $color-text-primary;
-    margin-bottom: 1rem;
-  }
+    .hero-desc {
+      font-size: 1.1rem;
+      color: $color-text-tertiary;
+      margin-bottom: 2rem;
+    }
 
-  .hero-desc {
-    font-size: 1.1rem;
-    color: $color-text-tertiary;
-    margin-bottom: 2rem;
-  }
+    .hero-cta {
+      @include button-primary;
+      font-size: 1.1rem;
+      a {
+        height: 2rem;
+        display: block;
+        color: var(--text-quaternary);
+        text-decoration: none;
+        line-height: 1.8rem;
+      }
+    }
 
-  .hero-cta {
-    @include button-primary;
-    font-size: 1.1rem;
-  }
+    .hero-arrow {
+      @include button-secondary;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2.4rem;
+      width: 2.8rem;
+      height: 2.8rem;
+      box-shadow: 0 1px 4px var(--shadow-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
 
-  .hero-arrow {
-    @include button-secondary;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 2.4rem;
-    width: 2.8rem;
-    height: 2.8rem;
-    box-shadow: 0 1px 4px var(--shadow-dark);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    user-select: none;
-  }
+    .hero-arrow--left {
+      left: 1rem;
+    }
+    .hero-arrow--right {
+      right: 1rem;
+    }
 
-  .hero-arrow--left {
-    left: 1rem;
-  }
-  .hero-arrow--right {
-    right: 1rem;
-  }
-
-  .hero-dots {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-  }
-
-  .hero-dots span {
-    width: 0.75rem;
-    height: 0.75rem;
-    background: $color-border-primary;
-    display: inline-block;
-    cursor: pointer;
-    transition: background 0.2s;
-    border: 1px solid $color-border-secondary;
-  }
-
-  .hero-dots span.active {
-    background: $color-accent-primary;
+    .hero-dots {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      & span {
+        width: 0.75rem;
+        height: 0.75rem;
+        background: $color-border-primary;
+        display: inline-block;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid $color-border-secondary;
+        &.active {
+          background: $color-accent-primary;
+        }
+      }
+    }
   }
 
   @keyframes fadein {

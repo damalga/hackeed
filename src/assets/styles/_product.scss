@@ -55,7 +55,7 @@
     .main-image {
       width: 100%;
       aspect-ratio: 1;
-      background: var(--bg-tertiary);
+      background: var(--bg-quaternary);
       border: 1px solid var(--border-primary);
       overflow: hidden;
       display: flex;
@@ -84,7 +84,7 @@
   border: 2px solid var(--border-primary);
   overflow: hidden;
   cursor: pointer;
-  background: var(--bg-tertiary);
+  background: var(--bg-quaternary);
   transition: border-color 0.2s;
 
   &.active {

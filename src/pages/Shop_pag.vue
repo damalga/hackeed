@@ -56,6 +56,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useProducts } from '@/composables/useProducts'
 import { useStripe } from '@/composables/useStripe'
+import { usePageMeta } from '@/composables/usePageMeta'
 
 import Header from '../components/Header_comp.vue'
 import Footer from '../components/Footer_comp.vue'
@@ -63,6 +64,17 @@ import Filters from '../components/Filters_comp.vue'
 import Products from '../components/Products_comp.vue'
 import Pagination from '../components/Pagination_comp.vue'
 import SortBy from '../components/SortBy_comp.vue'
+
+// SEO Meta Tags
+usePageMeta({
+  title: 'Tienda - Comprar Herramientas de Hacking y Pentesting | Hackeed',
+  description:
+    'Explora nuestro catálogo completo de hardware hacking: Flipper Zero, Raspberry Pi, Hak5, RTL-SDR y más. Stock actualizado diariamente. Envíos en 24h desde España.',
+  keywords:
+    'comprar flipper zero, tienda raspberry pi, hak5 españa, herramientas pentesting, productos hacking, gadgets ciberseguridad',
+  url: 'https://hackeed.com/shop',
+  image: 'https://hackeed.com/images/og-shop.jpg',
+})
 
 // Productos de Neon
 const { products, loadProducts, loading, error } = useProducts()
@@ -85,7 +97,7 @@ const activeFilters = ref({
 
 // Estado de paginación
 const currentPage = ref(1)
-const itemsPerPage = 15
+const itemsPerPage = 16
 
 // Estado de ordenamiento
 const sortBy = ref('newest')
@@ -158,8 +170,12 @@ const sortedProducts = computed(() => {
 
   switch (sortBy.value) {
     case 'newest':
-      // Ordenar por ID (productos más recientes primero)
-      return sorted.sort((a, b) => b.id - a.id)
+      // Ordenar por fecha de creación (productos más recientes primero)
+      return sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+
+    case 'oldest':
+      // Ordenar por fecha de creación (productos más antiguos primero)
+      return sorted.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
 
     case 'category':
       // OPCIÓN 1: Ordenar por cantidad de productos en la categoría (más productos primero)

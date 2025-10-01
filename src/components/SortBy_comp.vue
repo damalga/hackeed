@@ -25,7 +25,8 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'sort-change'])
 
 const options = [
-  { value: 'newest', label: 'Novedades' },
+  { value: 'newest', label: 'Novedades primero' },
+  { value: 'oldest', label: 'Más antiguos primero' },
   { value: 'price-asc', label: 'Precio: menor a mayor' },
   { value: 'price-desc', label: 'Precio: mayor a menor' },
 ]

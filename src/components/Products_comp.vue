@@ -66,7 +66,6 @@ import { computed, onMounted } from 'vue'
 import { useProductModalStore } from '@/stores/productModalStore'
 import { useCartStore } from '@/stores/cartStore'
 import { useProductVariantsStore } from '@/stores/productVariantsStore'
-import products from '@/data/products_data.js'
 
 // Props configurables
 const props = defineProps({
@@ -84,7 +83,7 @@ const props = defineProps({
   },
   productsList: {
     type: Array,
-    default: () => products, // por defecto usa todos los productos
+    default: () => [], // productos pasados desde el padre
   },
   showStock: {
     type: Boolean,

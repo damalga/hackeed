@@ -4,29 +4,30 @@ export async function handler() {
   try {
     console.log('Starting getProducts function');
     const sql = neon();
-    
+
     console.log('Executing SQL query');
     const rows = await sql`
-      SELECT 
+      SELECT
         id,
-        sku, 
-        name, 
+        sku,
+        name,
         description,
         long_desc,
         img,
         images,
-        price_cents, 
-        stock, 
-        active, 
-        brand, 
+        price_cents,
+        stock,
+        active,
+        brand,
         category,
         features,
-        variants
+        variants,
+        created_at
       FROM products
       WHERE active = true
-      ORDER BY name
+      ORDER BY created_at DESC
     `;
-    
+
     console.log(`Found ${rows.length} products`);
     console.log('Sample product:', rows[0]);
 
@@ -46,9 +47,10 @@ export async function handler() {
           brand: product.brand,
           inStock: product.stock > 0,
           features: product.features ? (typeof product.features === 'string' ? JSON.parse(product.features) : product.features) : [],
-          variants: product.variants ? (typeof product.variants === 'string' ? JSON.parse(product.variants) : product.variants) : null
+          variants: product.variants ? (typeof product.variants === 'string' ? JSON.parse(product.variants) : product.variants) : null,
+          createdAt: product.created_at
         };
-        
+
         console.log(`Transformed product ${index}:`, {
           id: transformed.id,
           name: transformed.name,
@@ -56,7 +58,7 @@ export async function handler() {
           hasFeatures: transformed.features.length > 0,
           hasVariants: !!transformed.variants
         });
-        
+
         return transformed;
       } catch (transformErr) {
         console.error(`Error transforming product ${index}:`, transformErr);
@@ -67,8 +69,8 @@ export async function handler() {
 
     console.log(`Successfully transformed ${products.length} products`);
 
-    return { 
-      statusCode: 200, 
+    return {
+      statusCode: 200,
       body: JSON.stringify(products),
       headers: {
         'Content-Type': 'application/json',
@@ -78,9 +80,9 @@ export async function handler() {
   } catch (err) {
     console.error('Error in getProducts function:', err);
     console.error('Error stack:', err.stack);
-    return { 
-      statusCode: 500, 
-      body: JSON.stringify({ 
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
         error: err.message,
         details: 'Check server logs for more information'
       }),

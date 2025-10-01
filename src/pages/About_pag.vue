@@ -32,7 +32,19 @@
 
 <script setup>
 import { ref } from 'vue'
+import { usePageMeta } from '@/composables/usePageMeta'
 import Header from '../components/Header_comp.vue'
 import Footer from '../components/Footer_comp.vue'
 import Cart from '../components/Cart_comp.vue'
+
+// SEO Meta Tags
+usePageMeta({
+  title: 'Sobre Nosotros - Hackeed | Proyecto de Hacking Ético y Tecnología',
+  description:
+    'Hackeed es más que una tienda: somos una comunidad de hacking ético, un laboratorio vivo donde la curiosidad manda. Proyecto open source construido con Vue.js.',
+  keywords:
+    'hackeed, proyecto hacking ético, comunidad hacking españa, tienda tecnología open source',
+  url: 'https://hackeed.com/about',
+  image: 'https://hackeed.com/images/og-about.jpg',
+})
 </script>
