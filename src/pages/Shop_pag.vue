@@ -85,7 +85,7 @@ const activeFilters = ref({
 
 // Estado de paginación
 const currentPage = ref(1)
-const itemsPerPage = 15
+const itemsPerPage = 16
 
 // Estado de ordenamiento
 const sortBy = ref('newest')
