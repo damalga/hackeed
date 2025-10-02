@@ -59,6 +59,7 @@
 <script setup>
 import { ref } from 'vue'
 import { usePageMeta } from '@/composables/usePageMeta'
+import { useSchema } from '@/composables/useSchema'
 import Header from '../components/Header_comp.vue'
 import Footer from '../components/Footer_comp.vue'
 import Cart from '../components/Cart_comp.vue'
@@ -72,5 +73,77 @@ usePageMeta({
     'preguntas frecuentes hackeed, ayuda compra online, envíos españa, devoluciones, formas de pago, tiempos entrega',
   url: 'https://hackeed.com/sfaq',
   image: 'https://hackeed.com/images/og-faq.jpg',
+})
+
+// Structured Data - FAQPage Schema
+useSchema({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: '¿Cómo pago?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Con Stripe. Tarjeta y demás inventos modernos. Nosotros no vemos ni guardamos tu número de tarjeta, todo eso lo gestiona Stripe.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Qué hacéis con mis datos?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Lo mínimo para que el pedido te llegue. Nada de vender listas ni spamearte con aburridos correos electrónicos. Ni siquiera gestionamos usuarios: todas las compras se hacen como invitado (guest user), así que de momento, a menos que veamos que nos hace falta, no hay logueos ni registros.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Desde dónde enviáis?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Ahora mismo desde España (Madrid). Si vives cerca, llegará rápido. Si estás en otro país de la UE, tardará un poco más.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Cuánto tarda en llegar mi pedido?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Normalmente entre 2 y 5 días laborables en la península con GLS. Asegúrate de poner bien tu email para recibir actualizaciones del estado de tu pedido.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Cuánto cuesta el envío?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Lo verás antes de pagar, nada de sorpresas raras.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Puedo devolver algo?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Sí, tienes 14 días desde que recibes el producto (como dice la ley).',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Quién paga el envío de la devolución?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Tú. A no ser que el error sea nuestro, en ese caso lo cubrimos nosotros.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Y si me llega roto?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Nos escribes con fotos y te mandamos otro o te devolvemos la pasta.',
+      },
+    },
+  ],
 })
 </script>

@@ -63,6 +63,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useProducts } from '@/composables/useProducts'
 import { useStripe } from '@/composables/useStripe'
 import { usePageMeta } from '@/composables/usePageMeta'
+import { useSchema } from '@/composables/useSchema'
 
 import Header from '../components/Header_comp.vue'
 import Footer from '../components/Footer_comp.vue'
@@ -80,6 +81,27 @@ usePageMeta({
     'comprar flipper zero, tienda raspberry pi, hak5 españa, herramientas pentesting, productos hacking, gadgets ciberseguridad',
   url: 'https://hackeed.com/shop',
   image: 'https://hackeed.com/images/og-shop.jpg',
+})
+
+// Structured Data - CollectionPage Schema
+useSchema({
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Tienda de Hardware Hacking',
+  description:
+    'Catálogo completo de productos de hardware hacking y pentesting: Flipper Zero, Raspberry Pi, Hak5, RTL-SDR y más',
+  url: 'https://hackeed.com/shop',
+  isPartOf: {
+    '@type': 'WebSite',
+    name: 'Hackeed',
+    url: 'https://hackeed.com',
+  },
+  about: {
+    '@type': 'Thing',
+    name: 'Hardware Hacking',
+    description:
+      'Productos y herramientas para pentesting, hacking ético, ciberseguridad y proyectos tecnológicos',
+  },
 })
 
 // Productos de Neon
