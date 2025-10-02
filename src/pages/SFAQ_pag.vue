@@ -66,7 +66,7 @@ import Cart from '../components/Cart_comp.vue'
 
 // SEO Meta Tags
 usePageMeta({
-  title: 'Preguntas Frecuentes - FAQ sobre Envíos, Pagos y Devoluciones | Hackeed',
+  title: 'a c k e e d | SFAQ',
   description:
     'Resolvemos todas tus dudas: formas de pago con Stripe, envíos en 2-5 días, devoluciones en 14 días, política de privacidad. Compra segura en Hackeed.',
   keywords:

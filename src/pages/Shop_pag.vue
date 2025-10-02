@@ -32,6 +32,8 @@
             class="shop-products"
           />
 
+          <Product />
+
           <!-- Paginador -->
           <Pagination
             :current-page="currentPage"
@@ -69,6 +71,7 @@ import Header from '../components/Header_comp.vue'
 import Footer from '../components/Footer_comp.vue'
 import Filters from '../components/Filters_comp.vue'
 import Products from '../components/Products_comp.vue'
+import Product from '../components/Product_comp.vue'
 import Pagination from '../components/Pagination_comp.vue'
 import SortBy from '../components/SortBy_comp.vue'
 

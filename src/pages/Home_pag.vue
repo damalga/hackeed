@@ -10,6 +10,7 @@
         :show-title="true"
         :products-list="products"
       />
+      <Product />
     </main>
     <Footer />
   </div>
@@ -24,12 +25,13 @@ import Header from '../components/Header_comp.vue'
 import Hero from '../components/Hero_comp.vue'
 import Slider from '../components/Slider_comp.vue'
 import Products from '../components/Products_comp.vue'
+import Product from '../components/Product_comp.vue'
 import Contact from '../components/Contact_comp.vue'
 import Footer from '../components/Footer_comp.vue'
 
 // SEO Meta Tags
 usePageMeta({
-  title: 'a c k e e d',
+  title: 'a c k e e d | Home',
   description:
     'Tienda online especializada en hackware (hardware hacking, pentesting, mundo maker y tecnología avanzada). Envíos en 24-48h desde Madrid (España).',
   keywords:
