@@ -15,7 +15,7 @@ import Cart from '../components/Cart_comp.vue'
 
 // SEO Meta Tags
 usePageMeta({
-  title: 'Contacto - Soporte y Consultas | Hackeed',
+  title: 'a c k e e d | Contacto',
   description:
     'Contacta con Hackeed para consultas sobre productos, soporte técnico o colaboraciones. Escríbenos a hackeed.es@proton.me',
   keywords: 'contacto hackeed, soporte técnico, consultas pentesting, ayuda compra hardware',

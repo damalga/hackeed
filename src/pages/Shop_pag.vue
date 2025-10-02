@@ -77,7 +77,7 @@ import SortBy from '../components/SortBy_comp.vue'
 
 // SEO Meta Tags
 usePageMeta({
-  title: 'Tienda - Comprar Herramientas de Hacking y Pentesting | Hackeed',
+  title: 'a c k e e d | TIenda',
   description:
     'Explora nuestro catálogo completo de hardware hacking: Flipper Zero, Raspberry Pi, Hak5, RTL-SDR y más. Stock actualizado diariamente. Envíos en 24h desde España.',
   keywords:

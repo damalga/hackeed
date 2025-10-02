@@ -40,7 +40,7 @@ import Cart from '../components/Cart_comp.vue'
 
 // SEO Meta Tags
 usePageMeta({
-  title: 'Sobre Nosotros - Hackeed | Proyecto de Hacking Ético y Tecnología',
+  title: 'a c k e e d | Sobre Nosotros',
   description:
     'Hackeed es más que una tienda: Es un proyecto que une el hacking ético con el mundo maker y más allá, se trata de un laboratorio vivo donde la curiosidad manda. Proyecto open source serverless construido con Vue, Netlify y Neon.',
   keywords:
