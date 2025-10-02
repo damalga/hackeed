@@ -29,9 +29,9 @@ import Footer from '../components/Footer_comp.vue'
 
 // SEO Meta Tags
 usePageMeta({
-  title: 'Hackeed - Tienda de Hardware Hacking en España | Flipper Zero, Raspberry Pi',
+  title: 'a c k e e d',
   description:
-    'Tienda online especializada en hardware hacking y tecnología. Compra Flipper Zero, Raspberry Pi, Hak5, SDR y herramientas de pentesting. Envíos en 24-48h desde España.',
+    'Tienda online especializada en hackware (hardware hacking, pentesting, mundo maker y tecnología avanzada). Envíos en 24-48h desde Madrid (España).',
   keywords:
     'tienda hacking españa, flipper zero, raspberry pi tienda, hak5, hardware pentesting, herramientas ciberseguridad, gadgets tecnología',
   url: 'https://hackeed.com',
