@@ -66,7 +66,7 @@ const dynamicPages = [
 
 async function generateSitemap() {
   try {
-    console.log('🗺️  Generando sitemap.xml...')
+    console.log('Generando sitemap.xml...')
 
     // Combinar todas las páginas
     const allPages = [...staticPages, ...dynamicPages]
@@ -94,11 +94,11 @@ async function generateSitemap() {
     const outputPath = resolve('./public/sitemap.xml')
     writeFileSync(outputPath, xmlString)
 
-    console.log('✅ Sitemap generado exitosamente en /public/sitemap.xml')
-    console.log(`📄 Total de URLs: ${allPages.length}`)
-    console.log('\n📋 URLs incluidas:')
+    console.log('Sitemap generado exitosamente en /public/sitemap.xml')
+    console.log(`Total de URLs: ${allPages.length}`)
+    console.log('\nURLs incluidas:')
     allPages.forEach((page) => {
-      console.log(`   - ${baseUrl}${page.url} (prioridad: ${page.priority})`)
+      console.log(`- ${baseUrl}${page.url} (prioridad: ${page.priority})`)
     })
     console.log('')
   } catch (error) {

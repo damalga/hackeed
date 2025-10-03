@@ -33,18 +33,53 @@
 <script setup>
 import { ref } from 'vue'
 import { usePageMeta } from '@/composables/usePageMeta'
+import { useSchema } from '@/composables/useSchema'
 import Header from '../components/Header_comp.vue'
 import Footer from '../components/Footer_comp.vue'
 import Cart from '../components/Cart_comp.vue'
 
 // SEO Meta Tags
 usePageMeta({
-  title: 'Sobre Nosotros - Hackeed | Proyecto de Hacking Ético y Tecnología',
+  title: 'a c k e e d | Sobre Nosotros',
   description:
-    'Hackeed es más que una tienda: somos una comunidad de hacking ético, un laboratorio vivo donde la curiosidad manda. Proyecto open source construido con Vue.js.',
+    'Hackeed es más que una tienda: Es un proyecto que une el hacking ético con el mundo maker y más allá, se trata de un laboratorio vivo donde la curiosidad manda. Proyecto open source serverless construido con Vue, Netlify y Neon.',
   keywords:
-    'hackeed, proyecto hacking ético, comunidad hacking españa, tienda tecnología open source',
+    'hackeed, proyecto hacking ético, comunidad hacking españa, tienda tecnología open source, digital nomad, mundo maker',
   url: 'https://hackeed.com/about',
   image: 'https://hackeed.com/images/og-about.jpg',
+})
+
+// Structured Data - AboutPage Schema
+useSchema({
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: 'Sobre Hackeed',
+  description:
+    'Hackeed es más que una tienda: Es un proyecto que une el hacking ético con el mundo maker y más allá, se trata de un laboratorio vivo donde la curiosidad manda.',
+  url: 'https://hackeed.com/about',
+  mainEntity: {
+    '@type': 'Organization',
+    name: 'Hackeed',
+    description:
+      'Proyecto abierto de hacking ético, mundo maker y desarrollo/programación. Un laboratorio vivo donde la curiosidad manda. Una invitación a hackear, compartir y jugar.',
+    url: 'https://hackeed.com',
+    foundingDate: '2025',
+    email: 'hackeed.es@proton.me',
+    sameAs: ['https://github.com/damalga/hackeed'],
+    knowsAbout: [
+      'Hardware Hacking',
+      'Pentesting',
+      'Ciberseguridad',
+      'Ethical Hacking',
+      'Tecnología Open Source',
+      'Digital Nomad',
+      'Guerrilla Hacking',
+      'Mundo Maker',
+      'Indie Hacker',
+      'Tienda Hack',
+      'Hack shop',
+      'Informática España',
+    ],
+  },
 })
 </script>

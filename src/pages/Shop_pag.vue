@@ -32,6 +32,8 @@
             class="shop-products"
           />
 
+          <Product />
+
           <!-- Paginador -->
           <Pagination
             :current-page="currentPage"
@@ -63,23 +65,46 @@ import { ref, computed, onMounted } from 'vue'
 import { useProducts } from '@/composables/useProducts'
 import { useStripe } from '@/composables/useStripe'
 import { usePageMeta } from '@/composables/usePageMeta'
+import { useSchema } from '@/composables/useSchema'
 
 import Header from '../components/Header_comp.vue'
 import Footer from '../components/Footer_comp.vue'
 import Filters from '../components/Filters_comp.vue'
 import Products from '../components/Products_comp.vue'
+import Product from '../components/Product_comp.vue'
 import Pagination from '../components/Pagination_comp.vue'
 import SortBy from '../components/SortBy_comp.vue'
 
 // SEO Meta Tags
 usePageMeta({
-  title: 'Tienda - Comprar Herramientas de Hacking y Pentesting | Hackeed',
+  title: 'a c k e e d | TIenda',
   description:
     'Explora nuestro catálogo completo de hardware hacking: Flipper Zero, Raspberry Pi, Hak5, RTL-SDR y más. Stock actualizado diariamente. Envíos en 24h desde España.',
   keywords:
     'comprar flipper zero, tienda raspberry pi, hak5 españa, herramientas pentesting, productos hacking, gadgets ciberseguridad',
   url: 'https://hackeed.com/shop',
   image: 'https://hackeed.com/images/og-shop.jpg',
+})
+
+// Structured Data - CollectionPage Schema
+useSchema({
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Tienda de Hardware Hacking',
+  description:
+    'Catálogo completo de productos de hardware hacking y pentesting: Flipper Zero, Raspberry Pi, Hak5, RTL-SDR y más',
+  url: 'https://hackeed.com/shop',
+  isPartOf: {
+    '@type': 'WebSite',
+    name: 'Hackeed',
+    url: 'https://hackeed.com',
+  },
+  about: {
+    '@type': 'Thing',
+    name: 'Hardware Hacking',
+    description:
+      'Productos y herramientas para pentesting, hacking ético, ciberseguridad y proyectos tecnológicos',
+  },
 })
 
 // Productos de Neon
