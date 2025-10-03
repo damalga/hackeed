@@ -5,7 +5,6 @@
         <router-link to="/about" class="header-link">Sobre nosotros</router-link>
         <router-link to="/sfaq" class="footer-link">SFAQ</router-link>
         <router-link to="/contact" class="footer-link">Contacto</router-link>
-        <router-link to="/privacy" class="footer-link">Privacidad</router-link>
       </div>
       <div class="footer-claim">
         <span class="footer-claim">
