@@ -2,6 +2,14 @@
   command = "pnpm run build"
   publish = "dist"
 
+# Build para staging (rama staging)
+[context.staging]
+  command = "pnpm run build:staging"
+
+# Build para producción (rama main)
+[context.production]
+  command = "pnpm run build"
+
 [dev]
   command = "pnpm run dev"
   port = 8888
