@@ -8,11 +8,19 @@
 .netlify
 
 # Environment Variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# IMPORTANTE: Solo ignoramos archivos .env con datos sensibles
+# Los archivos .env.development, .env.staging, .env.production SÍ se suben
+# porque solo contienen configuración pública (URLs, flags, etc.)
+
+.env                        # Ignorar (contiene claves reales)
+.env.local                  # Ignorar (overrides locales)
+.env.*.local                # Ignorar (cualquier override local)
+
+# Los siguientes NO se ignoran (se commitean):
+# .env.example              ✅ Template para otros devs
+# .env.development          ✅ Config de desarrollo
+# .env.staging              ✅ Config de staging
+# .env.production           ✅ Config de producción
 
 # OS
 .DS_Store
