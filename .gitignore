@@ -4,6 +4,9 @@
 # Distribution
 /dist
 
+# Generated files
+/public/sitemap.xml
+
 # Local Netlify folder
 .netlify
 
