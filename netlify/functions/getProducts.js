@@ -34,6 +34,18 @@ export async function handler() {
     // Transform the data to match frontend expectations
     const products = rows.map((product, index) => {
       try {
+        // Parse variants if needed
+        let variants = product.variants ? (typeof product.variants === 'string' ? JSON.parse(product.variants) : product.variants) : null;
+
+        // Si el producto tiene variantes, sincronizar inStock de cada opción con el stock de la BD
+        if (variants && variants.options) {
+          const stockAvailable = product.stock > 0;
+          variants.options = variants.options.map(option => ({
+            ...option,
+            inStock: stockAvailable
+          }));
+        }
+
         const transformed = {
           id: product.id,
           sku: product.sku,
@@ -47,7 +59,7 @@ export async function handler() {
           brand: product.brand,
           inStock: product.stock > 0,
           features: product.features ? (typeof product.features === 'string' ? JSON.parse(product.features) : product.features) : [],
-          variants: product.variants ? (typeof product.variants === 'string' ? JSON.parse(product.variants) : product.variants) : null,
+          variants: variants,
           createdAt: product.created_at
         };
 
