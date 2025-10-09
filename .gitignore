@@ -12,9 +12,10 @@
 # Los archivos .env.development, .env.staging, .env.production SÍ se suben
 # porque solo contienen configuración pública (URLs, flags, etc.)
 
-.env                        # Ignorar (contiene claves reales)
-.env.local                  # Ignorar (overrides locales)
-.env.*.local                # Ignorar (cualquier override local)
+# Ignorar archivos con claves reales
+.env
+.env.local
+.env.*.local
 
 # Los siguientes NO se ignoran (se commitean):
 # .env.example              ✅ Template para otros devs
