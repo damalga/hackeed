@@ -231,6 +231,25 @@
   @include button-secondary;
   width: 100%;
   margin: 1.5625rem 0 0.9375rem 0;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border-color: var(--border-primary);
+  }
+}
+
+.checkout-error {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: rgba(255, 0, 0, 0.1);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  border-radius: 0.25rem;
+  color: var(--color-error);
+  font-size: 0.875rem;
+  text-align: center;
 }
 
 .continue-shopping {

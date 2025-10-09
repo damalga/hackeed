@@ -83,9 +83,21 @@
                 <span>€{{ cartStore.totalPrice.toFixed(2) }}</span>
               </div>
 
-              <button class="checkout-btn">Proceder al pago</button>
+              <button
+                class="checkout-btn"
+                @click="handleCheckout"
+                :disabled="cartStore.loading || cartStore.totalItems === 0"
+              >
+                <span v-if="cartStore.loading">Procesando...</span>
+                <span v-else>Proceder al pago</span>
+              </button>
 
               <router-link to="/shop" class="continue-shopping"> Continuar comprando </router-link>
+
+              <!-- Mensaje de error si hay problemas con Stripe -->
+              <div v-if="cartStore.error" class="checkout-error">
+                ⚠️ {{ cartStore.error }}
+              </div>
             </div>
           </div>
         </div>
@@ -168,5 +180,36 @@ const handleConfirmRemoveItem = () => {
 const handleCancelRemoveItem = () => {
   showRemoveItemModal.value = false
   itemToRemove.value = null
+}
+
+// ==========================================
+// CHECKOUT - Redirección a Stripe
+// ==========================================
+const handleCheckout = async () => {
+  try {
+    // Verificar que hay items en el carrito
+    if (cartStore.totalItems === 0) {
+      console.warn('⚠️ Intento de checkout con carrito vacío')
+      return
+    }
+
+    console.log('🛒 Iniciando proceso de checkout...')
+    console.log('📦 Items en carrito:', cartStore.totalItems)
+    console.log('💰 Total:', cartStore.totalPrice)
+
+    // Información de cliente temporal (en producción esto vendría de un formulario)
+    const customerInfo = {
+      email: 'test@example.com', // TODO: Reemplazar con formulario de checkout
+      name: 'Cliente de Prueba',
+    }
+
+    // Redirigir a Stripe Checkout
+    await cartStore.redirectToCheckout(customerInfo)
+
+    console.log('✅ Redirigiendo a Stripe...')
+  } catch (error) {
+    console.error('❌ Error en checkout:', error)
+    // El error ya se muestra en cartStore.error automáticamente
+  }
 }
 </script>
