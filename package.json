@@ -11,8 +11,6 @@
     "build:staging": "vite build --mode staging",
     "preview": "vite preview",
     "dev:nl": "netlify dev",
-    "dev:nl:staging": "netlify dev --mode staging",
-    "dev:nl:production": "netlify dev --mode production",
     "generate:sitemap": "node scripts/generate-sitemap.js",
     "prebuild": "pnpm run generate:sitemap",
     "lint": "eslint . --ext .js,.vue",
