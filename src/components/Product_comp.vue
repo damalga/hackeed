@@ -110,7 +110,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useProductModalStore } from '@/stores/productModalStore'
 import { useCartStore } from '@/stores/cartStore'
 import { useProductVariantsStore } from '@/stores/productVariantsStore'
@@ -170,9 +170,19 @@ const removeFromCart = () => {
 }
 
 // Cerrar modal con tecla Escape
-document.addEventListener('keydown', (e) => {
+const handleEscapeKey = (e) => {
   if (e.key === 'Escape' && productModalStore.isModalOpen) {
     closeModal()
   }
+}
+
+// Añadir listener cuando el componente se monta
+onMounted(() => {
+  document.addEventListener('keydown', handleEscapeKey)
+})
+
+// Remover listener cuando el componente se desmonta (previene memory leaks)
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleEscapeKey)
 })
 </script>
