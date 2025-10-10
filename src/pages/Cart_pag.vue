@@ -33,22 +33,36 @@
                   <button
                     class="quantity-btn minus"
                     @click="cartStore.updateQuantity(item.cartItemId, item.quantity - 1)"
+                    aria-label="Disminuir cantidad de {{ item.name }}"
+                    :aria-describedby="`quantity-${item.cartItemId}`"
                   >
                     −
                   </button>
-                  <span class="quantity">{{ item.quantity }}</span>
+                  <span
+                    class="quantity"
+                    :id="`quantity-${item.cartItemId}`"
+                    role="status"
+                    aria-live="polite"
+                    :aria-label="`Cantidad: ${item.quantity}`"
+                  >
+                    {{ item.quantity }}
+                  </span>
                   <button
                     class="quantity-btn plus"
                     @click="cartStore.updateQuantity(item.cartItemId, item.quantity + 1)"
+                    aria-label="Aumentar cantidad de {{ item.name }}"
+                    :aria-describedby="`quantity-${item.cartItemId}`"
                   >
                     +
                   </button>
                 </div>
-                <div class="item-total">€{{ (item.price * item.quantity).toFixed(2) }}</div>
+                <div class="item-total" aria-label="Subtotal del producto">
+                  €{{ (item.price * item.quantity).toFixed(2) }}
+                </div>
                 <button
                   class="remove-item"
                   @click="confirmRemoveItem(item)"
-                  title="Eliminar producto"
+                  :aria-label="`Eliminar ${item.name} del carrito`"
                 >
                   Eliminar producto
                 </button>
