@@ -21,7 +21,12 @@ export async function handler(event) {
     const { items, customerEmail = 'test@example.com' } = JSON.parse(event.body || '{}');
 
     if (!items?.length) {
-      return { statusCode: 400, body: JSON.stringify({ error: 'Carrito vacío' }) };
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          error: 'No hay productos en tu carrito. Agrega productos antes de continuar.'
+        })
+      };
     }
 
     // Obtener productos de BD y validar
@@ -33,14 +38,21 @@ export async function handler(event) {
     `;
 
     if (dbProducts.length !== items.length) {
-      throw new Error('Algunos productos no existen o están inactivos');
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          error: 'Algunos productos en tu carrito ya no están disponibles. Actualiza tu carrito y revisa la disponibilidad.'
+        })
+      };
     }
 
     const lineItems = items.map(item => {
       const dbProduct = dbProducts.find(p => p.id === item.id);
-      if (!dbProduct) throw new Error(`Producto ${item.id} no encontrado`);
+      if (!dbProduct) {
+        throw new Error(`El producto "${item.name || item.id}" ya no está disponible.`);
+      }
       if (dbProduct.stock < item.quantity) {
-        throw new Error(`Stock insuficiente para ${dbProduct.name}`);
+        throw new Error(`No hay suficiente stock para "${dbProduct.name}". Stock disponible: ${dbProduct.stock}, solicitado: ${item.quantity}.`);
       }
 
       return {
@@ -75,6 +87,39 @@ export async function handler(event) {
 
   } catch (err) {
     console.error('❌ Checkout error:', err);
-    return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
+
+    // Determinar el tipo de error y proporcionar mensaje apropiado
+    let userMessage = err.message;
+    let statusCode = 500;
+
+    // Errores de red/Stripe API
+    if (err.type === 'StripeConnectionError' || err.message.includes('network')) {
+      userMessage = 'No se pudo conectar con el servicio de pagos. Verifica tu conexión a internet e intenta nuevamente.';
+      statusCode = 503;
+    }
+    // Errores de validación de Stripe
+    else if (err.type === 'StripeInvalidRequestError') {
+      userMessage = 'Hay un problema con los datos de pago. Por favor, revisa la información e intenta de nuevo.';
+      statusCode = 400;
+    }
+    // Errores de autenticación (API keys)
+    else if (err.type === 'StripeAuthenticationError') {
+      userMessage = 'Error de configuración del sistema de pagos. Por favor, contacta con soporte técnico.';
+      statusCode = 500;
+    }
+    // Errores de base de datos
+    else if (err.message.includes('stock') || err.message.includes('disponible')) {
+      // Ya tiene mensaje descriptivo, mantenerlo
+      statusCode = 400;
+    }
+    // Error genérico
+    else if (statusCode === 500 && !err.message.includes('stock') && !err.message.includes('disponible')) {
+      userMessage = 'Ocurrió un error al procesar tu solicitud. Por favor, intenta nuevamente o contacta con soporte si el problema persiste.';
+    }
+
+    return {
+      statusCode,
+      body: JSON.stringify({ error: userMessage })
+    };
   }
 }
