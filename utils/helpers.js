@@ -66,7 +66,7 @@ export function calculateCartTotals(items, options = {}) {
 }
 
 // Validar cantidad de producto
-export function validateQuantity(quantity, max = 99) {
+export function validateQuantity(quantity, max = 10) {
   const qty = parseInt(quantity) || 1
   return Math.max(1, Math.min(max, qty))
 }
@@ -342,5 +342,13 @@ export const DEFAULT_CONFIG = {
   STANDARD_SHIPPING_COST: 5.99,
   EXPRESS_SHIPPING_COST: 12.99,
   TAX_RATE: 0.21, // 21% IVA
-  MAX_QUANTITY_PER_ITEM: 99
+  MIN_QUANTITY_PER_ITEM: 1,
+  MAX_QUANTITY_PER_ITEM: 10
+}
+
+// Límites de cantidad para validación
+export const QUANTITY_LIMITS = {
+  MIN: 1,
+  MAX: 10,
+  DEFAULT: 1
 }

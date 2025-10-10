@@ -82,23 +82,39 @@
               <button
                 class="quantity-btn"
                 @click="updateQuantity(cartStore.getItemQuantity(product) - 1)"
+                aria-label="Disminuir cantidad"
+                :aria-describedby="`quantity-${product.id}`"
               >
                 -
               </button>
-              <span class="quantity">{{ cartStore.getItemQuantity(product) }}</span>
+              <span
+                class="quantity"
+                :id="`quantity-${product.id}`"
+                role="status"
+                aria-live="polite"
+              >
+                {{ cartStore.getItemQuantity(product) }}
+              </span>
               <button
                 class="quantity-btn"
                 @click="updateQuantity(cartStore.getItemQuantity(product) + 1)"
+                aria-label="Aumentar cantidad"
+                :aria-describedby="`quantity-${product.id}`"
+                :disabled="isMaxQuantityReached"
+                :title="isMaxQuantityReached ? `Máximo ${QUANTITY_LIMITS.MAX} unidades` : ''"
               >
                 +
               </button>
-              <button class="remove-btn" @click="removeFromCart">Quitar del carrito</button>
+              <button class="remove-btn" @click="removeFromCart" aria-label="Quitar del carrito">
+                Quitar del carrito
+              </button>
             </div>
             <button
               v-else
               class="add-to-cart-btn"
               @click="addToCart"
               :disabled="!variantsStore.isProductAvailable(product)"
+              :aria-label="variantsStore.isProductAvailable(product) ? 'Añadir al carrito' : 'Producto agotado'"
             >
               {{ variantsStore.isProductAvailable(product) ? 'Añadir al carrito' : 'Agotado' }}
             </button>
@@ -115,6 +131,7 @@ import { useProductModalStore } from '@/stores/productModalStore'
 import { useCartStore } from '@/stores/cartStore'
 import { useProductVariantsStore } from '@/stores/productVariantsStore'
 import ProductVariants from './ProductVariants_comp.vue'
+import { QUANTITY_LIMITS } from '../../utils/helpers'
 
 const productModalStore = useProductModalStore()
 const cartStore = useCartStore()
@@ -123,6 +140,12 @@ const variantsStore = useProductVariantsStore()
 const selectedImage = ref('')
 
 const product = computed(() => productModalStore.selectedProduct)
+
+// Verificar si se ha alcanzado el máximo de cantidad
+const isMaxQuantityReached = computed(() => {
+  if (!product.value) return false
+  return cartStore.getItemQuantity(product.value) >= QUANTITY_LIMITS.MAX
+})
 
 // Actualizar imagen seleccionada cuando cambie el producto
 watch(

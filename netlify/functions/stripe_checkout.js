@@ -51,6 +51,17 @@ export async function handler(event) {
       if (!dbProduct) {
         throw new Error(`El producto "${item.name || item.id}" ya no está disponible.`);
       }
+
+      // Validar cantidad
+      if (!item.quantity || item.quantity <= 0 || !Number.isInteger(item.quantity)) {
+        throw new Error(`Cantidad inválida para "${dbProduct.name}". La cantidad debe ser un número entero positivo.`);
+      }
+
+      if (item.quantity > 10) {
+        throw new Error(`Cantidad inválida para "${dbProduct.name}". Máximo permitido: 10 unidades por producto.`);
+      }
+
+      // Validar stock
       if (dbProduct.stock < item.quantity) {
         throw new Error(`No hay suficiente stock para "${dbProduct.name}". Stock disponible: ${dbProduct.stock}, solicitado: ${item.quantity}.`);
       }
