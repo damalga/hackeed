@@ -146,6 +146,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStripe } from '@/composables/useStripe'
+import { getUserFriendlyMessage } from '../../utils/errorMessages'
 
 export default {
   name: 'PaymentSuccess',
@@ -176,7 +177,7 @@ export default {
         sessionId.value = route.query.session_id
 
         if (!sessionId.value) {
-          throw new Error('No se proporcionó ID de sesión')
+          throw new Error('No se proporcionó ID de sesión. Verifica que el enlace sea correcto o intenta nuevamente desde el carrito.')
         }
 
         const result = await verifyPayment(sessionId.value)
@@ -198,13 +199,13 @@ export default {
           )
         } else {
           paymentVerified.value = false
-          errorMessage.value = 'El pago no pudo ser verificado'
+          errorMessage.value = 'No pudimos verificar tu pago. Si realizaste el pago correctamente, por favor contacta con soporte para que podamos ayudarte.'
         }
       } catch (err) {
         console.error('Error verifying payment:', err)
         paymentVerified.value = false
         error.value = err.message
-        errorMessage.value = err.message || 'Error al verificar el pago'
+        errorMessage.value = getUserFriendlyMessage(err)
       } finally {
         loading.value = false
       }
@@ -243,7 +244,7 @@ export default {
         )
 
         if (!response.ok) {
-          throw new Error('Error generando la factura')
+          throw new Error('No se pudo generar la factura')
         }
 
         const blob = await response.blob()
@@ -257,7 +258,7 @@ export default {
         window.URL.revokeObjectURL(url)
       } catch (err) {
         console.error('Error downloading invoice:', err)
-        alert('Error al descargar la factura. Por favor, contacta con soporte.')
+        alert('No se pudo descargar la factura. Por favor, intenta nuevamente o contacta con soporte si el problema persiste.')
       }
     }
 

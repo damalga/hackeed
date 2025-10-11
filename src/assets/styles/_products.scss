@@ -4,7 +4,7 @@
 .products {
   background: var(--bg-primary);
   .products-container {
-    max-width: 1400px;
+    max-width: 1440px;
     margin: 0 auto;
   }
 }
@@ -34,6 +34,9 @@
   transform: translateY(-0.1rem);
   box-shadow: 0 8px 20px var(--shadow-dark);
   border-color: var(--accent-primary);
+  .product-image {
+    background: var(--accent-primary);
+  }
 }
 
 .product-image {
@@ -47,7 +50,7 @@
   img {
     height: 92%;
     object-fit: contain;
-    filter: brightness(1.1);
+    filter: brightness(1.02);
   }
 }
 

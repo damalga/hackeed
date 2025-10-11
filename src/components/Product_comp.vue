@@ -1,13 +1,14 @@
 <template>
   <div v-if="productModalStore.isModalOpen" class="modal-overlay" @click="closeModal">
     <div class="modal-content" @click.stop>
-      <button class="modal-close" @click="closeModal">
+      <button class="modal-close" @click="closeModal" aria-label="Cerrar modal de producto">
         <svg
           width="24"
           height="24"
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
         >
           <path
             d="M18 6L6 18M6 6L18 18"
@@ -23,7 +24,35 @@
         <!-- Galería de imágenes -->
         <div class="modal-images">
           <div class="main-image">
-            <img :src="selectedImage" :alt="product.name" />
+            <img
+              :src="selectedImage"
+              :alt="`${product.name} - Vista ${currentImageIndex + 1} de ${totalImages}`"
+            />
+            <!-- Flechas de navegación -->
+            <button
+              v-if="product.images && product.images.length > 1"
+              class="image-nav-arrow image-nav-arrow--left"
+              @click="previousImage"
+              aria-label="Imagen anterior"
+            >
+              &#8592;
+            </button>
+            <button
+              v-if="product.images && product.images.length > 1"
+              class="image-nav-arrow image-nav-arrow--right"
+              @click="nextImage"
+              aria-label="Siguiente imagen"
+            >
+              &#8594;
+            </button>
+            <!-- Indicador de posición -->
+            <div
+              v-if="product.images && product.images.length > 1"
+              class="image-counter"
+              aria-live="polite"
+            >
+              {{ currentImageIndex + 1 }} / {{ totalImages }}
+            </div>
           </div>
           <div v-if="product.images && product.images.length > 1" class="image-thumbnails">
             <button
@@ -31,9 +60,11 @@
               :key="index"
               class="thumbnail"
               :class="{ active: selectedImage === image }"
-              @click="selectedImage = image"
+              @click="selectImage(index)"
+              :aria-label="`Ver imagen ${index + 1} de ${totalImages}`"
+              :aria-current="selectedImage === image ? 'true' : 'false'"
             >
-              <img :src="image" :alt="`${product.name} - imagen ${index + 1}`" />
+              <img :src="image" :alt="`${product.name} - miniatura ${index + 1}`" />
             </button>
           </div>
         </div>
@@ -82,23 +113,41 @@
               <button
                 class="quantity-btn"
                 @click="updateQuantity(cartStore.getItemQuantity(product) - 1)"
+                aria-label="Disminuir cantidad"
+                :aria-describedby="`quantity-${product.id}`"
               >
                 -
               </button>
-              <span class="quantity">{{ cartStore.getItemQuantity(product) }}</span>
+              <span
+                class="quantity"
+                :id="`quantity-${product.id}`"
+                role="status"
+                aria-live="polite"
+              >
+                {{ cartStore.getItemQuantity(product) }}
+              </span>
               <button
                 class="quantity-btn"
                 @click="updateQuantity(cartStore.getItemQuantity(product) + 1)"
+                aria-label="Aumentar cantidad"
+                :aria-describedby="`quantity-${product.id}`"
+                :disabled="isMaxQuantityReached"
+                :title="isMaxQuantityReached ? `Máximo ${QUANTITY_LIMITS.MAX} unidades` : ''"
               >
                 +
               </button>
-              <button class="remove-btn" @click="removeFromCart">Quitar del carrito</button>
+              <button class="remove-btn" @click="removeFromCart" aria-label="Quitar del carrito">
+                Quitar del carrito
+              </button>
             </div>
             <button
               v-else
               class="add-to-cart-btn"
               @click="addToCart"
               :disabled="!variantsStore.isProductAvailable(product)"
+              :aria-label="
+                variantsStore.isProductAvailable(product) ? 'Añadir al carrito' : 'Producto agotado'
+              "
             >
               {{ variantsStore.isProductAvailable(product) ? 'Añadir al carrito' : 'Agotado' }}
             </button>
@@ -115,19 +164,36 @@ import { useProductModalStore } from '@/stores/productModalStore'
 import { useCartStore } from '@/stores/cartStore'
 import { useProductVariantsStore } from '@/stores/productVariantsStore'
 import ProductVariants from './ProductVariants_comp.vue'
+import { QUANTITY_LIMITS } from '../../utils/helpers'
 
 const productModalStore = useProductModalStore()
 const cartStore = useCartStore()
 const variantsStore = useProductVariantsStore()
 
 const selectedImage = ref('')
+const currentImageIndex = ref(0)
 
 const product = computed(() => productModalStore.selectedProduct)
+
+// Computada para obtener el total de imágenes
+const totalImages = computed(() => {
+  if (product.value && product.value.images && product.value.images.length > 0) {
+    return product.value.images.length
+  }
+  return 1
+})
+
+// Verificar si se ha alcanzado el máximo de cantidad
+const isMaxQuantityReached = computed(() => {
+  if (!product.value) return false
+  return cartStore.getItemQuantity(product.value) >= QUANTITY_LIMITS.MAX
+})
 
 // Actualizar imagen seleccionada cuando cambie el producto
 watch(
   product,
   (newProduct) => {
+    currentImageIndex.value = 0
     if (newProduct && newProduct.images && newProduct.images.length > 0) {
       selectedImage.value = newProduct.images[0]
     } else if (newProduct && newProduct.img) {
@@ -139,6 +205,29 @@ watch(
 
 const closeModal = () => {
   productModalStore.closeModal()
+}
+
+// Funciones de navegación de imágenes
+const selectImage = (index) => {
+  if (product.value && product.value.images && product.value.images[index]) {
+    currentImageIndex.value = index
+    selectedImage.value = product.value.images[index]
+  }
+}
+
+const nextImage = () => {
+  if (product.value && product.value.images && product.value.images.length > 0) {
+    const nextIndex = (currentImageIndex.value + 1) % product.value.images.length
+    selectImage(nextIndex)
+  }
+}
+
+const previousImage = () => {
+  if (product.value && product.value.images && product.value.images.length > 0) {
+    const prevIndex =
+      (currentImageIndex.value - 1 + product.value.images.length) % product.value.images.length
+    selectImage(prevIndex)
+  }
 }
 
 // Características actuales del producto (incluyendo variantes)
