@@ -131,6 +131,8 @@
                 @click="updateQuantity(cartStore.getItemQuantity(product) + 1)"
                 aria-label="Aumentar cantidad"
                 :aria-describedby="`quantity-${product.id}`"
+                :disabled="isMaxQuantityReached"
+                :title="isMaxQuantityReached ? `Máximo ${QUANTITY_LIMITS.MAX} unidades` : ''"
               >
                 +
               </button>
@@ -143,7 +145,9 @@
               class="add-to-cart-btn"
               @click="addToCart"
               :disabled="!variantsStore.isProductAvailable(product)"
-              :aria-label="variantsStore.isProductAvailable(product) ? 'Añadir al carrito' : 'Producto agotado'"
+              :aria-label="
+                variantsStore.isProductAvailable(product) ? 'Añadir al carrito' : 'Producto agotado'
+              "
             >
               {{ variantsStore.isProductAvailable(product) ? 'Añadir al carrito' : 'Agotado' }}
             </button>
@@ -160,6 +164,7 @@ import { useProductModalStore } from '@/stores/productModalStore'
 import { useCartStore } from '@/stores/cartStore'
 import { useProductVariantsStore } from '@/stores/productVariantsStore'
 import ProductVariants from './ProductVariants_comp.vue'
+import { QUANTITY_LIMITS } from '../../utils/helpers'
 
 const productModalStore = useProductModalStore()
 const cartStore = useCartStore()
@@ -176,6 +181,12 @@ const totalImages = computed(() => {
     return product.value.images.length
   }
   return 1
+})
+
+// Verificar si se ha alcanzado el máximo de cantidad
+const isMaxQuantityReached = computed(() => {
+  if (!product.value) return false
+  return cartStore.getItemQuantity(product.value) >= QUANTITY_LIMITS.MAX
 })
 
 // Actualizar imagen seleccionada cuando cambie el producto
@@ -213,7 +224,8 @@ const nextImage = () => {
 
 const previousImage = () => {
   if (product.value && product.value.images && product.value.images.length > 0) {
-    const prevIndex = (currentImageIndex.value - 1 + product.value.images.length) % product.value.images.length
+    const prevIndex =
+      (currentImageIndex.value - 1 + product.value.images.length) % product.value.images.length
     selectImage(prevIndex)
   }
 }

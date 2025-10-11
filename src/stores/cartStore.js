@@ -2,6 +2,8 @@ import { defineStore } from "pinia";
 import { ref, computed, watch } from "vue";
 import { loadStripe } from '@stripe/stripe-js';
 import { useProductVariantsStore } from "./productVariantsStore";
+import { handleError, getUserFriendlyMessage, ERROR_CATEGORIES } from "../../utils/errorMessages";
+import { QUANTITY_LIMITS, validateQuantity } from "../../utils/helpers";
 
 export const useCartStore = defineStore("cart", () => {
   // Cargar datos del localStorage al inicializar
@@ -137,7 +139,21 @@ export const useCartStore = defineStore("cart", () => {
       if (quantity <= 0) {
         removeFromCart(cartItemId);
       } else {
-        item.quantity = quantity;
+        // Validar cantidad usando la función helper
+        const validatedQuantity = validateQuantity(quantity, QUANTITY_LIMITS.MAX);
+
+        // Mostrar warning si se excede el límite
+        if (quantity > QUANTITY_LIMITS.MAX) {
+          console.warn(`⚠️ Cantidad excede el límite máximo de ${QUANTITY_LIMITS.MAX} unidades por producto`);
+          error.value = `Máximo ${QUANTITY_LIMITS.MAX} unidades por producto`;
+
+          // Limpiar el error después de 3 segundos
+          setTimeout(() => {
+            error.value = null;
+          }, 3000);
+        }
+
+        item.quantity = validatedQuantity;
       }
     }
     // El watcher se encarga de guardar automáticamente
@@ -194,8 +210,8 @@ export const useCartStore = defineStore("cart", () => {
       console.log('✅ Stripe inicializado correctamente');
       return stripe.value;
     } catch (err) {
-      error.value = 'Error al cargar Stripe: ' + err.message;
-      console.error('❌ Error inicializando Stripe:', err);
+      handleError(err, 'Inicialización de Stripe');
+      error.value = getUserFriendlyMessage(err);
       return null;
     }
   };
@@ -245,8 +261,8 @@ export const useCartStore = defineStore("cart", () => {
 
       return session;
     } catch (err) {
-      error.value = err.message;
-      console.error('❌ Error creando sesión de checkout:', err);
+      handleError(err, 'Creación de sesión de checkout');
+      error.value = getUserFriendlyMessage(err);
       throw err;
     } finally {
       loading.value = false;
@@ -287,8 +303,8 @@ export const useCartStore = defineStore("cart", () => {
         }
       }
     } catch (err) {
-      error.value = err.message;
-      console.error('❌ Error en redirección a checkout:', err);
+      handleError(err, 'Redirección a checkout');
+      error.value = getUserFriendlyMessage(err);
       throw err;
     }
   };
@@ -305,8 +321,8 @@ export const useCartStore = defineStore("cart", () => {
 
       return result;
     } catch (err) {
-      error.value = err.message;
-      console.error('Error verificando pago:', err);
+      handleError(err, 'Verificación de pago');
+      error.value = getUserFriendlyMessage(err);
       throw err;
     }
   };
