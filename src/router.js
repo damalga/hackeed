@@ -16,9 +16,7 @@ const routes = [
   { path: '/cart', component: Cart },
   { path: '/sfaq', component: Faq },
   { path: '/contact', component: Contact },
-  { path: '/test-cart', component: TestCart },
   { path: '/success', component: PaymentSuccess },
-  { path: '/debug', component: StripeDebug },
 ]
 
 const router = createRouter({
