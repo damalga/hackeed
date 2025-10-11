@@ -61,12 +61,64 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
 
       img {
         max-width: 100%;
         max-height: 100%;
         object-fit: contain;
         filter: brightness(1.1);
+      }
+
+      // Flechas de navegación de imágenes
+      .image-nav-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.6);
+        border: 1px solid var(--border-primary);
+        color: var(--text-primary);
+        font-size: 1.5rem;
+        width: 2.5rem;
+        height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 5;
+
+        &:hover {
+          background: rgba(0, 0, 0, 0.8);
+          color: var(--accent-primary);
+          border-color: var(--accent-primary);
+        }
+
+        &:focus-visible {
+          outline: 2px solid var(--accent-primary);
+          outline-offset: 2px;
+        }
+
+        &--left {
+          left: 0.625rem;
+        }
+
+        &--right {
+          right: 0.625rem;
+        }
+      }
+
+      // Contador de imágenes
+      .image-counter {
+        position: absolute;
+        bottom: 0.625rem;
+        right: 0.625rem;
+        background: rgba(0, 0, 0, 0.7);
+        color: var(--text-primary);
+        padding: 0.25rem 0.625rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border: 1px solid var(--border-primary);
       }
     }
   }

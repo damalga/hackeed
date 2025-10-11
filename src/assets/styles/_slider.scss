@@ -75,9 +75,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
     &:hover:not(:disabled) {
       background: var(--accent-secondary);
       border-color: var(--accent-secondary);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--accent-primary);
+      outline-offset: 3px;
     }
   }
 
@@ -94,18 +100,31 @@
     justify-content: center;
   }
 
-  .slider-dots span {
+  // Cambiar de span a button para mejor accesibilidad
+  .slider-dots button {
     width: 0.75rem;
     height: 0.75rem;
     background: $color-border-primary;
     display: inline-block;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.3s ease;
     border: 1px solid $color-border-secondary;
-  }
+    padding: 0;
 
-  .slider-dots span.active {
-    background: $color-accent-primary;
+    &:hover {
+      background: $color-text-tertiary;
+      transform: scale(1.2);
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-accent-primary;
+      outline-offset: 3px;
+    }
+
+    &.active {
+      background: $color-accent-primary;
+      border-color: $color-accent-primary;
+    }
   }
 
   @keyframes fadein {
