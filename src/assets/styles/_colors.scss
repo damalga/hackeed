@@ -95,7 +95,7 @@ $shadow-dark: rgba(0, 0, 0, 0.3);
   @include button-base;
   background: $color-bg-tertiary;
   color: $color-text-primary;
-  border-color: $color-border-primary;
+  border-color: $color-success;
 
   &:hover:not(:disabled) {
     background: $color-accent-primary;

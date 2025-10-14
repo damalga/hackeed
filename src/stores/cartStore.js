@@ -2,8 +2,7 @@ import { defineStore } from "pinia";
 import { ref, computed, watch } from "vue";
 import { loadStripe } from '@stripe/stripe-js';
 import { useProductVariantsStore } from "./productVariantsStore";
-import { handleError, getUserFriendlyMessage, ERROR_CATEGORIES } from "../../utils/errorMessages";
-import { QUANTITY_LIMITS, validateQuantity } from "../../utils/helpers";
+import { handleError, getUserFriendlyMessage, ERROR_CATEGORIES, QUANTITY_LIMITS, validateQuantity } from "@/utils/helpers";
 
 export const useCartStore = defineStore("cart", () => {
   // Cargar datos del localStorage al inicializar
