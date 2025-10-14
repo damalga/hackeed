@@ -1,31 +1,27 @@
 <template>
-  <div v-if="productModalStore.isModalOpen" class="modal-overlay" @click="closeModal">
-    <div class="modal-content" @click.stop>
-      <button class="modal-close" @click="closeModal" aria-label="Cerrar modal de producto">
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <path
-            d="M18 6L6 18M6 6L18 18"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </button>
+  <Header />
 
-      <div v-if="product" class="modal-body">
+  <main class="product-detail-page">
+    <!-- Loading state -->
+    <div v-if="loading" class="loading-state">
+      <p>Cargando producto...</p>
+    </div>
+
+    <!-- Error state -->
+    <div v-else-if="error" class="error-state">
+      <h2>Producto no encontrado</h2>
+      <p>{{ error }}</p>
+      <router-link to="/shop" class="back-to-shop-btn">Volver a la tienda</router-link>
+    </div>
+
+    <!-- Product detail -->
+    <div v-else-if="product" class="product-detail-container">
+      <div class="product-detail-content">
         <!-- Galería de imágenes -->
-        <div class="modal-images">
+        <div class="product-images">
           <div class="main-image">
             <img
-              :src="selectedImage"
+              :src="'../' + selectedImage"
               :alt="`${product.name} - Vista ${currentImageIndex + 1} de ${totalImages}`"
             />
             <!-- Flechas de navegación -->
@@ -64,17 +60,17 @@
               :aria-label="`Ver imagen ${index + 1} de ${totalImages}`"
               :aria-current="selectedImage === image ? 'true' : 'false'"
             >
-              <img :src="image" :alt="`${product.name} - miniatura ${index + 1}`" />
+              <img :src="'../' + image" :alt="`${product.name} - miniatura ${index + 1}`" />
             </button>
           </div>
         </div>
 
         <!-- Info producto -->
-        <div class="modal-info">
+        <div class="product-detail">
           <div class="product-header">
-            <h2 class="product-title">
+            <h1 class="product-title">
               {{ variantsStore.getProductFullName(product) }}
-            </h2>
+            </h1>
             <span class="product-category">{{ product.category }}</span>
           </div>
 
@@ -110,12 +106,9 @@
       </div>
 
       <!-- Botones -->
-      <div class="buttons-modal">
-        <!-- Botón para ir a la página del producto -->
-        <button @click="navigateToProductPage" class="view-product-page-btn">
-          Ver página completa del producto
-        </button>
-
+      <div class="buttons-detail">
+        <!-- Botón volver a tienda -->
+        <button @click="navigateToShop" class="back-to-shop">Volver a la tienda</button>
         <div v-if="cartStore.isInCart(product)" class="quantity-controls">
           <button
             class="quantity-btn"
@@ -142,7 +135,6 @@
             Quitar del carrito
           </button>
         </div>
-
         <button
           v-else
           class="add-to-cart-btn"
@@ -156,27 +148,46 @@
         </button>
       </div>
     </div>
-  </div>
+  </main>
+
+  <Footer />
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
-import { useProductModalStore } from '@/stores/productModalStore'
+import { ref, computed, watch, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { usePageMeta } from '@/composables/usePageMeta'
+import { useProducts } from '@/composables/useProducts'
 import { useCartStore } from '@/stores/cartStore'
 import { useProductVariantsStore } from '@/stores/productVariantsStore'
-import ProductVariants from './ProductVariants_comp.vue'
-import { QUANTITY_LIMITS, getProductSlug } from '@/utils/helpers'
+import Header from '../components/Header_comp.vue'
+import Footer from '../components/Footer_comp.vue'
+import ProductVariants from '../components/ProductVariants_comp.vue'
+import { QUANTITY_LIMITS, getProductIdFromSlug, getProductUrl } from '@/utils/helpers'
 
-const productModalStore = useProductModalStore()
+const route = useRoute()
+const router = useRouter()
+const { products, loadProducts, loading: productsLoading } = useProducts()
 const cartStore = useCartStore()
 const variantsStore = useProductVariantsStore()
 
 const selectedImage = ref('')
 const currentImageIndex = ref(0)
+const loading = ref(true)
+const error = ref(null)
 
-const product = computed(() => productModalStore.selectedProduct)
+// Obtener producto desde slug
+const product = computed(() => {
+  const slug = route.params.slug
+  if (!slug || !products.value.length) return null
 
-// Computada para obtener el total de imágenes
+  const productId = getProductIdFromSlug(slug)
+  if (!productId) return null
+
+  return products.value.find((p) => p.id === productId)
+})
+
+// Total de imágenes
 const totalImages = computed(() => {
   if (product.value && product.value.images && product.value.images.length > 0) {
     return product.value.images.length
@@ -190,23 +201,34 @@ const isMaxQuantityReached = computed(() => {
   return cartStore.getItemQuantity(product.value) >= QUANTITY_LIMITS.MAX
 })
 
-// Actualizar imagen seleccionada cuando cambie el producto
+// Características actuales del producto (incluyendo variantes)
+const currentFeatures = computed(() => {
+  if (product.value) {
+    return variantsStore.getProductFeatures(product.value)
+  }
+  return []
+})
+
+// Meta tags dinámicos SEO
 watch(
   product,
   (newProduct) => {
-    currentImageIndex.value = 0
-    if (newProduct && newProduct.images && newProduct.images.length > 0) {
-      selectedImage.value = newProduct.images[0]
-    } else if (newProduct && newProduct.img) {
-      selectedImage.value = newProduct.img
+    if (newProduct) {
+      const productUrl = getProductUrl(newProduct, import.meta.env.VITE_APP_URL)
+      const imageUrl = newProduct.images?.[0] || newProduct.img
+
+      usePageMeta({
+        title: `${newProduct.name} | Hackeed`,
+        description:
+          newProduct.longDesc || newProduct.desc || `Compra ${newProduct.name} en Hackeed`,
+        url: productUrl,
+        image: imageUrl,
+        type: 'product',
+      })
     }
   },
   { immediate: true }
 )
-
-const closeModal = () => {
-  productModalStore.closeModal()
-}
 
 // Funciones de navegación de imágenes
 const selectImage = (index) => {
@@ -231,13 +253,10 @@ const previousImage = () => {
   }
 }
 
-// Características actuales del producto (incluyendo variantes)
-const currentFeatures = computed(() => {
-  if (product.value) {
-    return variantsStore.getProductFeatures(product.value)
-  }
-  return []
-})
+const onVariantChanged = (variantData) => {
+  // Manejar cambio de variante si es necesario
+  console.log('Variant changed:', variantData)
+}
 
 const addToCart = () => {
   if (product.value && variantsStore.isProductAvailable(product.value)) {
@@ -259,27 +278,32 @@ const removeFromCart = () => {
   }
 }
 
-// Navegar a la página del producto
-const navigateToProductPage = () => {
-  if (!product.value) return
-  const slug = getProductSlug(product.value)
-  window.location.href = `/product/${slug}`
+const navigateToShop = () => {
+  window.location.href = '/shop'
 }
 
-// Cerrar modal con tecla Escape
-const handleEscapeKey = (e) => {
-  if (e.key === 'Escape' && productModalStore.isModalOpen) {
-    closeModal()
+// Cargar productos al montar
+onMounted(async () => {
+  loading.value = true
+  try {
+    await loadProducts()
+
+    // Verificar que el producto existe
+    if (!product.value) {
+      error.value = 'El producto que buscas no existe o ya no está disponible.'
+    } else {
+      // Inicializar imagen cuando el producto está cargado
+      if (product.value.images && product.value.images.length > 0) {
+        selectedImage.value = product.value.images[0]
+      } else if (product.value.img) {
+        selectedImage.value = product.value.img
+      }
+    }
+  } catch (e) {
+    error.value = 'Error al cargar el producto. Por favor, intenta nuevamente.'
+    console.error('Error loading product:', e)
+  } finally {
+    loading.value = false
   }
-}
-
-// Añadir listener cuando el componente se monta
-onMounted(() => {
-  document.addEventListener('keydown', handleEscapeKey)
-})
-
-// Remover listener cuando el componente se desmonta (previene memory leaks)
-onUnmounted(() => {
-  document.removeEventListener('keydown', handleEscapeKey)
 })
 </script>

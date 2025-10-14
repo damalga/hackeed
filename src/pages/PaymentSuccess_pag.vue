@@ -146,7 +146,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStripe } from '@/composables/useStripe'
-import { getUserFriendlyMessage } from '../../utils/errorMessages'
+import { getUserFriendlyMessage } from '@/utils/helpers'
 
 export default {
   name: 'PaymentSuccess',

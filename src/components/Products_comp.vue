@@ -111,6 +111,7 @@ const displayedProducts = computed(() => {
 })
 
 const openProductModal = (product) => {
+  // Abrir modal como antes
   productModalStore.openModal(product)
 }
 

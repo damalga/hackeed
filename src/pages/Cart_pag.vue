@@ -149,7 +149,7 @@ import Header from '../components/Header_comp.vue'
 import Footer from '../components/Footer_comp.vue'
 import ConfirmModal from '../components/ConfirmModal_comp.vue'
 import { useCartStore } from '../stores/cartStore'
-import { QUANTITY_LIMITS } from '../../utils/helpers'
+import { QUANTITY_LIMITS } from '@/utils/helpers'
 import { ref, computed } from 'vue'
 
 // SEO Meta Tags - No indexar carrito

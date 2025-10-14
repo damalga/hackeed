@@ -3,8 +3,15 @@ import { SitemapStream, streamToPromise } from 'sitemap'
 import { Readable } from 'stream'
 import { writeFileSync } from 'fs'
 import { resolve } from 'path'
+import { neon } from '@netlify/neon'
+import dotenv from 'dotenv'
+import { getProductSlug } from '../src/utils/helpers.js'
+
+// Cargar variables de entorno
+dotenv.config()
 
 const baseUrl = 'https://hackeed.com'
+const sql = neon(process.env.DATABASE_URL)
 
 // Páginas estáticas del sitio
 const staticPages = [
@@ -40,36 +47,40 @@ const staticPages = [
   },
 ]
 
-// Páginas dinámicas (productos, categorías, etc.)
-// TODO: En el futuro, cargar desde la base de datos
-const dynamicPages = [
-  // Ejemplo de cómo añadir productos cuando tengas páginas individuales:
-  // {
-  //   url: '/producto/flipper-zero',
-  //   changefreq: 'weekly',
-  //   priority: 0.8,
-  //   lastmod: '2024-10-01',
-  //   img: [
-  //     {
-  //       url: 'https://hackeed.com/images/flipper_zero/flipper-zero.jpg',
-  //       title: 'Flipper Zero',
-  //       caption: 'Flipper Zero - Multiherramienta de pentesting',
-  //     }
-  //   ]
-  // },
+// Cargar productos desde la base de datos
+async function loadProductPages() {
+  try {
+    console.log('Cargando productos desde la base de datos...')
+    const products = await sql`
+      SELECT id, name, updated_at
+      FROM products
+      WHERE active = true
+      ORDER BY id
+    `
 
-  // Ejemplo de categorías (cuando las implementes):
-  // { url: '/categoria/raspberry-pi', changefreq: 'weekly', priority: 0.7 },
-  // { url: '/categoria/flipper-zero', changefreq: 'weekly', priority: 0.7 },
-  // { url: '/categoria/hak5', changefreq: 'weekly', priority: 0.7 },
-]
+    return products.map((product) => ({
+      url: `/product/${getProductSlug(product)}`,
+      changefreq: 'weekly',
+      priority: 0.8,
+      lastmod: product.updated_at || new Date().toISOString(),
+    }))
+  } catch (error) {
+    console.warn('⚠️  No se pudieron cargar productos desde la BD:', error.message)
+    console.warn('   Se generará sitemap solo con páginas estáticas')
+    return []
+  }
+}
 
 async function generateSitemap() {
   try {
-    console.log('Generando sitemap.xml...')
+    console.log('🗺️  Generando sitemap.xml...')
+
+    // Cargar páginas dinámicas de productos
+    const productPages = await loadProductPages()
+    console.log(`✓ ${productPages.length} productos cargados`)
 
     // Combinar todas las páginas
-    const allPages = [...staticPages, ...dynamicPages]
+    const allPages = [...staticPages, ...productPages]
 
     // Crear stream de sitemap
     const stream = new SitemapStream({ hostname: baseUrl })
@@ -94,11 +105,13 @@ async function generateSitemap() {
     const outputPath = resolve('./public/sitemap.xml')
     writeFileSync(outputPath, xmlString)
 
-    console.log('Sitemap generado exitosamente en /public/sitemap.xml')
-    console.log(`Total de URLs: ${allPages.length}`)
-    console.log('\nURLs incluidas:')
+    console.log('\n✅ Sitemap generado exitosamente en /public/sitemap.xml')
+    console.log(`📊 Total de URLs: ${allPages.length}`)
+    console.log(`   - Páginas estáticas: ${staticPages.length}`)
+    console.log(`   - Páginas de productos: ${productPages.length}`)
+    console.log('\n📝 URLs incluidas:')
     allPages.forEach((page) => {
-      console.log(`- ${baseUrl}${page.url} (prioridad: ${page.priority})`)
+      console.log(`   ${baseUrl}${page.url} (prioridad: ${page.priority})`)
     })
     console.log('')
   } catch (error) {

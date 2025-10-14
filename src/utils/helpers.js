@@ -66,9 +66,80 @@ export function calculateCartTotals(items, options = {}) {
 }
 
 // Validar cantidad de producto
-export function validateQuantity(quantity, max = 99) {
+export function validateQuantity(quantity, max = 10) {
   const qty = parseInt(quantity) || 1
   return Math.max(1, Math.min(max, qty))
+}
+
+/**
+ * 🔗 SEO / URL HELPERS
+ * Funciones para generar URLs y slugs SEO-friendly
+ */
+
+// Generar slug SEO-friendly desde texto
+export function generateSlug(text) {
+  if (!text) return ''
+
+  return text
+    .toLowerCase()
+    .trim()
+    // Reemplazar caracteres especiales españoles
+    .replace(/á/g, 'a')
+    .replace(/é/g, 'e')
+    .replace(/í/g, 'i')
+    .replace(/ó/g, 'o')
+    .replace(/ú/g, 'u')
+    .replace(/ñ/g, 'n')
+    .replace(/ü/g, 'u')
+    // Reemplazar espacios y caracteres no alfanuméricos con guiones
+    .replace(/[^a-z0-9]+/g, '-')
+    // Eliminar guiones al inicio y final
+    .replace(/^-+|-+$/g, '')
+}
+
+// Generar slug de producto (nombre + id para unicidad)
+export function getProductSlug(product) {
+  if (!product) return ''
+  const nameSlug = generateSlug(product.name)
+  return `${nameSlug}-${product.id}`
+}
+
+// Extraer ID de producto desde slug (soporta UUIDs)
+export function getProductIdFromSlug(slug) {
+  if (!slug) return null
+
+  // El slug tiene formato: nombre-producto-UUID
+  // Necesitamos extraer el UUID al final
+  // UUID formato: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (5 grupos separados por guiones)
+
+  const parts = slug.split('-')
+
+  // Si tiene al menos 5 partes al final que parecen UUID, reconstruirlo
+  if (parts.length >= 5) {
+    // Los últimos 5 elementos forman el UUID
+    const uuidParts = parts.slice(-5)
+
+    // Verificar que tienen el formato correcto de UUID
+    if (
+      uuidParts[0].length === 8 &&
+      uuidParts[1].length === 4 &&
+      uuidParts[2].length === 4 &&
+      uuidParts[3].length === 4 &&
+      uuidParts[4].length === 12
+    ) {
+      return uuidParts.join('-')
+    }
+  }
+
+  // Fallback: intentar parsear como número (para compatibilidad futura)
+  const id = parseInt(parts[parts.length - 1])
+  return isNaN(id) ? null : id
+}
+
+// Generar URL completa de producto
+export function getProductUrl(product, baseUrl = '') {
+  const slug = getProductSlug(product)
+  return `${baseUrl}/product/${slug}`
 }
 
 /**
@@ -342,5 +413,104 @@ export const DEFAULT_CONFIG = {
   STANDARD_SHIPPING_COST: 5.99,
   EXPRESS_SHIPPING_COST: 12.99,
   TAX_RATE: 0.21, // 21% IVA
-  MAX_QUANTITY_PER_ITEM: 99
+  MIN_QUANTITY_PER_ITEM: 1,
+  MAX_QUANTITY_PER_ITEM: 10
+}
+
+// Límites de cantidad para validación
+export const QUANTITY_LIMITS = {
+  MIN: 1,
+  MAX: 10,
+  DEFAULT: 1
+}
+
+/**
+ * ⚠️ ERROR HANDLING
+ * Funciones para manejar errores de forma consistente
+ */
+
+// Categorías de errores
+export const ERROR_CATEGORIES = {
+  NETWORK: 'network',
+  VALIDATION: 'validation',
+  STRIPE: 'stripe',
+  SERVER: 'server',
+  UNKNOWN: 'unknown'
+}
+
+// Categorizar error basado en su tipo
+export function categorizeError(error) {
+  if (!error) return ERROR_CATEGORIES.UNKNOWN
+
+  const message = error.message?.toLowerCase() || ''
+
+  // Network errors
+  if (message.includes('fetch') || message.includes('network') || message.includes('conexión')) {
+    return ERROR_CATEGORIES.NETWORK
+  }
+
+  // Validation errors
+  if (message.includes('validación') || message.includes('inválido') || message.includes('requerido')) {
+    return ERROR_CATEGORIES.VALIDATION
+  }
+
+  // Stripe errors
+  if (message.includes('stripe') || message.includes('pago') || message.includes('checkout')) {
+    return ERROR_CATEGORIES.STRIPE
+  }
+
+  // Server errors
+  if (message.includes('server') || message.includes('servidor') || message.includes('http')) {
+    return ERROR_CATEGORIES.SERVER
+  }
+
+  return ERROR_CATEGORIES.UNKNOWN
+}
+
+// Obtener mensaje amigable para el usuario
+export function getUserFriendlyMessage(error) {
+  if (!error) return 'Ha ocurrido un error desconocido'
+
+  const category = categorizeError(error)
+  const originalMessage = error.message || 'Error desconocido'
+
+  // Mensajes amigables por categoría
+  const friendlyMessages = {
+    [ERROR_CATEGORIES.NETWORK]: 'Problema de conexión. Verifica tu conexión a internet e intenta nuevamente.',
+    [ERROR_CATEGORIES.VALIDATION]: originalMessage, // Los mensajes de validación suelen ser claros
+    [ERROR_CATEGORIES.STRIPE]: 'Hubo un problema con el sistema de pagos. Por favor intenta nuevamente.',
+    [ERROR_CATEGORIES.SERVER]: 'Error en el servidor. Por favor intenta nuevamente en unos momentos.',
+    [ERROR_CATEGORIES.UNKNOWN]: 'Ha ocurrido un error inesperado. Por favor intenta nuevamente.'
+  }
+
+  return friendlyMessages[category] || originalMessage
+}
+
+// Manejar y registrar errores
+export function handleError(error, context = '') {
+  const category = categorizeError(error)
+  const timestamp = new Date().toISOString()
+
+  // Log detallado en desarrollo
+  if (process.env.NODE_ENV === 'development') {
+    console.group(`❌ Error ${context ? `[${context}]` : ''}`)
+    console.error('Timestamp:', timestamp)
+    console.error('Category:', category)
+    console.error('Message:', error.message)
+    console.error('Stack:', error.stack)
+    console.groupEnd()
+  } else {
+    // Log simplificado en producción
+    console.error(`Error [${context}]:`, error.message)
+  }
+
+  // Aquí podrías enviar errores a un servicio de tracking como Sentry
+  // sendErrorToTracking(error, context, category)
+
+  return {
+    category,
+    message: error.message,
+    friendlyMessage: getUserFriendlyMessage(error),
+    timestamp
+  }
 }
