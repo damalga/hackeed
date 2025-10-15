@@ -3,14 +3,6 @@
   publish = "dist"
   environment = { SECRETS_SCAN_OMIT_KEYS = "VITE_STRIPE_PUBLISHABLE_KEY" }
 
-# Build para staging (rama staging)
-[context.staging]
-  command = "pnpm run build"
-
-# Build para producción (rama main)
-[context.production]
-  command = "pnpm run build"
-
 [dev]
   command = "pnpm run dev"
   port = 8888
@@ -20,6 +12,11 @@
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
 
 [[headers]]
   for = "/.netlify/functions/*"

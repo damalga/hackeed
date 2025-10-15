@@ -1,6 +1,6 @@
 @use '_colors.scss' as *;
 
-// Product modal style
+// Product modal
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -18,11 +18,10 @@
 .modal-content {
   background: var(--bg-secondary);
   border: 1px solid var(--border-primary);
-  max-width: 56.25rem;
+  max-width: 60rem;
   width: 100%;
-  max-height: 90vh;
+  height: 80vh;
   overflow-y: auto;
-  position: relative;
   box-shadow: 0 8px 32px var(--shadow-dark);
   .modal-close {
     position: absolute;
@@ -43,8 +42,9 @@
   .modal-body {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2.5rem;
-    padding: 2.5rem;
+    gap: 1.6rem;
+    padding: 1.6rem 1.6rem 8rem;
+    position: relative;
   }
 
   // Product images section
@@ -67,7 +67,7 @@
         max-width: 100%;
         max-height: 100%;
         object-fit: contain;
-        filter: brightness(1.1);
+        filter: brightness(1.02);
       }
 
       // Flechas de navegación de imágenes
@@ -236,9 +236,19 @@
   }
 }
 
-// Cart controls
-.cart-controls {
+// Botones
+.buttons-modal {
+  background-color: var(--bg-secondary);
   margin-top: auto;
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  left: 25%;
+  bottom: 10vh;
+  width: 50%;
+  padding: 1.6rem;
+  gap: 1.6rem;
+  border: 1px solid var(--border-primary);
 }
 
 .quantity-controls {
@@ -281,6 +291,24 @@
 .remove-btn {
   @include button-danger;
   flex: 1;
+}
+
+// Botón para ver página completa del producto
+.view-product-page-btn {
+  @include button-secondary;
+  width: 100%;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+}
+
+// Botón para volver a la tienda (solo en página de producto)
+.back-to-shop {
+  @include button-primary;
+  width: 100%;
+  text-decoration: none;
+  display: block;
+  text-align: center;
 }
 
 // Responsive design

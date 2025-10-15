@@ -52,6 +52,7 @@
                     @click="cartStore.updateQuantity(item.cartItemId, item.quantity + 1)"
                     aria-label="Aumentar cantidad de {{ item.name }}"
                     :aria-describedby="`quantity-${item.cartItemId}`"
+                    :disabled="isMaxQuantity(item.quantity)"
                   >
                     +
                   </button>
@@ -109,9 +110,7 @@
               <router-link to="/shop" class="continue-shopping"> Continuar comprando </router-link>
 
               <!-- Mensaje de error si hay problemas con Stripe -->
-              <div v-if="cartStore.error" class="checkout-error">
-                ⚠️ {{ cartStore.error }}
-              </div>
+              <div v-if="cartStore.error" class="checkout-error">⚠️ {{ cartStore.error }}</div>
             </div>
           </div>
         </div>
@@ -150,6 +149,8 @@ import Header from '../components/Header_comp.vue'
 import Footer from '../components/Footer_comp.vue'
 import ConfirmModal from '../components/ConfirmModal_comp.vue'
 import { useCartStore } from '../stores/cartStore'
+import { QUANTITY_LIMITS } from '@/utils/helpers'
+import { ref, computed } from 'vue'
 
 // SEO Meta Tags - No indexar carrito
 usePageMeta({
@@ -158,12 +159,14 @@ usePageMeta({
   robots: 'noindex, nofollow', // No queremos que se indexe el carrito
   url: 'https://hackeed.com/cart',
 })
-import { ref } from 'vue'
 
 const cartStore = useCartStore()
 const showConfirmModal = ref(false)
 const showRemoveItemModal = ref(false)
 const itemToRemove = ref(null)
+
+// Función para verificar si se alcanzó el máximo en un item
+const isMaxQuantity = (quantity) => quantity >= QUANTITY_LIMITS.MAX
 
 const confirmClearCart = () => {
   showConfirmModal.value = true

@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { ref, computed, watch } from "vue";
 import { loadStripe } from '@stripe/stripe-js';
 import { useProductVariantsStore } from "./productVariantsStore";
-import { handleError, getUserFriendlyMessage, ERROR_CATEGORIES } from "../../utils/errorMessages";
+import { handleError, getUserFriendlyMessage, ERROR_CATEGORIES, QUANTITY_LIMITS, validateQuantity } from "@/utils/helpers";
 
 export const useCartStore = defineStore("cart", () => {
   // Cargar datos del localStorage al inicializar
@@ -138,7 +138,21 @@ export const useCartStore = defineStore("cart", () => {
       if (quantity <= 0) {
         removeFromCart(cartItemId);
       } else {
-        item.quantity = quantity;
+        // Validar cantidad usando la función helper
+        const validatedQuantity = validateQuantity(quantity, QUANTITY_LIMITS.MAX);
+
+        // Mostrar warning si se excede el límite
+        if (quantity > QUANTITY_LIMITS.MAX) {
+          console.warn(`⚠️ Cantidad excede el límite máximo de ${QUANTITY_LIMITS.MAX} unidades por producto`);
+          error.value = `Máximo ${QUANTITY_LIMITS.MAX} unidades por producto`;
+
+          // Limpiar el error después de 3 segundos
+          setTimeout(() => {
+            error.value = null;
+          }, 3000);
+        }
+
+        item.quantity = validatedQuantity;
       }
     }
     // El watcher se encarga de guardar automáticamente
