@@ -93,15 +93,35 @@ export const useProductVariantsStore = defineStore('productVariants', () => {
 
     const productVariants = getProductVariants(product.id)
     const selectedOption = productVariants[product.variants.name] || product.variants.default
-    
+
     if (selectedOption) {
       const option = product.variants.options.find(opt => opt.id === selectedOption)
       if (option) {
-        return option.inStock
+        // Verificar stock: si existe campo 'stock', usarlo; si no, usar 'inStock'
+        return option.stock !== undefined ? option.stock > 0 : option.inStock
       }
     }
 
     return product.inStock
+  }
+
+  // Función para obtener el stock disponible de la variante seleccionada
+  const getVariantStock = (product) => {
+    if (!product.variants) {
+      return null // No hay variantes, no aplica
+    }
+
+    const productVariants = getProductVariants(product.id)
+    const selectedOption = productVariants[product.variants.name] || product.variants.default
+
+    if (selectedOption) {
+      const option = product.variants.options.find(opt => opt.id === selectedOption)
+      if (option) {
+        return option.stock !== undefined ? option.stock : null
+      }
+    }
+
+    return null
   }
 
   // Función para obtener la opción seleccionada completa
@@ -140,7 +160,7 @@ export const useProductVariantsStore = defineStore('productVariants', () => {
   return {
     // Estado
     selectedVariants,
-    
+
     // Getters/Actions
     getSelectedVariant,
     selectVariant,
@@ -149,6 +169,7 @@ export const useProductVariantsStore = defineStore('productVariants', () => {
     getProductFullName,
     getProductFeatures,
     isProductAvailable,
+    getVariantStock,
     getSelectedOption,
     initializeProductDefaults,
     clearProductVariants,

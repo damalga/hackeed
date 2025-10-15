@@ -1,6 +1,11 @@
 <template>
   <section class="hero">
     <div class="hero-container">
+      <!-- Image section -->
+      <div class="hero-image">
+        <img src="../../public/images/hero/1200x1200-standard.png" alt="Hero Image" class="hero-img" />
+      </div>
+
       <!-- Text section -->
       <div class="hero-text">
         <h1 class="hero-title">Bienvenido a Hackeed</h1>
@@ -11,11 +16,6 @@
         <button class="hero-cta">
           <router-link to="/shop"> Explorar Productos </router-link>
         </button>
-      </div>
-
-      <!-- Image section -->
-      <div class="hero-image">
-        <!--<img src="/hero-image.jpg" alt="Hero Image" class="hero-img" />-->
       </div>
     </div>
   </section>

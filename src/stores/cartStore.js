@@ -87,6 +87,15 @@ export const useCartStore = defineStore("cart", () => {
   const addToCart = (product) => {
     const variantsStore = useProductVariantsStore();
 
+    // Verificar disponibilidad del producto antes de agregarlo
+    if (!variantsStore.isProductAvailable(product)) {
+      error.value = 'Este producto no está disponible';
+      setTimeout(() => {
+        error.value = null;
+      }, 3000);
+      return false;
+    }
+
     // Crear un identificador único que incluya las variantes
     const cartItemId = getCartItemId(product);
 
@@ -95,6 +104,27 @@ export const useCartStore = defineStore("cart", () => {
     );
 
     if (existingItem) {
+      // Verificar stock antes de incrementar
+      const variantStock = variantsStore.getVariantStock(product);
+
+      // Si hay stock numérico, validar contra él
+      if (variantStock !== null && existingItem.quantity >= variantStock) {
+        error.value = `Stock máximo alcanzado (${variantStock} unidades disponibles)`;
+        setTimeout(() => {
+          error.value = null;
+        }, 3000);
+        return false;
+      }
+
+      // También validar contra el límite de cantidad por seguridad
+      if (existingItem.quantity >= QUANTITY_LIMITS.MAX) {
+        error.value = `Máximo ${QUANTITY_LIMITS.MAX} unidades por producto`;
+        setTimeout(() => {
+          error.value = null;
+        }, 3000);
+        return false;
+      }
+
       existingItem.quantity += 1;
     } else {
       // Obtener precio y nombre con variantes
@@ -120,6 +150,7 @@ export const useCartStore = defineStore("cart", () => {
       });
     }
     // El watcher se encarga de guardar automáticamente
+    return true;
   };
 
   const removeFromCart = (cartItemId) => {
