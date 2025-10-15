@@ -1,10 +1,11 @@
 [build]
   command = "pnpm run build"
   publish = "dist"
+  environment = { SECRETS_SCAN_OMIT_KEYS = "VITE_STRIPE_PUBLISHABLE_KEY" }
 
 # Build para staging (rama staging)
 [context.staging]
-  command = "pnpm run build:staging"
+  command = "pnpm run build"
 
 # Build para producción (rama main)
 [context.production]
