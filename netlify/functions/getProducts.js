@@ -37,13 +37,27 @@ export async function handler() {
         // Parse variants if needed
         let variants = product.variants ? (typeof product.variants === 'string' ? JSON.parse(product.variants) : product.variants) : null;
 
-        // Si el producto tiene variantes, sincronizar inStock de cada opción con el stock de la BD
+        // Calcular disponibilidad del producto
+        let productInStock;
+
         if (variants && variants.options) {
-          const stockAvailable = product.stock > 0;
+          // Si tiene variantes, el producto está disponible si al menos una variante tiene stock
+          productInStock = variants.options.some(option => {
+            // Si la opción tiene campo 'stock', usarlo; si no, mantener compatibilidad con 'inStock'
+            return option.stock ? option.stock > 0 : option.inStock === true;
+          });
+
+          // Asegurar que cada opción tenga el campo 'inStock' calculado desde 'stock'
           variants.options = variants.options.map(option => ({
             ...option,
-            inStock: stockAvailable
+            // Mantener el stock numérico si existe
+            stock: option.stock !== undefined ? option.stock : (option.inStock ? 999 : 0),
+            // Calcular inStock desde stock para compatibilidad
+            inStock: option.stock !== undefined ? option.stock > 0 : option.inStock === true
           }));
+        } else {
+          // Si NO tiene variantes, usar el stock general del producto
+          productInStock = product.stock > 0;
         }
 
         const transformed = {
@@ -57,7 +71,7 @@ export async function handler() {
           price: product.price_cents ? product.price_cents / 100 : 0,
           category: product.category,
           brand: product.brand,
-          inStock: product.stock > 0,
+          inStock: productInStock,
           features: product.features ? (typeof product.features === 'string' ? JSON.parse(product.features) : product.features) : [],
           variants: variants,
           createdAt: product.created_at
