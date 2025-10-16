@@ -1,0 +1,158 @@
+// =============================================================================
+// ERROR PAGES STYLES (404, 500, etc.)
+// =============================================================================
+
+.error-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.error-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: var(--bg-primary);
+}
+
+.error-content {
+  max-width: 600px;
+  text-align: center;
+  width: 100%;
+}
+
+.error-code {
+  font-size: 120px;
+  font-weight: 900;
+  line-height: 1;
+  margin: 0;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.error-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 20px 0 15px;
+}
+
+.error-description {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0 0 30px;
+}
+
+// Actions (botones)
+.error-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.error-btn {
+  padding: 12px 30px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+
+  &--primary {
+    background: var(--accent-primary);
+    color: var(--bg-primary);
+
+    &:hover {
+      background: var(--accent-secondary);
+    }
+  }
+
+  &--secondary {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 2px solid var(--border-primary);
+
+    &:hover {
+      border-color: var(--accent-primary);
+      background: var(--bg-tertiary);
+    }
+  }
+}
+
+// Ayuda/contacto
+.error-help {
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border-primary);
+}
+
+.error-help-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.error-contact-link {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--accent-primary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: var(--accent-secondary);
+    text-decoration: underline;
+  }
+}
+
+// =============================================================================
+// RESPONSIVE
+// =============================================================================
+
+@media (max-width: 768px) {
+  .error-code {
+    font-size: 80px;
+  }
+
+  .error-title {
+    font-size: 24px;
+  }
+
+  .error-description {
+    font-size: 14px;
+  }
+
+  .error-actions {
+    flex-direction: column;
+    align-items: stretch;
+
+    .error-btn {
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .error-container {
+    padding: 30px 15px;
+  }
+
+  .error-code {
+    font-size: 60px;
+  }
+
+  .error-title {
+    font-size: 20px;
+  }
+}
