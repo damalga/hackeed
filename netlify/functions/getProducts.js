@@ -2,10 +2,10 @@ import { neon } from '@netlify/neon';
 
 export async function handler() {
   try {
-    console.log('Starting getProducts function');
+    console.log('getProducts: Starting function');
     const sql = neon();
 
-    console.log('Executing SQL query');
+    console.log('getProducts: Executing SQL query');
     const rows = await sql`
       SELECT
         id,
@@ -28,35 +28,35 @@ export async function handler() {
       ORDER BY created_at DESC
     `;
 
-    console.log(`Found ${rows.length} products`);
-    console.log('Sample product:', rows[0]);
+    console.log(`getProducts: Found ${rows.length} products`);
+    console.log('getProducts: Sample product:', rows[0]);
 
-    // Transform the data to match frontend expectations
+    // Transform data to match frontend schema
     const products = rows.map((product, index) => {
       try {
         // Parse variants if needed
         let variants = product.variants ? (typeof product.variants === 'string' ? JSON.parse(product.variants) : product.variants) : null;
 
-        // Calcular disponibilidad del producto
+        // Calculate product availability
         let productInStock;
 
         if (variants && variants.options) {
-          // Si tiene variantes, el producto está disponible si al menos una variante tiene stock
+          // Product available if at least one variant has stock
           productInStock = variants.options.some(option => {
-            // Si la opción tiene campo 'stock', usarlo; si no, mantener compatibilidad con 'inStock'
+            // Use stock field if available, otherwise fallback to inStock boolean
             return option.stock ? option.stock > 0 : option.inStock === true;
           });
 
-          // Asegurar que cada opción tenga el campo 'inStock' calculado desde 'stock'
+          // Ensure each option has inStock field calculated from stock
           variants.options = variants.options.map(option => ({
             ...option,
-            // Mantener el stock numérico si existe
+            // Preserve numeric stock if exists
             stock: option.stock !== undefined ? option.stock : (option.inStock ? 999 : 0),
-            // Calcular inStock desde stock para compatibilidad
+            // Calculate inStock from stock for compatibility
             inStock: option.stock !== undefined ? option.stock > 0 : option.inStock === true
           }));
         } else {
-          // Si NO tiene variantes, usar el stock general del producto
+          // No variants: use general product stock
           productInStock = product.stock > 0;
         }
 
@@ -77,7 +77,7 @@ export async function handler() {
           createdAt: product.created_at
         };
 
-        console.log(`Transformed product ${index}:`, {
+        console.log(`getProducts: Transformed product ${index}:`, {
           id: transformed.id,
           name: transformed.name,
           hasImages: transformed.images.length > 0,
@@ -87,13 +87,13 @@ export async function handler() {
 
         return transformed;
       } catch (transformErr) {
-        console.error(`Error transforming product ${index}:`, transformErr);
-        console.error('Raw product data:', product);
+        console.error(`getProducts: Error transforming product ${index}:`, transformErr);
+        console.error('getProducts: Raw product data:', product);
         throw transformErr;
       }
     });
 
-    console.log(`Successfully transformed ${products.length} products`);
+    console.log(`getProducts: Successfully transformed ${products.length} products`);
 
     return {
       statusCode: 200,
@@ -104,8 +104,8 @@ export async function handler() {
       }
     };
   } catch (err) {
-    console.error('Error in getProducts function:', err);
-    console.error('Error stack:', err.stack);
+    console.error('getProducts: Function error:', err);
+    console.error('getProducts: Error stack:', err.stack);
     return {
       statusCode: 500,
       body: JSON.stringify({

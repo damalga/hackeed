@@ -16,7 +16,7 @@ export async function handler(event) {
   try {
     stripeEvent = stripe.webhooks.constructEvent(event.body, sig, webhookSecret);
   } catch (err) {
-    console.error('❌ Firma inválida:', err.message);
+    console.error('Invalid signature:', err.message);
     return { statusCode: 400, body: `Webhook Error: ${err.message}` };
   }
 
@@ -24,41 +24,93 @@ export async function handler(event) {
     if (stripeEvent.type === 'checkout.session.completed') {
       const session = stripeEvent.data.object;
 
-      // Traemos los line items con el Product expandido para leer metadata
+      // Fetch line items with expanded product metadata
       const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
         expand: ['data.price.product']
       });
 
-      // Agrupar cantidades por product_id (por si se repite)
-      const qtyByProduct = new Map();
+      // Process each line item
       for (const li of lineItems.data) {
         const prod = li.price?.product;
-        const productId = prod?.metadata?.product_id; // <- viene de tu checkout
+        const productId = prod?.metadata?.product_id;
+        const variantOptionId = prod?.metadata?.variant_option_id;
         const qty = li.quantity || 0;
 
         if (!productId) {
-          console.warn('⚠️ line_item sin product_id en metadata. Nombre:', prod?.name);
+          console.warn('line_item without product_id in metadata. Name:', prod?.name);
           continue;
         }
 
-        qtyByProduct.set(productId, (qtyByProduct.get(productId) || 0) + qty);
-      }
+        // Update variant-specific stock if product has variants
+        if (variantOptionId) {
+          console.log('Processing product with variant:', productId, 'variant:', variantOptionId, 'qty:', qty);
 
-      // Descontar stock para cada product_id
-      for (const [productId, qty] of qtyByProduct.entries()) {
-        await sql`
-          UPDATE products
-          SET stock = GREATEST(stock - ${qty}, 0)
-          WHERE id = ${productId}
-        `;
-        console.log(`✅ Stock actualizado: ${productId} -${qty}`);
+          // Fetch product with variants
+          const [product] = await sql`
+            SELECT variants
+            FROM products
+            WHERE id = ${productId}
+          `;
+
+          if (!product) {
+            console.error('Product not found:', productId);
+            continue;
+          }
+
+          // Parse variants
+          let variants = product.variants;
+          if (typeof variants === 'string') {
+            variants = JSON.parse(variants);
+          }
+
+          if (!variants || !variants.options) {
+            console.error('Product has no valid variants:', productId);
+            continue;
+          }
+
+          // Find and update specific variant option
+          let optionFound = false;
+          variants.options = variants.options.map(option => {
+            if (option.id === variantOptionId || option.name === variantOptionId) {
+              optionFound = true;
+              const newStock = Math.max((option.stock || 0) - qty, 0);
+              console.log('Variant stock updated:', option.name, 'from', option.stock, 'to', newStock);
+              return {
+                ...option,
+                stock: newStock,
+                inStock: newStock > 0
+              };
+            }
+            return option;
+          });
+
+          if (!optionFound) {
+            console.error('Variant not found:', variantOptionId, 'in product', productId);
+            continue;
+          }
+
+          // Update product with modified variants
+          await sql`
+            UPDATE products
+            SET variants = ${JSON.stringify(variants)}
+            WHERE id = ${productId}
+          `;
+
+          console.log('Variant stock updated in DB: product', productId, 'variant', variantOptionId, 'qty', -qty);
+
+        } else {
+          // No variants: update general stock
+          await sql`
+            UPDATE products
+            SET stock = GREATEST(stock - ${qty}, 0)
+            WHERE id = ${productId}
+          `;
+          console.log('General stock updated: product', productId, 'qty', -qty);
+        }
       }
-    } else {
-      // Otros eventos no los necesitamos ahora
-      // console.log('Evento ignorado:', stripeEvent.type);
     }
 
-    // Idempotencia básica: registra el evento y evita reprocesar
+    // Record event for idempotency
     await sql`
       INSERT INTO stripe_events (stripe_event_id, event_type, data, processed)
       VALUES (${stripeEvent.id}, ${stripeEvent.type}, ${JSON.stringify(stripeEvent.data)}, true)
@@ -67,7 +119,7 @@ export async function handler(event) {
 
     return { statusCode: 200, body: JSON.stringify({ received: true }) };
   } catch (err) {
-    console.error('❌ Error procesando webhook:', err);
+    console.error('Error processing webhook:', err);
     return { statusCode: 500, body: 'Webhook handler failed' };
   }
 }

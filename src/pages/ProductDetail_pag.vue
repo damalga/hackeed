@@ -255,7 +255,7 @@ const previousImage = () => {
 
 const onVariantChanged = (variantData) => {
   // Manejar cambio de variante si es necesario
-  console.log('Variant changed:', variantData)
+  console.log('ProductDetail: Variant changed:', variantData)
 }
 
 const addToCart = () => {
@@ -301,7 +301,7 @@ onMounted(async () => {
     }
   } catch (e) {
     error.value = 'Error al cargar el producto. Por favor, intenta nuevamente.'
-    console.error('Error loading product:', e)
+    console.error('ProductDetail: Error loading product:', e)
   } finally {
     loading.value = false
   }

@@ -50,7 +50,7 @@ const staticPages = [
 // Cargar productos desde la base de datos
 async function loadProductPages() {
   try {
-    console.log('Cargando productos desde la base de datos...')
+    console.log('Sitemap: Loading products from database')
     const products = await sql`
       SELECT id, name, updated_at
       FROM products
@@ -65,19 +65,19 @@ async function loadProductPages() {
       lastmod: product.updated_at || new Date().toISOString(),
     }))
   } catch (error) {
-    console.warn('⚠️  No se pudieron cargar productos desde la BD:', error.message)
-    console.warn('   Se generará sitemap solo con páginas estáticas')
+    console.warn('Sitemap: Could not load products from database:', error.message)
+    console.warn('Sitemap: Generating sitemap with static pages only')
     return []
   }
 }
 
 async function generateSitemap() {
   try {
-    console.log('🗺️  Generando sitemap.xml...')
+    console.log('Sitemap: Generating sitemap.xml')
 
     // Cargar páginas dinámicas de productos
     const productPages = await loadProductPages()
-    console.log(`✓ ${productPages.length} productos cargados`)
+    console.log(`Sitemap: Loaded ${productPages.length} products`)
 
     // Combinar todas las páginas
     const allPages = [...staticPages, ...productPages]
@@ -105,17 +105,17 @@ async function generateSitemap() {
     const outputPath = resolve('./public/sitemap.xml')
     writeFileSync(outputPath, xmlString)
 
-    console.log('\n✅ Sitemap generado exitosamente en /public/sitemap.xml')
-    console.log(`📊 Total de URLs: ${allPages.length}`)
-    console.log(`   - Páginas estáticas: ${staticPages.length}`)
-    console.log(`   - Páginas de productos: ${productPages.length}`)
-    console.log('\n📝 URLs incluidas:')
+    console.log('\nSitemap: Generated successfully at /public/sitemap.xml')
+    console.log(`Sitemap: Total URLs: ${allPages.length}`)
+    console.log(`Sitemap: Static pages: ${staticPages.length}`)
+    console.log(`Sitemap: Product pages: ${productPages.length}`)
+    console.log('\nSitemap: URLs included:')
     allPages.forEach((page) => {
-      console.log(`   ${baseUrl}${page.url} (prioridad: ${page.priority})`)
+      console.log(`  ${baseUrl}${page.url} (priority: ${page.priority})`)
     })
     console.log('')
   } catch (error) {
-    console.error('❌ Error generando sitemap:', error)
+    console.error('Sitemap: Generation error:', error)
     process.exit(1)
   }
 }

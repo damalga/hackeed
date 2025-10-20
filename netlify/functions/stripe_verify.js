@@ -15,17 +15,17 @@ export async function handler(event) {
   }
 
   try {
-    // 1. Recuperar sesión de Stripe
+    // Retrieve Stripe session
     const session = await stripe.checkout.sessions.retrieve(sessionId, {
       expand: ['payment_intent']
     });
 
-    // 2. Buscar orden en DB (si la guardas) o producto relacionado
+    // Fetch order from database
     const order = await sql`
       SELECT * FROM orders WHERE stripe_session_id = ${sessionId} LIMIT 1
     `;
 
-    // 3. Preparar respuesta
+    // Prepare response
     return {
       statusCode: 200,
       body: JSON.stringify({
@@ -41,7 +41,7 @@ export async function handler(event) {
     };
 
   } catch (err) {
-    console.error('Error verificando pago:', err);
+    console.error('stripe_verify: Payment verification error:', err);
     return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
   }
 }

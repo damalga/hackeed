@@ -5,7 +5,7 @@ import { useProductVariantsStore } from "./productVariantsStore";
 import { handleError, getUserFriendlyMessage, ERROR_CATEGORIES, QUANTITY_LIMITS, validateQuantity } from "@/utils/helpers";
 
 export const useCartStore = defineStore("cart", () => {
-  // Cargar datos del localStorage al inicializar
+  // Load cart data from localStorage on initialization
   const loadCartFromStorage = () => {
     try {
       const savedCart = localStorage.getItem('hackeed_cart');
@@ -16,7 +16,7 @@ export const useCartStore = defineStore("cart", () => {
     }
   };
 
-  // Guardar datos en localStorage
+  // Persist cart data to localStorage
   const saveCartToStorage = (cartItems) => {
     try {
       localStorage.setItem('hackeed_cart', JSON.stringify(cartItems));
@@ -25,42 +25,42 @@ export const useCartStore = defineStore("cart", () => {
     }
   };
 
-  // Estado del carrito
+  // Cart state
   const items = ref(loadCartFromStorage());
 
-  // Estado de Stripe
+  // Stripe state
   const loading = ref(false);
   const error = ref(null);
   const stripe = ref(null);
   const currency = ref('EUR');
 
-  // Configuración de Stripe con verificación
+  // Validate Stripe configuration
   const checkStripeConfig = () => {
     const publishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
 
     if (!publishableKey) {
-      console.error('❌ VITE_STRIPE_PUBLISHABLE_KEY no está configurada');
-      console.log('📋 Para configurar Stripe:');
-      console.log('1. Ve a https://dashboard.stripe.com/test/apikeys');
-      console.log('2. Copia tu Publishable key (pk_test_...)');
-      console.log('3. Agrega VITE_STRIPE_PUBLISHABLE_KEY=tu_clave en el archivo .env');
-      console.log('4. Reinicia el servidor de desarrollo');
+      console.error('VITE_STRIPE_PUBLISHABLE_KEY not configured');
+      console.log('To configure Stripe:');
+      console.log('1. Go to https://dashboard.stripe.com/test/apikeys');
+      console.log('2. Copy your Publishable key (pk_test_...)');
+      console.log('3. Add VITE_STRIPE_PUBLISHABLE_KEY=your_key in .env file');
+      console.log('4. Restart development server');
       return null;
     }
 
     if (!publishableKey.startsWith('pk_')) {
-      console.error('❌ VITE_STRIPE_PUBLISHABLE_KEY debe empezar con "pk_"');
+      console.error('VITE_STRIPE_PUBLISHABLE_KEY must start with "pk_"');
       return null;
     }
 
-    console.log('✅ Stripe configurado correctamente');
+    console.log('Stripe configured correctly');
     return publishableKey;
   };
 
   const publishableKey = checkStripeConfig();
   const stripePromise = publishableKey ? loadStripe(publishableKey) : null;
 
-  // Watcher para guardar cambios automáticamente
+  // Auto-save cart changes to localStorage
   watch(
     items,
     (newItems) => {
@@ -69,7 +69,7 @@ export const useCartStore = defineStore("cart", () => {
     { deep: true }
   );
 
-  // Getters (computadas)
+  // Computed getters
   const totalItems = computed(() => {
     return items.value.reduce((total, item) => total + item.quantity, 0);
   });
@@ -83,11 +83,11 @@ export const useCartStore = defineStore("cart", () => {
 
   const cartItems = computed(() => items.value);
 
-  // Actions (funciones)
+  // Cart actions
   const addToCart = (product) => {
     const variantsStore = useProductVariantsStore();
 
-    // Verificar disponibilidad del producto antes de agregarlo
+    // Verify product availability before adding
     if (!variantsStore.isProductAvailable(product)) {
       error.value = 'Este producto no está disponible';
       setTimeout(() => {
@@ -96,7 +96,7 @@ export const useCartStore = defineStore("cart", () => {
       return false;
     }
 
-    // Crear un identificador único que incluya las variantes
+    // Generate unique identifier including variants
     const cartItemId = getCartItemId(product);
 
     const existingItem = items.value.find(
@@ -104,10 +104,10 @@ export const useCartStore = defineStore("cart", () => {
     );
 
     if (existingItem) {
-      // Verificar stock antes de incrementar
+      // Verify stock before incrementing quantity
       const variantStock = variantsStore.getVariantStock(product);
 
-      // Si hay stock numérico, validar contra él
+      // Validate against numeric stock if available
       if (variantStock !== null && existingItem.quantity >= variantStock) {
         error.value = `Stock máximo alcanzado (${variantStock} unidades disponibles)`;
         setTimeout(() => {
@@ -116,7 +116,7 @@ export const useCartStore = defineStore("cart", () => {
         return false;
       }
 
-      // También validar contra el límite de cantidad por seguridad
+      // Validate against max quantity limit
       if (existingItem.quantity >= QUANTITY_LIMITS.MAX) {
         error.value = `Máximo ${QUANTITY_LIMITS.MAX} unidades por producto`;
         setTimeout(() => {
@@ -127,15 +127,15 @@ export const useCartStore = defineStore("cart", () => {
 
       existingItem.quantity += 1;
     } else {
-      // Obtener precio y nombre con variantes
+      // Get price and name with variants
       const finalPrice = variantsStore.getProductPrice(product);
       const fullName = variantsStore.getProductFullName(product);
       const selectedOption = variantsStore.getSelectedOption(product);
 
       items.value.push({
         id: product.id,
-        cartItemId: cartItemId, // ID único para el item en carrito
-        name: fullName, // nombre con variante incluida
+        cartItemId: cartItemId, // Unique ID for cart item
+        name: fullName, // Name including variant
         originalName: product.name,
         desc: product.desc,
         img: product.img,
@@ -149,7 +149,7 @@ export const useCartStore = defineStore("cart", () => {
           : null,
       });
     }
-    // El watcher se encarga de guardar automáticamente
+    // Auto-saved via watcher
     return true;
   };
 
@@ -160,7 +160,7 @@ export const useCartStore = defineStore("cart", () => {
     if (index > -1) {
       items.value.splice(index, 1);
     }
-    // El watcher se encarga de guardar automáticamente
+    // Auto-saved via watcher
   };
 
   const updateQuantity = (cartItemId, quantity) => {
@@ -169,15 +169,15 @@ export const useCartStore = defineStore("cart", () => {
       if (quantity <= 0) {
         removeFromCart(cartItemId);
       } else {
-        // Validar cantidad usando la función helper
+        // Validate quantity using helper function
         const validatedQuantity = validateQuantity(quantity, QUANTITY_LIMITS.MAX);
 
-        // Mostrar warning si se excede el límite
+        // Show warning if limit exceeded
         if (quantity > QUANTITY_LIMITS.MAX) {
-          console.warn(`⚠️ Cantidad excede el límite máximo de ${QUANTITY_LIMITS.MAX} unidades por producto`);
+          console.warn('Quantity exceeds maximum limit of', QUANTITY_LIMITS.MAX, 'units per product');
           error.value = `Máximo ${QUANTITY_LIMITS.MAX} unidades por producto`;
 
-          // Limpiar el error después de 3 segundos
+          // Clear error after 3 seconds
           setTimeout(() => {
             error.value = null;
           }, 3000);
@@ -186,15 +186,15 @@ export const useCartStore = defineStore("cart", () => {
         item.quantity = validatedQuantity;
       }
     }
-    // El watcher se encarga de guardar automáticamente
+    // Auto-saved via watcher
   };
 
   const clearCart = () => {
     items.value = [];
-    // El watcher se encarga de guardar automáticamente
+    // Auto-saved via watcher
   };
 
-  // Generar ID único para item del carrito (incluye variantes)
+  // Generate unique cart item ID (includes variants)
   const getCartItemId = (product) => {
     if (!product.variants) {
       return `${product.id}`;
@@ -208,36 +208,36 @@ export const useCartStore = defineStore("cart", () => {
     return `${product.id}-${variantString}`;
   };
 
-  // Verificar si un producto está en el carrito (con variantes específicas)
+  // Check if product with specific variants is in cart
   const isInCart = (product) => {
     const cartItemId = getCartItemId(product);
     return items.value.some((item) => item.cartItemId === cartItemId);
   };
 
-  // Obtener la cantidad de un producto específico en el carrito (con variantes)
+  // Get quantity of specific product in cart (with variants)
   const getItemQuantity = (product) => {
     const cartItemId = getCartItemId(product);
     const item = items.value.find((item) => item.cartItemId === cartItemId);
     return item ? item.quantity : 0;
   };
 
-  // ============= FUNCIONES DE STRIPE =============
+  // ============= STRIPE FUNCTIONS =============
 
-  // Inicializar Stripe
+  // Initialize Stripe
   const initStripe = async () => {
     try {
       if (!stripePromise) {
         throw new Error('Stripe no está configurado correctamente. Revisa la configuración de VITE_STRIPE_PUBLISHABLE_KEY');
       }
 
-      console.log('🔄 Inicializando Stripe...');
+      console.log('Initializing Stripe');
       stripe.value = await stripePromise;
 
       if (!stripe.value) {
         throw new Error('No se pudo cargar Stripe');
       }
 
-      console.log('✅ Stripe inicializado correctamente');
+      console.log('Stripe initialized successfully');
       return stripe.value;
     } catch (err) {
       handleError(err, 'Inicialización de Stripe');
@@ -246,22 +246,22 @@ export const useCartStore = defineStore("cart", () => {
     }
   };
 
-  // Crear sesión de checkout
+  // Create Stripe checkout session
   const createCheckoutSession = async (customerInfo = {}) => {
     loading.value = true;
     error.value = null;
 
     try {
-      console.log('🚀 Creando sesión de checkout...');
+      console.log('Creating checkout session');
       console.log('Cart items:', items.value);
       console.log('Customer info:', customerInfo);
 
-      // Verificar que hay items en el carrito
+      // Verify cart is not empty
       if (!items.value || items.value.length === 0) {
         throw new Error('El carrito está vacío');
       }
 
-      // Verificar configuración de Stripe
+      // Verify Stripe configuration
       if (!publishableKey) {
         throw new Error('Stripe no está configurado. Revisa las variables de entorno.');
       }
@@ -299,12 +299,12 @@ export const useCartStore = defineStore("cart", () => {
     }
   };
 
-  // Redirigir a Stripe Checkout
+  // Redirect to Stripe Checkout
   const redirectToCheckout = async (customerInfo = {}) => {
     try {
-      console.log('🔄 Iniciando redirección a checkout...');
+      console.log('Starting redirect to checkout');
 
-      // Verificar configuración antes de continuar
+      // Verify configuration before proceeding
       if (!publishableKey) {
         throw new Error('Stripe no está configurado. Revisa las variables de entorno VITE_STRIPE_PUBLISHABLE_KEY.');
       }
@@ -315,15 +315,13 @@ export const useCartStore = defineStore("cart", () => {
       }
 
       const session = await createCheckoutSession(customerInfo);
-      console.log('✅ Sesión creada, redirigiendo...', session.id);
+      console.log('Session created, redirecting. Session ID:', session.id);
 
       if (session.url) {
-        // Redirección directa usando la URL de la sesión (más confiable)
-        console.log('🔗 Redirigiendo a:', session.url);
+        console.log('Redirecting to:', session.url);
         window.location.href = session.url;
       } else {
-        // Fallback al método tradicional
-        console.log('🔗 Usando redirectToCheckout con session ID:', session.id);
+        console.log('Using redirectToCheckout with session ID:', session.id);
         const { error: redirectError } = await stripeInstance.redirectToCheckout({
           sessionId: session.id
         });
@@ -339,7 +337,7 @@ export const useCartStore = defineStore("cart", () => {
     }
   };
 
-  // Verificar estado de pago
+  // Verify payment status
   const verifyPayment = async (sessionId) => {
     try {
       const response = await fetch(`/.netlify/functions/stripe_verify?session_id=${sessionId}`);
@@ -357,7 +355,7 @@ export const useCartStore = defineStore("cart", () => {
     }
   };
 
-  // Formatear precio para mostrar
+  // Format price for display
   const formatPrice = (price, currencyCode = 'EUR') => {
     return new Intl.NumberFormat('es-ES', {
       style: 'currency',
@@ -366,20 +364,20 @@ export const useCartStore = defineStore("cart", () => {
   };
 
   return {
-    // Estado del carrito
+    // Cart state
     items,
 
-    // Estado de Stripe
+    // Stripe state
     loading,
     error,
     currency,
 
-    // Getters del carrito
+    // Cart getters
     totalItems,
     totalPrice,
     cartItems,
 
-    // Actions del carrito
+    // Cart actions
     addToCart,
     removeFromCart,
     updateQuantity,
@@ -388,7 +386,7 @@ export const useCartStore = defineStore("cart", () => {
     getItemQuantity,
     getCartItemId,
 
-    // Actions de Stripe
+    // Stripe actions
     initStripe,
     createCheckoutSession,
     redirectToCheckout,

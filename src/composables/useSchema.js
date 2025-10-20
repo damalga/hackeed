@@ -24,7 +24,7 @@ import { useHead } from '@vueuse/head'
  */
 export function useSchema(schema) {
   if (!schema) {
-    console.warn('[useSchema] No schema provided')
+    console.warn('useSchema: No schema provided')
     return
   }
 
