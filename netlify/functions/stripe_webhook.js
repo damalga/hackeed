@@ -29,11 +29,11 @@ export async function handler(event) {
         expand: ['data.price.product']
       });
 
-      // Agrupar cantidades por product_id (por si se repite)
-      const qtyByProduct = new Map();
+      // Procesar cada line item individualmente
       for (const li of lineItems.data) {
         const prod = li.price?.product;
-        const productId = prod?.metadata?.product_id; // <- viene de tu checkout
+        const productId = prod?.metadata?.product_id;
+        const variantOptionId = prod?.metadata?.variant_option_id;
         const qty = li.quantity || 0;
 
         if (!productId) {
@@ -41,17 +41,72 @@ export async function handler(event) {
           continue;
         }
 
-        qtyByProduct.set(productId, (qtyByProduct.get(productId) || 0) + qty);
-      }
+        // Si el producto tiene variante, actualizar el stock de la variante específica
+        if (variantOptionId) {
+          console.log(`📦 Procesando producto con variante: ${productId}, variante: ${variantOptionId}, qty: ${qty}`);
 
-      // Descontar stock para cada product_id
-      for (const [productId, qty] of qtyByProduct.entries()) {
-        await sql`
-          UPDATE products
-          SET stock = GREATEST(stock - ${qty}, 0)
-          WHERE id = ${productId}
-        `;
-        console.log(`✅ Stock actualizado: ${productId} -${qty}`);
+          // Obtener el producto actual con sus variantes
+          const [product] = await sql`
+            SELECT variants
+            FROM products
+            WHERE id = ${productId}
+          `;
+
+          if (!product) {
+            console.error(`❌ Producto ${productId} no encontrado`);
+            continue;
+          }
+
+          // Parsear variantes
+          let variants = product.variants;
+          if (typeof variants === 'string') {
+            variants = JSON.parse(variants);
+          }
+
+          if (!variants || !variants.options) {
+            console.error(`❌ Producto ${productId} no tiene variantes válidas`);
+            continue;
+          }
+
+          // Buscar y actualizar la opción específica
+          let optionFound = false;
+          variants.options = variants.options.map(option => {
+            if (option.id === variantOptionId || option.name === variantOptionId) {
+              optionFound = true;
+              const newStock = Math.max((option.stock || 0) - qty, 0);
+              console.log(`  ➡️ Variante "${option.name}": stock ${option.stock} → ${newStock}`);
+              return {
+                ...option,
+                stock: newStock,
+                inStock: newStock > 0
+              };
+            }
+            return option;
+          });
+
+          if (!optionFound) {
+            console.error(`❌ Variante ${variantOptionId} no encontrada en producto ${productId}`);
+            continue;
+          }
+
+          // Actualizar el producto con las variantes modificadas
+          await sql`
+            UPDATE products
+            SET variants = ${JSON.stringify(variants)}
+            WHERE id = ${productId}
+          `;
+
+          console.log(`✅ Stock de variante actualizado: producto ${productId}, variante ${variantOptionId}, -${qty}`);
+
+        } else {
+          // Producto sin variantes: actualizar stock general
+          await sql`
+            UPDATE products
+            SET stock = GREATEST(stock - ${qty}, 0)
+            WHERE id = ${productId}
+          `;
+          console.log(`✅ Stock general actualizado: ${productId} -${qty}`);
+        }
       }
     } else {
       // Otros eventos no los necesitamos ahora
