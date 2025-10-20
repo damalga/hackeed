@@ -16,7 +16,7 @@ export function useProducts() {
       products.value = data
     } catch (e) {
       error.value = e.message
-      console.error('Error loading products:', e)
+      console.error('useProducts: Error loading products:', e)
     } finally {
       loading.value = false
     }

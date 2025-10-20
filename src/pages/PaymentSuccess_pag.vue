@@ -202,7 +202,7 @@ export default {
           errorMessage.value = 'No pudimos verificar tu pago. Si realizaste el pago correctamente, por favor contacta con soporte para que podamos ayudarte.'
         }
       } catch (err) {
-        console.error('Error verifying payment:', err)
+        console.error('PaymentSuccess: Error verifying payment:', err)
         paymentVerified.value = false
         error.value = err.message
         errorMessage.value = getUserFriendlyMessage(err)
@@ -257,7 +257,7 @@ export default {
         document.body.removeChild(a)
         window.URL.revokeObjectURL(url)
       } catch (err) {
-        console.error('Error downloading invoice:', err)
+        console.error('PaymentSuccess: Error downloading invoice:', err)
         alert('No se pudo descargar la factura. Por favor, intenta nuevamente o contacta con soporte si el problema persiste.')
       }
     }

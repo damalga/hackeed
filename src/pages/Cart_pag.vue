@@ -70,13 +70,13 @@
               </div>
             </div>
 
-            <!-- Botón limpiar carrito (si hay productos) -->
+            <!-- Clear cart button -->
             <div v-if="cartStore.totalItems > 0" class="cart-actions">
               <button class="clear-cart-btn" @click="confirmClearCart">Vaciar carrito</button>
             </div>
           </div>
 
-          <!-- Resumen del carrito -->
+          <!-- Cart summary -->
           <div class="cart-summary">
             <div class="summary-card">
               <h3>Resumen del pedido</h3>
@@ -109,7 +109,7 @@
 
               <router-link to="/shop" class="continue-shopping"> Continuar comprando </router-link>
 
-              <!-- Mensaje de error si hay problemas con Stripe -->
+              <!-- Stripe error message -->
               <div v-if="cartStore.error" class="checkout-error">⚠️ {{ cartStore.error }}</div>
             </div>
           </div>
@@ -119,7 +119,7 @@
 
     <Footer />
 
-    <!-- Modal de confirmación para vaciar carrito -->
+    <!-- Clear cart confirmation modal -->
     <ConfirmModal
       :show="showConfirmModal"
       title="Vaciar carrito"
@@ -130,7 +130,7 @@
       @cancel="handleCancelClear"
     />
 
-    <!-- Modal de confirmación para eliminar producto individual -->
+    <!-- Remove item confirmation modal -->
     <ConfirmModal
       :show="showRemoveItemModal"
       title="Eliminar producto"
@@ -152,11 +152,11 @@ import { useCartStore } from '../stores/cartStore'
 import { QUANTITY_LIMITS } from '@/utils/helpers'
 import { ref, computed } from 'vue'
 
-// SEO Meta Tags - No indexar carrito
+// SEO Meta Tags - Do not index cart
 usePageMeta({
   title: 'Carrito de Compras | Hackeed',
   description: 'Revisa tu carrito de compras en Hackeed',
-  robots: 'noindex, nofollow', // No queremos que se indexe el carrito
+  robots: 'noindex, nofollow', // Cart should not be indexed
   url: 'https://hackeed.com/cart',
 })
 
@@ -165,7 +165,7 @@ const showConfirmModal = ref(false)
 const showRemoveItemModal = ref(false)
 const itemToRemove = ref(null)
 
-// Función para verificar si se alcanzó el máximo en un item
+// Check if item quantity has reached maximum
 const isMaxQuantity = (quantity) => quantity >= QUANTITY_LIMITS.MAX
 
 const confirmClearCart = () => {
@@ -200,33 +200,33 @@ const handleCancelRemoveItem = () => {
 }
 
 // ==========================================
-// CHECKOUT - Redirección a Stripe
+// CHECKOUT - Stripe redirect
 // ==========================================
 const handleCheckout = async () => {
   try {
-    // Verificar que hay items en el carrito
+    // Verify cart is not empty
     if (cartStore.totalItems === 0) {
-      console.warn('⚠️ Intento de checkout con carrito vacío')
+      console.warn('Checkout attempt with empty cart')
       return
     }
 
-    console.log('🛒 Iniciando proceso de checkout...')
-    console.log('📦 Items en carrito:', cartStore.totalItems)
-    console.log('💰 Total:', cartStore.totalPrice)
+    console.log('Starting checkout process')
+    console.log('Items in cart:', cartStore.totalItems)
+    console.log('Total:', cartStore.totalPrice)
 
-    // Información de cliente temporal (en producción esto vendría de un formulario)
+    // Temporary customer info (in production this would come from a form)
     const customerInfo = {
-      email: 'test@example.com', // TODO: Reemplazar con formulario de checkout
+      email: 'test@example.com', // TODO: Replace with checkout form
       name: 'Cliente de Prueba',
     }
 
-    // Redirigir a Stripe Checkout
+    // Redirect to Stripe Checkout
     await cartStore.redirectToCheckout(customerInfo)
 
-    console.log('✅ Redirigiendo a Stripe...')
+    console.log('Redirecting to Stripe')
   } catch (error) {
-    console.error('❌ Error en checkout:', error)
-    // El error ya se muestra en cartStore.error automáticamente
+    console.error('Checkout error:', error)
+    // Error already displayed in cartStore.error automatically
   }
 }
 </script>

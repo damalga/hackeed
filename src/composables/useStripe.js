@@ -37,11 +37,11 @@ export function useStripe() {
     getCartItemCount: () => cartStore.totalItems,
     saveCartToStorage: () => {
       // Ya no es necesario, el cartStore lo hace automáticamente con un watcher
-      console.log('saveCartToStorage is deprecated - cart auto-saves now');
+      console.log('useStripe: saveCartToStorage is deprecated, cart auto-saves now');
     },
     loadCartFromStorage: () => {
       // Ya no es necesario, el cartStore lo carga al inicializar
-      console.log('loadCartFromStorage is deprecated - cart auto-loads now');
+      console.log('useStripe: loadCartFromStorage is deprecated, cart auto-loads now');
     },
 
     // Métodos de Stripe

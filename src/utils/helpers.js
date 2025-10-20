@@ -1,13 +1,13 @@
 // =============================================================================
-// HELPERS - Utilidades comunes para la aplicación
+// HELPERS - Common utilities
 // =============================================================================
 
 /**
- * 🛍️ STRIPE HELPERS
- * Funciones utilitarias para trabajar con Stripe
+ * STRIPE HELPERS
+ * Utility functions for Stripe integration
  */
 
-// Formatear precios según la configuración local
+// Format price according to locale settings
 export function formatPrice(amount, currency = 'EUR') {
   return new Intl.NumberFormat('es-ES', {
     style: 'currency',
@@ -15,34 +15,34 @@ export function formatPrice(amount, currency = 'EUR') {
   }).format(amount)
 }
 
-// Convertir euros a centavos (formato Stripe)
+// Convert euros to cents (Stripe format)
 export function eurosToStripeAmount(euros) {
   return Math.round(euros * 100)
 }
 
-// Convertir centavos de Stripe a euros
+// Convert Stripe cents to euros
 export function stripeAmountToEuros(stripeAmount) {
   return stripeAmount / 100
 }
 
-// Validar email
+// Validate email format
 export function isValidEmail(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   return emailRegex.test(email)
 }
 
-// Validar teléfono español
+// Validate Spanish phone number format
 export function isValidSpanishPhone(phone) {
   const cleanPhone = phone.replace(/\s/g, '')
   return /^(\+34|0034|34)?[6789]\d{8}$/.test(cleanPhone)
 }
 
 /**
- * 🛒 CART HELPERS
- * Funciones para manejar el carrito de compras
+ * CART HELPERS
+ * Shopping cart utility functions
  */
 
-// Calcular totales del carrito
+// Calculate cart totals
 export function calculateCartTotals(items, options = {}) {
   const {
     freeShippingThreshold = 50,
@@ -65,25 +65,25 @@ export function calculateCartTotals(items, options = {}) {
   }
 }
 
-// Validar cantidad de producto
+// Validate product quantity
 export function validateQuantity(quantity, max = 10) {
   const qty = parseInt(quantity) || 1
   return Math.max(1, Math.min(max, qty))
 }
 
 /**
- * 🔗 SEO / URL HELPERS
- * Funciones para generar URLs y slugs SEO-friendly
+ * SEO / URL HELPERS
+ * URL and SEO-friendly slug generation
  */
 
-// Generar slug SEO-friendly desde texto
+// Generate SEO-friendly slug from text
 export function generateSlug(text) {
   if (!text) return ''
 
   return text
     .toLowerCase()
     .trim()
-    // Reemplazar caracteres especiales españoles
+    // Replace Spanish special characters
     .replace(/á/g, 'a')
     .replace(/é/g, 'e')
     .replace(/í/g, 'i')
@@ -91,35 +91,34 @@ export function generateSlug(text) {
     .replace(/ú/g, 'u')
     .replace(/ñ/g, 'n')
     .replace(/ü/g, 'u')
-    // Reemplazar espacios y caracteres no alfanuméricos con guiones
+    // Replace spaces and non-alphanumeric chars with hyphens
     .replace(/[^a-z0-9]+/g, '-')
-    // Eliminar guiones al inicio y final
+    // Remove leading and trailing hyphens
     .replace(/^-+|-+$/g, '')
 }
 
-// Generar slug de producto (nombre + id para unicidad)
+// Generate product slug (name + id for uniqueness)
 export function getProductSlug(product) {
   if (!product) return ''
   const nameSlug = generateSlug(product.name)
   return `${nameSlug}-${product.id}`
 }
 
-// Extraer ID de producto desde slug (soporta UUIDs)
+// Extract product ID from slug (supports UUIDs)
 export function getProductIdFromSlug(slug) {
   if (!slug) return null
 
-  // El slug tiene formato: nombre-producto-UUID
-  // Necesitamos extraer el UUID al final
-  // UUID formato: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (5 grupos separados por guiones)
+  // Slug format: product-name-UUID
+  // UUID format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (5 hyphen-separated groups)
 
   const parts = slug.split('-')
 
-  // Si tiene al menos 5 partes al final que parecen UUID, reconstruirlo
+  // If last 5 parts look like UUID, reconstruct it
   if (parts.length >= 5) {
-    // Los últimos 5 elementos forman el UUID
+    // Last 5 elements form the UUID
     const uuidParts = parts.slice(-5)
 
-    // Verificar que tienen el formato correcto de UUID
+    // Verify UUID format
     if (
       uuidParts[0].length === 8 &&
       uuidParts[1].length === 4 &&
@@ -131,23 +130,23 @@ export function getProductIdFromSlug(slug) {
     }
   }
 
-  // Fallback: intentar parsear como número (para compatibilidad futura)
+  // Fallback: parse as number (for future compatibility)
   const id = parseInt(parts[parts.length - 1])
   return isNaN(id) ? null : id
 }
 
-// Generar URL completa de producto
+// Generate complete product URL
 export function getProductUrl(product, baseUrl = '') {
   const slug = getProductSlug(product)
   return `${baseUrl}/product/${slug}`
 }
 
 /**
- * 📅 DATE HELPERS
- * Funciones para formatear fechas
+ * DATE HELPERS
+ * Date formatting utilities
  */
 
-// Formatear fecha para mostrar al usuario
+// Format date for user display
 export function formatDate(dateString, locale = 'es-ES') {
   const date = new Date(dateString)
   return date.toLocaleDateString(locale, {
@@ -159,23 +158,23 @@ export function formatDate(dateString, locale = 'es-ES') {
   })
 }
 
-// Formatear fecha corta
+// Format short date
 export function formatDateShort(dateString, locale = 'es-ES') {
   const date = new Date(dateString)
   return date.toLocaleDateString(locale)
 }
 
-// Generar timestamp
+// Generate timestamp
 export function generateTimestamp() {
   return Date.now()
 }
 
 /**
- * 🎨 UI HELPERS
- * Funciones para mejorar la experiencia de usuario
+ * UI HELPERS
+ * User interface utility functions
  */
 
-// Obtener texto de estado de orden
+// Get order status text
 export function getOrderStatusText(status) {
   const statusMap = {
     pending: 'Pendiente',
@@ -188,7 +187,7 @@ export function getOrderStatusText(status) {
   return statusMap[status] || status
 }
 
-// Obtener clase CSS para estado de orden
+// Get CSS class for order status
 export function getOrderStatusClass(status) {
   const classMap = {
     pending: 'status-pending',
@@ -201,18 +200,18 @@ export function getOrderStatusClass(status) {
   return classMap[status] || 'status-default'
 }
 
-// Truncar texto
+// Truncate text to max length
 export function truncateText(text, maxLength = 100) {
   if (!text || text.length <= maxLength) return text
   return text.substring(0, maxLength).trim() + '...'
 }
 
 /**
- * 🔧 DEVELOPMENT HELPERS
- * Funciones útiles para desarrollo y debugging
+ * DEVELOPMENT HELPERS
+ * Development and debugging utilities
  */
 
-// Log con timestamp
+// Log with timestamp
 export function debugLog(message, data = null) {
   if (process.env.NODE_ENV === 'development') {
     const timestamp = new Date().toLocaleTimeString()
@@ -221,12 +220,12 @@ export function debugLog(message, data = null) {
   }
 }
 
-// Generar ID único simple
+// Generate simple unique ID
 export function generateId(prefix = 'id') {
   return `${prefix}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
 }
 
-// Generar número de orden
+// Generate order number
 export function generateOrderNumber() {
   const date = new Date()
   const dateStr = date.toISOString().slice(0, 10).replace(/-/g, '')
@@ -235,20 +234,20 @@ export function generateOrderNumber() {
 }
 
 /**
- * 🔐 SECURITY HELPERS
- * Funciones de seguridad y validación
+ * SECURITY HELPERS
+ * Security and validation utilities
  */
 
-// Sanitizar input de usuario
+// Sanitize user input
 export function sanitizeInput(input) {
   if (typeof input !== 'string') return input
   return input
     .trim()
-    .replace(/[<>]/g, '') // Remover brackets básicos
-    .substring(0, 1000) // Limitar longitud
+    .replace(/[<>]/g, '') // Remove basic brackets
+    .substring(0, 1000) // Limit length
 }
 
-// Validar datos de cliente
+// Validate customer data
 export function validateCustomerData(customerData) {
   const errors = []
 
@@ -271,11 +270,11 @@ export function validateCustomerData(customerData) {
 }
 
 /**
- * 🌐 API HELPERS
- * Funciones para manejar llamadas a APIs
+ * API HELPERS
+ * API request handling utilities
  */
 
-// Manejar respuestas de API
+// Handle API response
 export function handleApiResponse(response, data) {
   if (!response.ok) {
     throw new Error(data.error || data.message || `HTTP ${response.status}`)
@@ -283,14 +282,14 @@ export function handleApiResponse(response, data) {
   return data
 }
 
-// Crear headers estándar para requests
+// Create standard request headers
 export function createApiHeaders(includeAuth = false) {
   const headers = {
     'Content-Type': 'application/json',
   }
 
   if (includeAuth) {
-    // Aquí podrías agregar tokens de autenticación si los usas
+    // Add authentication tokens if needed
     // headers['Authorization'] = `Bearer ${token}`
   }
 
@@ -298,11 +297,11 @@ export function createApiHeaders(includeAuth = false) {
 }
 
 /**
- * 📊 DATA HELPERS
- * Funciones para manipular datos
+ * DATA HELPERS
+ * Data manipulation utilities
  */
 
-// Agrupar array de objetos por una propiedad
+// Group array of objects by property
 export function groupBy(array, key) {
   return array.reduce((groups, item) => {
     const group = item[key]
@@ -312,7 +311,7 @@ export function groupBy(array, key) {
   }, {})
 }
 
-// Ordenar array de objetos
+// Sort array of objects
 export function sortBy(array, key, direction = 'asc') {
   return [...array].sort((a, b) => {
     const aVal = a[key]
@@ -326,7 +325,7 @@ export function sortBy(array, key, direction = 'asc') {
   })
 }
 
-// Eliminar duplicados de array
+// Remove duplicates from array
 export function uniqueBy(array, key) {
   const seen = new Set()
   return array.filter(item => {
@@ -340,11 +339,11 @@ export function uniqueBy(array, key) {
 }
 
 /**
- * 💾 STORAGE HELPERS
- * Funciones para manejar localStorage
+ * STORAGE HELPERS
+ * localStorage utilities with error handling
  */
 
-// Guardar en localStorage con manejo de errores
+// Save to localStorage with error handling
 export function saveToStorage(key, data) {
   try {
     localStorage.setItem(key, JSON.stringify(data))
@@ -355,31 +354,31 @@ export function saveToStorage(key, data) {
   }
 }
 
-// Cargar desde localStorage con manejo de errores
+// Load from localStorage with error handling
 export function loadFromStorage(key, defaultValue = null) {
   try {
     const item = localStorage.getItem(key)
     return item ? JSON.parse(item) : defaultValue
   } catch (error) {
-    debugLog('Error cargando desde localStorage:', error)
+    debugLog('Error loading from localStorage:', error)
     return defaultValue
   }
 }
 
-// Limpiar localStorage
+// Clear localStorage entry
 export function clearStorage(key) {
   try {
     localStorage.removeItem(key)
     return true
   } catch (error) {
-    debugLog('Error limpiando localStorage:', error)
+    debugLog('Error clearing localStorage:', error)
     return false
   }
 }
 
 /**
- * 🎯 CONSTANTS
- * Constantes útiles para la aplicación
+ * CONSTANTS
+ * Application-wide constants
  */
 
 export const STRIPE_TEST_CARDS = {
@@ -405,19 +404,19 @@ export const PAYMENT_STATUSES = {
   CANCELLED: 'cancelled'
 }
 
-// Configuración por defecto
+// Default configuration
 export const DEFAULT_CONFIG = {
   CURRENCY: 'EUR',
   LOCALE: 'es-ES',
   FREE_SHIPPING_THRESHOLD: 50,
   STANDARD_SHIPPING_COST: 5.99,
   EXPRESS_SHIPPING_COST: 12.99,
-  TAX_RATE: 0.21, // 21% IVA
+  TAX_RATE: 0.21, // 21% VAT
   MIN_QUANTITY_PER_ITEM: 1,
   MAX_QUANTITY_PER_ITEM: 10
 }
 
-// Límites de cantidad para validación
+// Quantity validation limits
 export const QUANTITY_LIMITS = {
   MIN: 1,
   MAX: 10,
@@ -425,11 +424,11 @@ export const QUANTITY_LIMITS = {
 }
 
 /**
- * ⚠️ ERROR HANDLING
- * Funciones para manejar errores de forma consistente
+ * ERROR HANDLING
+ * Consistent error handling utilities
  */
 
-// Categorías de errores
+// Error categories
 export const ERROR_CATEGORIES = {
   NETWORK: 'network',
   VALIDATION: 'validation',
@@ -438,7 +437,7 @@ export const ERROR_CATEGORIES = {
   UNKNOWN: 'unknown'
 }
 
-// Categorizar error basado en su tipo
+// Categorize error by type
 export function categorizeError(error) {
   if (!error) return ERROR_CATEGORIES.UNKNOWN
 
@@ -467,17 +466,17 @@ export function categorizeError(error) {
   return ERROR_CATEGORIES.UNKNOWN
 }
 
-// Obtener mensaje amigable para el usuario
+// Get user-friendly error message
 export function getUserFriendlyMessage(error) {
   if (!error) return 'Ha ocurrido un error desconocido'
 
   const category = categorizeError(error)
   const originalMessage = error.message || 'Error desconocido'
 
-  // Mensajes amigables por categoría
+  // User-friendly messages by category
   const friendlyMessages = {
     [ERROR_CATEGORIES.NETWORK]: 'Problema de conexión. Verifica tu conexión a internet e intenta nuevamente.',
-    [ERROR_CATEGORIES.VALIDATION]: originalMessage, // Los mensajes de validación suelen ser claros
+    [ERROR_CATEGORIES.VALIDATION]: originalMessage, // Validation messages are usually clear
     [ERROR_CATEGORIES.STRIPE]: 'Hubo un problema con el sistema de pagos. Por favor intenta nuevamente.',
     [ERROR_CATEGORIES.SERVER]: 'Error en el servidor. Por favor intenta nuevamente en unos momentos.',
     [ERROR_CATEGORIES.UNKNOWN]: 'Ha ocurrido un error inesperado. Por favor intenta nuevamente.'
@@ -486,25 +485,25 @@ export function getUserFriendlyMessage(error) {
   return friendlyMessages[category] || originalMessage
 }
 
-// Manejar y registrar errores
+// Handle and log errors
 export function handleError(error, context = '') {
   const category = categorizeError(error)
   const timestamp = new Date().toISOString()
 
-  // Log detallado en desarrollo
+  // Detailed logging in development
   if (process.env.NODE_ENV === 'development') {
-    console.group(`❌ Error ${context ? `[${context}]` : ''}`)
+    console.group(`Error ${context ? `[${context}]` : ''}`)
     console.error('Timestamp:', timestamp)
     console.error('Category:', category)
     console.error('Message:', error.message)
     console.error('Stack:', error.stack)
     console.groupEnd()
   } else {
-    // Log simplificado en producción
+    // Simplified logging in production
     console.error(`Error [${context}]:`, error.message)
   }
 
-  // Aquí podrías enviar errores a un servicio de tracking como Sentry
+  // Could send errors to tracking service like Sentry
   // sendErrorToTracking(error, context, category)
 
   return {

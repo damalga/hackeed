@@ -270,8 +270,8 @@ export default {
 
     // Methods
     const proceedToCheckout = () => {
-      console.log('Proceder al pago clicked!')
-      console.log('Cart items:', cart.items)
+      console.log('Cart: Proceed to checkout clicked')
+      console.log('Cart: Items:', cart.items)
 
       if (cart.items.length === 0) {
         error.value = 'El carrito está vacío'
@@ -284,7 +284,7 @@ export default {
 
     const handleQuickCheckout = async () => {
       try {
-        console.log('Iniciando checkout rápido...')
+        console.log('Cart: Starting quick checkout')
         loading.value = true
 
         // Usar un email temporal para testing
@@ -296,14 +296,14 @@ export default {
 
         await redirectToCheckout(tempCustomerInfo)
       } catch (err) {
-        console.error('Error en checkout rápido:', err)
+        console.error('Cart: Quick checkout error:', err)
       } finally {
         loading.value = false
       }
     }
 
     const addTestProducts = () => {
-      console.log('Agregando productos de prueba...')
+      console.log('Cart: Adding test products')
 
       // Productos de prueba
       const testProducts = [
@@ -341,12 +341,12 @@ export default {
 
     const handleCheckout = async () => {
       try {
-        console.log('Enviando a Stripe con datos:', customerInfo.value)
+        console.log('Cart: Sending to Stripe with customer data:', customerInfo.value)
         await redirectToCheckout(customerInfo.value)
         successMessage.value = 'Redirigiendo a Stripe...'
         showCheckoutModal.value = false
       } catch (err) {
-        console.error('Error en checkout:', err)
+        console.error('Cart: Checkout error:', err)
         // El error ya se maneja en useStripe
       }
     }

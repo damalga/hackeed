@@ -20,12 +20,12 @@ export async function handler(event) {
   try {
     const { items, customerEmail = 'test@example.com' } = JSON.parse(event.body || '{}');
 
-    console.log('📦 Checkout request received');
-    console.log('📊 Items count:', items?.length);
-    console.log('📧 Customer email:', customerEmail);
+    console.log('Checkout request received');
+    console.log('Items count:', items?.length);
+    console.log('Customer email:', customerEmail);
 
     if (!items?.length) {
-      console.log('❌ No items in cart');
+      console.log('No items in cart');
       return {
         statusCode: 400,
         body: JSON.stringify({
@@ -34,14 +34,14 @@ export async function handler(event) {
       };
     }
 
-    // Obtener productos de BD y validar
+    // Fetch and validate products from database
     const productIds = items.map(i => i.id);
 
-    // Obtener IDs únicos (un producto puede estar varias veces con diferentes variantes)
+    // Extract unique product IDs (products may have multiple variants)
     const uniqueProductIds = [...new Set(productIds)];
 
-    console.log('🔍 Product IDs in cart:', productIds);
-    console.log('🔍 Unique product IDs:', uniqueProductIds);
+    console.log('Product IDs in cart:', productIds);
+    console.log('Unique product IDs:', uniqueProductIds);
 
     const dbProducts = await sql`
       SELECT id, name, price_cents, stock, variants
@@ -49,12 +49,12 @@ export async function handler(event) {
       WHERE id = ANY(${uniqueProductIds}) AND active = true
     `;
 
-    console.log('📦 DB products found:', dbProducts.length);
-    console.log('📦 Expected unique products:', uniqueProductIds.length);
+    console.log('DB products found:', dbProducts.length);
+    console.log('Expected unique products:', uniqueProductIds.length);
 
-    // Verificar que todos los productos únicos existen en la BD
+    // Verify all unique products exist in database
     if (dbProducts.length !== uniqueProductIds.length) {
-      console.log('❌ Product count mismatch');
+      console.log('Product count mismatch');
       const foundIds = dbProducts.map(p => p.id);
       const missingIds = uniqueProductIds.filter(id => !foundIds.includes(id));
       console.log('Missing product IDs:', missingIds);
@@ -67,10 +67,10 @@ export async function handler(event) {
       };
     }
 
-    console.log('🔍 Creating line items for', items.length, 'products');
+    console.log('Creating line items for', items.length, 'products');
 
     const lineItems = items.map(item => {
-      console.log(`Processing item: ${item.id}`, {
+      console.log('Processing item:', item.id, {
         hasVariants: !!item.variants,
         hasOption: !!item.variants?.option
       });
@@ -80,7 +80,7 @@ export async function handler(event) {
         throw new Error(`El producto "${item.name || item.id}" ya no está disponible.`);
       }
 
-      // Validar cantidad
+      // Validate quantity
       if (!item.quantity || item.quantity <= 0 || !Number.isInteger(item.quantity)) {
         throw new Error(`Cantidad inválida para "${dbProduct.name}". La cantidad debe ser un número entero positivo.`);
       }
@@ -89,7 +89,7 @@ export async function handler(event) {
         throw new Error(`Cantidad inválida para "${dbProduct.name}". Máximo permitido: 10 unidades por producto.`);
       }
 
-      // Parsear variantes si existen
+      // Parse variants if present
       let variants = null;
       if (dbProduct.variants) {
         variants = typeof dbProduct.variants === 'string'
@@ -97,19 +97,19 @@ export async function handler(event) {
           : dbProduct.variants;
       }
 
-      // Validar stock según si tiene variantes o no
+      // Validate stock based on variant configuration
       let availableStock;
       let variantKey = null;
 
-      // Verificar si el producto tiene variantes en la BD y el item del carrito también
+      // Check if product has variants in both database and cart item
       if (variants && variants.options && item.variants && item.variants.option) {
-        // Producto con variantes: buscar el stock de la variante específica
+        // Find variant-specific stock
         const selectedOption = variants.options.find(opt => {
-          // Comparar por ID si ambos lo tienen
+          // Match by ID if both have it
           if (opt.id && item.variants.option.id) {
             return opt.id === item.variants.option.id;
           }
-          // Fallback: comparar por nombre
+          // Fallback: match by name
           return opt.name === item.variants.option.name;
         });
 
@@ -119,8 +119,7 @@ export async function handler(event) {
 
         availableStock = selectedOption.stock !== undefined ? selectedOption.stock : 0;
 
-        // Crear una clave única para identificar la variante
-        // Usar las propiedades de la variante seleccionada
+        // Generate unique key for variant identification
         const variantProps = Object.entries(item.variants.selected || {})
           .map(([key, value]) => `${key}:${value}`)
           .sort()
@@ -128,11 +127,11 @@ export async function handler(event) {
         variantKey = variantProps;
 
       } else {
-        // Producto sin variantes o variante no especificada: usar stock general
+        // No variants: use general stock
         availableStock = dbProduct.stock !== undefined ? dbProduct.stock : 0;
       }
 
-      console.log(`Stock check for ${dbProduct.name}:`, {
+      console.log('Stock check:', dbProduct.name, {
         availableStock,
         requestedQuantity: item.quantity,
         hasVariantKey: !!variantKey
@@ -147,12 +146,12 @@ export async function handler(event) {
         throw new Error(`No hay suficiente stock para "${productName}". Stock disponible: ${availableStock}, solicitado: ${item.quantity}.`);
       }
 
-      // Preparar metadata para el webhook
+      // Prepare metadata for webhook
       const metadata = {
         product_id: dbProduct.id
       };
 
-      // Si tiene variantes, incluir la información necesaria para el webhook
+      // Include variant data for webhook if applicable
       if (variantKey) {
         metadata.variant_key = variantKey;
         metadata.variant_option_id = item.variants.option.id || item.variants.option.name;
@@ -162,7 +161,7 @@ export async function handler(event) {
         price_data: {
           currency: 'eur',
           product_data: {
-            name: item.name || dbProduct.name, // Usar el nombre del carrito que incluye la variante
+            name: item.name || dbProduct.name, // Use cart name which includes variant
             metadata: metadata
           },
           unit_amount: dbProduct.price_cents
@@ -189,35 +188,35 @@ export async function handler(event) {
     };
 
   } catch (err) {
-    console.error('❌ Checkout error:', err);
+    console.error('Checkout error:', err);
     console.error('Error stack:', err.stack);
     console.error('Error type:', err.type);
 
-    // Determinar el tipo de error y proporcionar mensaje apropiado
+    // Determine error type and provide appropriate message
     let userMessage = err.message;
     let statusCode = 500;
 
-    // Errores de red/Stripe API
+    // Network/Stripe API errors
     if (err.type === 'StripeConnectionError' || err.message.includes('network')) {
       userMessage = 'No se pudo conectar con el servicio de pagos. Verifica tu conexión a internet e intenta nuevamente.';
       statusCode = 503;
     }
-    // Errores de validación de Stripe
+    // Stripe validation errors
     else if (err.type === 'StripeInvalidRequestError') {
       userMessage = 'Hay un problema con los datos de pago. Por favor, revisa la información e intenta de nuevo.';
       statusCode = 400;
     }
-    // Errores de autenticación (API keys)
+    // Authentication errors (API keys)
     else if (err.type === 'StripeAuthenticationError') {
       userMessage = 'Error de configuración del sistema de pagos. Por favor, contacta con soporte técnico.';
       statusCode = 500;
     }
-    // Errores de base de datos
+    // Database errors
     else if (err.message.includes('stock') || err.message.includes('disponible')) {
-      // Ya tiene mensaje descriptivo, mantenerlo
+      // Already has descriptive message, keep it
       statusCode = 400;
     }
-    // Error genérico
+    // Generic error
     else if (statusCode === 500 && !err.message.includes('stock') && !err.message.includes('disponible')) {
       userMessage = 'Ocurrió un error al procesar tu solicitud. Por favor, intenta nuevamente o contacta con soporte si el problema persiste.';
     }
