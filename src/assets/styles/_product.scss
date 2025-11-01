@@ -289,7 +289,7 @@
 
 .add-to-cart-btn {
   @include button-primary;
-  width: 100%;
+  width: 50%;
 }
 
 .remove-btn {
@@ -325,7 +325,8 @@
       .buttons-modal {
         flex-direction: column;
         .view-product-page-btn,
-        .quantity-controls {
+        .quantity-controls,
+        .add-to-cart-btn {
           width: 100%;
         }
       }
