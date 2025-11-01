@@ -10,8 +10,10 @@
       <div class="hero-text">
         <h1 class="hero-title">Bienvenido a Hackeed</h1>
         <p class="hero-desc">
-          Te ofrecemos un catálogo de herramientas tecnológicas para abrir el mundo... O para
-          construirlo a tu gusto.
+          Te ofrecemos un catálogo de herramientas tecnológicas para abrir el mundo...
+          <br></br>
+          <br></br>
+          O para construirlo a tu gusto.
         </p>
         <button class="hero-cta">
           <router-link to="/shop"> Explorar Productos </router-link>

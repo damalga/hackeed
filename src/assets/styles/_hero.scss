@@ -6,6 +6,7 @@
 
   .hero-container {
     max-width: 1440px;
+    margin: 0 auto;
     display: flex;
     gap: 2.4rem;
     align-items: center;
@@ -41,7 +42,6 @@
     }
 
     .hero-text {
-      width: 76%;
       .hero-title {
         color: $color-text-primary;
         margin-bottom: 1rem;
