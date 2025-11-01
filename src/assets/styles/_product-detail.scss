@@ -2,7 +2,7 @@
 
 // Product detail page (versión página completa del modal)
 .product-detail-page {
-  padding: 2rem;
+  padding: 1.6rem;
   background: var(--bg-primary);
 }
 
@@ -48,14 +48,14 @@
   border: 1px solid var(--border-primary);
   position: relative;
 
-  @media (max-width: 968px) {
+  @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 1.25rem;
     padding: 1.25rem;
   }
 }
 
-// Product images section (igual que el modal)
+// Product images section (same as modal)
 .product-images {
   display: flex;
   flex-direction: column;
@@ -271,10 +271,10 @@
   padding: 1.6rem;
   margin-top: auto;
   display: flex;
+  justify-content: space-between;
   position: sticky;
   left: 24rem;
   bottom: 0;
-  width: 72rem;
   flex-direction: row;
   gap: 1.6rem;
   border: 1px solid var(--border-primary);
@@ -282,7 +282,7 @@
   .quantity-controls {
     display: flex;
     align-items: center;
-    gap: 0.9375rem;
+    gap: 1rem;
     flex-wrap: wrap;
 
     .quantity-btn {
@@ -322,7 +322,7 @@
   }
 
   .back-to-shop,
-  .add-to-cart-btn {
+  .quantity-controls {
     width: 50%;
   }
   .back-to-shop {
@@ -341,5 +341,15 @@
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .buttons-detail {
+    flex-direction: column;
+    .back-to-shop,
+    .quantity-controls {
+      width: 100%;
+    }
   }
 }

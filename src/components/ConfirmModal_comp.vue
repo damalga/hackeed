@@ -1,7 +1,7 @@
 <template>
   <transition name="modal-fade">
-    <div v-if="show" class="modal-overlay" @click="handleOverlayClick">
-      <div class="modal-container" @click.stop>
+    <div v-if="show" class="confirmation-modal-overlay" @click="handleOverlayClick">
+      <div class="confirmation-modal-container" @click.stop>
         <div class="modal-header">
           <h3 class="modal-title">{{ title }}</h3>
         </div>
