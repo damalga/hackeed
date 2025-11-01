@@ -13,14 +13,16 @@
   align-items: center;
   z-index: 1000;
   padding: 2rem 4rem;
+
   .modal-content {
     background: var(--bg-secondary);
     border: 1px solid var(--border-primary);
-    width: 100%;
+    width: 80%;
     height: 80vh;
     overflow-y: auto;
     box-shadow: 0 8px 32px var(--shadow-dark);
     position: relative;
+
     .modal-close {
       position: absolute;
       top: 1.25rem;
@@ -49,6 +51,7 @@
       display: flex;
       flex-direction: column;
       gap: 1rem;
+
       .main-image {
         width: 100%;
         aspect-ratio: 1;
@@ -234,11 +237,11 @@
   }
 }
 
-// Botones
 .buttons-modal {
   background-color: var(--bg-secondary);
   margin-top: auto;
   display: flex;
+  justify-content: space-between;
   flex-direction: row;
   position: sticky;
   bottom: 0;
@@ -246,6 +249,10 @@
   padding: 1.6rem;
   gap: 1.6rem;
   border: 1px solid var(--border-primary);
+  .view-product-page-btn,
+  .quantity-controls {
+    width: 50%;
+  }
 }
 
 .quantity-controls {
@@ -290,19 +297,15 @@
   flex: 1;
 }
 
-// Botón para ver página completa del producto
 .view-product-page-btn {
   @include button-secondary;
-  width: 100%;
   text-decoration: none;
   display: block;
   text-align: center;
 }
 
-// Botón para volver a la tienda (solo en página de producto)
 .back-to-shop {
   @include button-primary;
-  width: 100%;
   text-decoration: none;
   display: block;
   text-align: center;
@@ -310,15 +313,23 @@
 
 // Responsive design
 @media (max-width: 768px) {
-  .modal-content {
-    margin: 0.625rem;
-    max-height: calc(100vh - 1.25rem);
-  }
-
-  .modal-body {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-    padding: 1.25rem;
+  .modal-overlay {
+    .modal-content {
+      width: 100%;
+      max-height: calc(100vh - 1.25rem);
+      .modal-body {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+        padding: 1.25rem;
+      }
+      .buttons-modal {
+        flex-direction: column;
+        .view-product-page-btn,
+        .quantity-controls {
+          width: 100%;
+        }
+      }
+    }
   }
 
   .product-title {

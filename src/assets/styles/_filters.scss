@@ -11,9 +11,34 @@
   height: fit-content;
 }
 
+.filters-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
 .filters-title {
   color: var(--text-primary);
-  margin-bottom: 1.2rem;
+  margin: 0;
+}
+
+.filters-close {
+  display: none; // Oculto por defecto en desktop
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--accent-primary);
+  }
+
+  svg {
+    display: block;
+  }
 }
 
 .filter-group {
@@ -45,6 +70,8 @@
   padding: 0.4rem 0;
   cursor: pointer;
   transition: color 0.2s;
+  max-width: 100%;
+  width: 100%;
 
   &:hover {
     color: var(--accent-primary);
@@ -54,10 +81,14 @@
 .filter-checkbox {
   min-width: 1rem;
   min-height: 1rem;
+  width: 1rem;
+  height: 1rem;
   border: 2px solid var(--border-primary);
   background: var(--bg-tertiary);
   position: relative;
   transition: all 0.2s;
+  flex-shrink: 0;
+  margin-top: 0.1rem; // Alinear mejor con la primera línea del texto
 
   &.checked {
     background: var(--accent-primary);
@@ -80,6 +111,13 @@
   color: var(--text-secondary);
   font-size: 0.875rem;
   user-select: none;
+  flex: 1;
+  min-width: 0; // Permite que flex-shrink funcione correctamente
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+  line-height: 1.4;
 
   &.active {
     color: var(--text-primary);
@@ -90,6 +128,9 @@
   color: var(--text-muted);
   font-size: 0.75rem;
   margin-left: auto;
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 0.1rem; // Alinear con la primera línea del texto
 }
 
 // Price range filter
@@ -171,23 +212,108 @@
   }
 }
 
+.filter-toggle {
+  display: none;
+}
+
+.filter-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-secondary);
+
+  &:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-1px);
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.filter-label {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.filter-arrow {
+  width: 1.2rem;
+  height: 1.2rem;
+  transition: transform 0.3s ease;
+  rotate: -90deg;
+
+  &.open {
+    transform: rotate(180deg);
+  }
+}
+
+.filter-badge {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+  font-size: 0.625rem;
+  font-weight: bold;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 // Responsive design
 @media (max-width: 1024px) {
   .shop-filters {
-    position: relative;
+    position: fixed;
     top: 0;
-    margin-bottom: 30px;
-    padding: 20px;
+    left: -100%;
+    width: 340px;
+    max-width: 85vw;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 1000;
+    margin-bottom: 0;
+    padding: 1.6rem;
+    transition: left 0.3s ease-in-out;
+    box-shadow: 2px 0 10px var(--shadow-dark);
+
+    &.is-open {
+      left: 0;
+    }
+  }
+
+  // Toggle
+  .filters-close {
+    display: block;
+  }
+
+  .filter-toggle-sticky {
+    display: block;
+    position: sticky;
+    top: 4.8rem;
+    z-index: 2;
+    background: var(--bg-primary);
+    padding: 0.8rem 1.6rem;
+    margin: 0 -1.6rem;
+    border-top: 1px solid var(--border-primary);
+    border-bottom: 1px solid var(--border-primary);
   }
 }
 
 @media (max-width: 768px) {
   .shop-filters {
-    padding: 15px;
-  }
-
-  .filters-title {
-    margin-bottom: 1.2rem;
+    width: 280px;
   }
 
   .filter-group {
@@ -201,5 +327,15 @@
 
   .price-separator {
     display: none;
+  }
+
+  // Toggle
+  .filter-toggle-sticky {
+    padding: 0.8rem 1.6rem;
+  }
+
+  .filter-toggle-btn {
+    width: 100%;
+    justify-content: center;
   }
 }

@@ -59,6 +59,7 @@
   .shop-controls {
     display: flex;
     gap: 0.8rem;
+    align-items: end;
     .shop-results {
       color: var(--text-secondary);
       font-size: 0.875rem;
@@ -128,27 +129,55 @@
   }
 }
 
+// Overlay para cerrar filtros en móvil
+.filters-overlay {
+  display: none;
+}
+
 // Responsive design
 @media (max-width: 1024px) {
   .shop-container {
     grid-template-columns: 1fr;
     gap: 1.6rem;
-    padding: 1.6rem;
+    padding: 0 1.6rem;
   }
 
   .shop-sidebar {
     position: relative;
     top: 0;
   }
+
   .shop-title {
-    font-size: 2rem;
-    padding-bottom: 0.8rem;
+    font-size: 1.6rem;
+  }
+
+  // Overlay oscuro detrás de los filtros
+  .filters-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+    backdrop-filter: blur(2px);
   }
 }
 
 @media (max-width: 768px) {
-  .shop-header,
-  .shop-controls {
+  .shop-header {
     flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .shop-controls {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .shop-results {
+    flex: 1;
   }
 }

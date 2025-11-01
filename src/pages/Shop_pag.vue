@@ -5,8 +5,29 @@
       <div class="shop-container">
         <!-- Sidebar de filtros -->
         <aside class="shop-sidebar">
-          <Filters :products="products" @filters-changed="handleFiltersChange" />
+          <Filters
+            :products="products"
+            :is-open="filtersOpen"
+            @filters-changed="handleFiltersChange"
+            @close="toggleFilters"
+          />
         </aside>
+
+        <!-- Overlay para cerrar filtros en móvil -->
+        <div
+          v-if="filtersOpen"
+          class="filters-overlay"
+          @click="toggleFilters"
+          aria-hidden="true"
+        ></div>
+
+        <!-- Toggle de filtros para móvil (sticky) -->
+        <FilterToggle
+          :active-filters-count="activeFiltersCount"
+          :is-open="filtersOpen"
+          @toggle="toggleFilters"
+          class="filter-toggle-sticky"
+        />
 
         <!-- Área principal de productos -->
         <section class="shop-content">
@@ -70,6 +91,7 @@ import { useSchema } from '@/composables/useSchema'
 import Header from '../components/Header_comp.vue'
 import Footer from '../components/Footer_comp.vue'
 import Filters from '../components/Filters_comp.vue'
+import FilterToggle from '../components/FilterToggle_comp.vue'
 import Products from '../components/Products_comp.vue'
 import Product from '../components/Product_comp.vue'
 import Pagination from '../components/Pagination_comp.vue'
@@ -132,6 +154,14 @@ const itemsPerPage = 16
 
 // Estado de ordenamiento
 const sortBy = ref('newest')
+
+// Estado de visibilidad de filtros (cerrado por defecto en móvil)
+const filtersOpen = ref(false)
+
+// Función para abrir/cerrar filtros
+const toggleFilters = () => {
+  filtersOpen.value = !filtersOpen.value
+}
 
 // Contador de filtros activos
 const activeFiltersCount = computed(() => {
