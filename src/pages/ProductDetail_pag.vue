@@ -71,7 +71,10 @@
             <h1 class="product-title">
               {{ variantsStore.getProductFullName(product) }}
             </h1>
-            <span class="product-category">{{ product.category }}</span>
+            <div class="product-categories">
+              <span v-if="Array.isArray(product.category)" v-for="cat in product.category" :key="cat" class="product-category">{{ cat }}</span>
+              <span v-else-if="product.category" class="product-category">{{ product.category }}</span>
+            </div>
           </div>
 
           <div class="product-price">

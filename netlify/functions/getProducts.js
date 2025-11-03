@@ -69,7 +69,7 @@ export async function handler() {
           img: product.img,
           images: product.images ? (typeof product.images === 'string' ? JSON.parse(product.images) : product.images) : [],
           price: product.price_cents ? product.price_cents / 100 : 0,
-          category: product.category,
+          category: product.category ? (typeof product.category === 'string' ? JSON.parse(product.category) : product.category) : [],
           brand: product.brand,
           inStock: productInStock,
           features: product.features ? (typeof product.features === 'string' ? JSON.parse(product.features) : product.features) : [],

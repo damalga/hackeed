@@ -164,18 +164,34 @@ const selectedStock = ref([])
 const priceRange = ref({ min: null, max: null })
 
 // Datos computados para opciones de filtros
-// Categorias
+// Categorias - ahora soporta múltiples categorías por producto
 const categories = computed(() => {
   const categoryCount = {}
   props.products.forEach((product) => {
-    if (product.category) {
+    // Si category es un array, contar cada categoría
+    if (Array.isArray(product.category)) {
+      product.category.forEach((category) => {
+        if (category) {
+          categoryCount[category] = (categoryCount[category] || 0) + 1
+        }
+      })
+    }
+    // Compatibilidad con formato antiguo (category como string)
+    else if (product.category) {
       categoryCount[product.category] = (categoryCount[product.category] || 0) + 1
     }
   })
 
   return Object.entries(categoryCount)
     .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count)
+    .sort((a, b) => {
+      // Primero por cantidad (descendente)
+      if (b.count !== a.count) {
+        return b.count - a.count
+      }
+      // En caso de empate, orden alfabético (ascendente)
+      return a.name.localeCompare(b.name)
+    })
 })
 
 const brands = computed(() => {
@@ -188,7 +204,14 @@ const brands = computed(() => {
 
   return Object.entries(brandCount)
     .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count)
+    .sort((a, b) => {
+      // Primero por cantidad (descendente)
+      if (b.count !== a.count) {
+        return b.count - a.count
+      }
+      // En caso de empate, orden alfabético (ascendente)
+      return a.name.localeCompare(b.name)
+    })
 })
 
 // Funciones de toggle para filtros
