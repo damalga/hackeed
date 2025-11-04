@@ -6,7 +6,7 @@ We like to test systems, take them apart and put them back together. Always from
 
 What if ethics itself was just another questionable system? In the end, question, deconstruct and build. Never destroy. That’s the spirit!
 
-The frontend is built with **<a href="https://vuejs.org/" target="_blank" rel="noopener noreferrer">Vue 3</a>**, deployed through **<a href="https://www.netlify.com/" target="_blank" rel="noopener noreferrer">Netlify</a>**, and the database runs on **<a href="https://neon.tech/" target="_blank" rel="noopener noreferrer">Neon PostgreSQL</a>**.
+The frontend is built with **<a href="https://vuejs.org/" target="_blank" rel="noopener noreferrer">Vue 3</a>**, deployed through **<a href="https://www.netlify.com/" target="_blank" rel="noopener noreferrer">Netlify</a>**, and the database runs on **<a href="https://neon.tech/" target="_blank" rel="noopener noreferrer">Neon</a>**.
 
 But that’s just one way to do it.  
 If you feel like building your own serverless online store, this repository explains how this one is structured so you can use it as a base or do things your own way.
