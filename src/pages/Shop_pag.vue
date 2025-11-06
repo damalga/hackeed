@@ -180,11 +180,19 @@ const activeFiltersCount = computed(() => {
 const filteredProducts = computed(() => {
   let filtered = [...products.value]
 
-  // Filtrar por categorías
+  // Filtrar por categorías - ahora soporta múltiples categorías por producto
   if (activeFilters.value.categories.length > 0) {
-    filtered = filtered.filter((product) =>
-      activeFilters.value.categories.includes(product.category)
-    )
+    filtered = filtered.filter((product) => {
+      // Si el producto tiene un array de categorías
+      if (Array.isArray(product.category)) {
+        return product.category.some(cat => activeFilters.value.categories.includes(cat))
+      }
+      // Compatibilidad con formato antiguo (category como string)
+      else if (product.category) {
+        return activeFilters.value.categories.includes(product.category)
+      }
+      return false
+    })
   }
 
   // Filtrar por marcas
@@ -218,7 +226,14 @@ const filteredProducts = computed(() => {
 
 // Función para obtener conteo de productos por categoría/marca
 const getCategoryCount = (category) => {
-  return filteredProducts.value.filter((product) => product.category === category).length
+  return filteredProducts.value.filter((product) => {
+    // Si el producto tiene un array de categorías
+    if (Array.isArray(product.category)) {
+      return product.category.includes(category)
+    }
+    // Compatibilidad con formato antiguo
+    return product.category === category
+  }).length
 }
 
 const getBrandCount = (brand) => {
@@ -241,13 +256,17 @@ const sortedProducts = computed(() => {
     case 'category':
       // OPCIÓN 1: Ordenar por cantidad de productos en la categoría (más productos primero)
       return sorted.sort((a, b) => {
-        const countA = getCategoryCount(a.category)
-        const countB = getCategoryCount(b.category)
+        // Obtener la primera categoría de cada producto
+        const categoryA = Array.isArray(a.category) && a.category.length > 0 ? a.category[0] : (a.category || '')
+        const categoryB = Array.isArray(b.category) && b.category.length > 0 ? b.category[0] : (b.category || '')
+
+        const countA = getCategoryCount(categoryA)
+        const countB = getCategoryCount(categoryB)
         if (countA !== countB) {
           return countB - countA
         }
         // Si tienen el mismo count, ordenar alfabéticamente por categoría
-        return a.category.localeCompare(b.category)
+        return categoryA.localeCompare(categoryB)
       })
 
     // ALTERNATIVA más intuitiva - descomentar para usar:
