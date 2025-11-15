@@ -23,7 +23,6 @@ export async function handler(event) {
 
     console.log('Checkout request received');
     console.log('Items count:', items?.length);
-    console.log('Customer email:', customerEmail);
 
     if (!items?.length) {
       console.log('No items in cart');
