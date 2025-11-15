@@ -3,6 +3,7 @@ import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const sql = neon(process.env.DATABASE_URL);
+const baseUrl = process.env.VITE_BASE_URL || process.env.VITE_APP_URL || 'https://hackeed.es';
 
 export async function handler(event) {
   if (event.httpMethod === 'OPTIONS') {
@@ -174,8 +175,8 @@ export async function handler(event) {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: `${process.env.VITE_APP_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.VITE_APP_URL}/cart`,
+      success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/cart`,
       customer_email: customerEmail,
       billing_address_collection: 'required',
       phone_number_collection: {
