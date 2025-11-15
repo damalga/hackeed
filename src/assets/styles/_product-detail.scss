@@ -325,6 +325,7 @@
   .quantity-controls {
     width: 50%;
   }
+
   .back-to-shop {
     @include button-secondary;
     text-decoration: none;
@@ -348,7 +349,8 @@
   .buttons-detail {
     flex-direction: column;
     .back-to-shop,
-    .quantity-controls {
+    .quantity-controls,
+    .add-to-cart-btn {
       width: 100%;
     }
   }
