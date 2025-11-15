@@ -19,7 +19,7 @@ export async function handler(event) {
   }
 
   try {
-    const { items, customerEmail = 'test@example.com' } = JSON.parse(event.body || '{}');
+    const { items } = JSON.parse(event.body || '{}');
 
     console.log('Checkout request received');
     console.log('Items count:', items?.length);
@@ -177,7 +177,6 @@ export async function handler(event) {
       mode: 'payment',
       success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/cart`,
-      customer_email: customerEmail,
       billing_address_collection: 'required',
       phone_number_collection: {
         enabled: true
