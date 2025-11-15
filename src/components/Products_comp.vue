@@ -16,8 +16,8 @@
 
               <!-- Stock badge (solo en shop) -->
               <div v-if="showStock" class="product-stock">
-                <span v-if="variantsStore.isProductAvailable(product)" class="stock-badge in-stock"
-                  >En stock</span
+                <span v-if="variantsStore.hasAnyVariantInStock(product)" class="stock-badge in-stock"
+                  >Disponible</span
                 >
                 <span v-else class="stock-badge out-of-stock">Agotado</span>
               </div>

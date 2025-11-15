@@ -72,15 +72,23 @@
               {{ variantsStore.getProductFullName(product) }}
             </h1>
             <div class="product-categories">
-              <span v-if="Array.isArray(product.category)" v-for="cat in product.category" :key="cat" class="product-category">{{ cat }}</span>
-              <span v-else-if="product.category" class="product-category">{{ product.category }}</span>
+              <span
+                v-if="Array.isArray(product.category)"
+                v-for="cat in product.category"
+                :key="cat"
+                class="product-category"
+                >{{ cat }}</span
+              >
+              <span v-else-if="product.category" class="product-category">{{
+                product.category
+              }}</span>
             </div>
           </div>
 
           <div class="product-price">
             <span class="price">€{{ variantsStore.getProductPrice(product) }}</span>
-            <span v-if="variantsStore.isProductAvailable(product)" class="stock in-stock"
-              >En stock</span
+            <span v-if="variantsStore.hasAnyVariantInStock(product)" class="stock in-stock"
+              >Disponible</span
             >
             <span v-else class="stock out-of-stock">Agotado</span>
           </div>
