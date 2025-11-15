@@ -10,7 +10,7 @@
         <div v-if="cartStore.totalItems === 0" class="empty-cart">
           <div class="empty-cart-icon">🛒</div>
           <h2>Tu carrito está vacío</h2>
-          <p>¡Añade algunos productos increíbles y vuelve aquí!</p>
+          <p>Añade algún producto y vuelve aquí</p>
           <router-link to="/shop" class="continue-shopping-btn"> Ir a la tienda </router-link>
         </div>
 

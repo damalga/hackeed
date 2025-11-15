@@ -34,6 +34,7 @@
         animation: fadein 0.6s;
       }
     }
+
     .hero-image {
       width: 32%;
       .hero-img {
@@ -42,6 +43,7 @@
     }
 
     .hero-text {
+      width: 68%;
       .hero-title {
         color: $color-text-primary;
         margin-bottom: 1rem;
@@ -57,7 +59,6 @@
         @include button-primary;
         font-size: 1.1rem;
         a {
-          height: 2rem;
           display: block;
           color: var(--text-quaternary);
           text-decoration: none;
@@ -80,6 +81,19 @@
 }
 
 // Responsive design
+@media (max-width: 1024px) {
+  .hero {
+    .hero-container {
+      .hero-image {
+        width: 40%;
+      }
+      .hero-text {
+        width: 60%;
+      }
+    }
+  }
+}
+
 @media (max-width: 768px) {
   .hero {
     .hero-container {
@@ -91,6 +105,7 @@
     }
   }
 }
+
 @media (max-width: 480px) {
   .hero {
     padding: 2rem;

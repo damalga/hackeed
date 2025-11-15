@@ -114,7 +114,7 @@
             :class="{ checked: selectedStock.includes('inStock') }"
           ></div>
           <span class="filter-label" :class="{ active: selectedStock.includes('inStock') }">
-            En stock
+            Disponible
           </span>
           <span class="stock-badge in-stock">Disponible</span>
         </div>

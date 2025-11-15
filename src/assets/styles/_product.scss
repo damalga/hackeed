@@ -12,21 +12,21 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  padding: 2rem 4rem;
+  padding: 2rem;
 
   .modal-content {
     background: var(--bg-secondary);
     border: 1px solid var(--border-primary);
-    width: 80%;
-    height: 80vh;
+    width: 68%;
+    height: 84vh;
     overflow-y: auto;
     box-shadow: 0 8px 32px var(--shadow-dark);
     position: relative;
 
     .modal-close {
       position: absolute;
-      top: 1.25rem;
-      right: 1.25rem;
+      top: 0.8rem;
+      right: 0.8rem;
       background: none;
       border: none;
       cursor: pointer;
@@ -43,7 +43,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1.6rem;
-      padding: 1.6rem 1.6rem 8rem;
+      padding: 1.6rem 1.6rem 2rem;
     }
 
     // Product images section
@@ -178,7 +178,7 @@
 }
 
 .product-price {
-  padding: 1rem 0;
+  padding: 0.8rem 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -312,11 +312,34 @@
 }
 
 // Responsive design
+@media (max-width: 1440px) {
+  .modal-overlay {
+    .modal-content {
+      width: 76%;
+    }
+  }
+}
+
+@media (max-width: 1280px) {
+  .modal-overlay {
+    .modal-content {
+      width: 84%;
+    }
+  }
+}
+
+@media (max-width: 960px) {
+  .modal-overlay {
+    .modal-content {
+      width: 92%;
+    }
+  }
+}
+
 @media (max-width: 768px) {
   .modal-overlay {
     .modal-content {
       width: 100%;
-      max-height: calc(100vh - 1.25rem);
       .modal-body {
         grid-template-columns: 1fr;
         gap: 1.25rem;
