@@ -178,6 +178,9 @@ export async function handler(event) {
       cancel_url: `${process.env.VITE_APP_URL}/cart`,
       customer_email: customerEmail,
       billing_address_collection: 'required',
+      phone_number_collection: {
+        enabled: true
+      },
       locale: 'es'
     });
 
